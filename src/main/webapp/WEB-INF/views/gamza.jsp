@@ -1,0 +1,436 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+<title>Gamza Land</title>
+
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<style>
+	@font-face {
+		font-family: 'DOSGothic';
+		src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_eight@1.0/DOSGothic.woff') format('woff');
+		font-weight: normal;
+		font-style: normal;
+	}
+	
+	body { background-color:black; font-family:'DOSGothic'; color:white; text-align: center; user-select: none; }
+	div { display: inline-block; }
+	
+	#mainTitle {
+		font-size: 350%;
+		font-weight: bold;
+		margin-top: 10%;
+	}
+	
+	#mainStart {
+		font-size: 200%;
+		font-weight: bold;
+		margin-top: 10%;
+	}
+	
+	#endingTitle {
+		font-size: 350%;
+		font-weight: bold;
+		margin-top: 10%;
+	}
+	
+	#endingSubTitle {
+		font-size: 100%;
+		font-weight: bold;
+		margin-top: 10%;
+	}
+	
+	#backgroundGame {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 50%;
+		transform:translateX(-50%);
+	}
+	
+	#quest {
+		position: absolute;
+		font-size: 180%;
+		font-weight: bold;
+		color: black;
+		top: 25%;
+		left: 50%;
+		transform:translateX(-50%);
+		text-shadow: 2px 2px 2px #ccc;
+		user-select: none;
+	}
+	
+	#eventButton {
+		position: absolute;
+		font-size: 150%;
+		font-weight: bold;
+		color: black;
+		top: 40%;
+		left: 50%;
+		transform:translateX(-50%);
+		text-shadow: 2px 2px 2px #ccc;
+		user-select: none;
+	}
+	
+	#nyung {
+		position: absolute;
+		width: 12.5%;
+		height: 25%;
+		top: 50%;
+		left: 15%;
+	}
+	
+	#gamza {
+		position: absolute;
+		width: 12.5%;
+		height: 25%;
+		top: 50%;
+		left: 65%;
+	}
+	
+	#rookie {
+		position: absolute;
+		width: 9%;
+		height: 15%;
+		top: 62%;
+		left: 74.5%;
+	}
+	
+	#hoochu {
+		position: absolute;
+		width: 9%;
+		height: 15%;
+		top: 62%;
+		left: 58%;
+	}
+	
+	#dialogBox {
+		position: absolute;
+		border-radius: 10px;
+		background-color: black;
+		opacity: 0.7;
+		width: 98%;
+		height: 23%;
+		top: 76%;
+		left: 1%;
+		user-select: none;
+	}
+</style>
+<script type="text/javascript">
+	var shown = true;
+	setInterval(blinkText, 500);
+	
+	function blinkText(){
+		if (shown) {
+			$('#mainStart').css('color', 'black');
+			$('#arrow').hide();
+			shown = false;
+		} else {
+			$('#mainStart').css('color', 'white');
+			$('#arrow').show();
+			shown = true;
+		}
+	}
+</script>
+<script type="text/javascript">
+	function gameStart() {
+		$('#mainTitle').remove();
+		$('#mainStart').remove();
+		$('#backgroundGame').css('display', 'inline-block');
+		$('#nyung').css('display', 'inline-block');
+		$('#dialogBox').css('display', 'inline-block');
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(내 이름은 녕이. 감자 랜드를 탐험 중이다.)");
+		$('#dialogBox').attr('onclick', 'event_1()');
+	}
+	
+	function event_1() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(앗, 마침 저기에 사람이 있다. 말을 걸어보자.)");
+		$('#dialogBox').attr('onclick', 'event_2()');
+	}
+	
+	function event_2() {
+		$('#gamza').css('display', 'inline-block');
+		$('#hoochu').css('display', 'inline-block');
+		$('#rookie').css('display', 'inline-block');
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;실례합니다. 길을 좀 여쭙고 싶은데요.");
+		$('#dialogBox').attr('onclick', 'event_3()');
+	}
+	
+	function event_3() {
+		$('#characterName').html("&emsp;잘생긴 남자");
+		$('#dialogText').html("&emsp;안녕하세요. 처음보는 얼굴인데, 감자 랜드는 처음이신가요?");
+		$('#dialogBox').attr('onclick', 'event_4()');
+	}
+	
+	function event_4() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(이 남자... 정말 잘생겼다. 완전 내 취향이다.)");
+		$('#dialogBox').attr('onclick', 'event_5()');
+	}
+	
+	function event_5() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;네, 오늘 처음 왔어요! 감자 마을은 어느 방향으로 가야하나요?");
+		$('#dialogBox').attr('onclick', 'event_6()');
+	}
+	
+	function event_6() {
+		$('#characterName').html("&emsp;잘생긴 남자");
+		$('#dialogText').html("&emsp;감자 마을은 바로 이 앞에 있어요. 길을 안내해 드릴까요?");
+		$('#dialogBox').attr('onclick', 'event_7()');
+	}
+	
+	function event_7() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;그럼 정말 감사하죠! 그런데... 혹시 성함이...?");
+		$('#dialogBox').attr('onclick', 'event_8()');
+	}
+	
+	function event_8() {
+		$('#characterName').html("&emsp;잘생긴 남자");
+		$('#dialogText').html("&emsp;제 이름은 감자라고 합니다.");
+		$('#dialogBox').attr('onclick', 'event_9()');
+	}
+	
+	function event_9() {
+		$('#characterName').html("&emsp;감자");
+		$('#dialogText').html("&emsp;감자 마을의 촌장이죠.");
+		$('#dialogBox').attr('onclick', 'event_10()');
+	}
+	
+	function event_10() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;아...! 촌장님이셨군요! 제 이름은 녕이라고 해요.");
+		$('#dialogBox').attr('onclick', 'event_11()');
+	}
+	
+	function event_11() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;그런데... 옆에 있는 고양이들은 이름이 어떻게 되나요?");
+		$('#dialogBox').attr('onclick', 'event_12()');
+	}
+	
+	function event_12() {
+		$('#characterName').html("&emsp;감자");
+		$('#dialogText').html("&emsp;이 아이들은 루키와 후추에요. 말을 걸어 보실래요?");
+		$('#dialogBox').attr('onclick', 'event_13()');
+	}
+	
+	function event_13() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;네! 그럼 사양 않고...");
+		$('#dialogBox').attr('onclick', 'event_14()');
+	}
+	
+	function event_14() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(이름이 루키와 후추인가 보다. 말을 걸어 보자.)");
+		$('#dialogBox').attr('onclick', 'event_15()');
+	}
+	
+	function event_15() {
+		$('#dialogBox').css('display', 'none');
+		$('#quest').css('display', 'inline-block');
+		$('#quest').html("루키에게 말을 걸어보자");
+		$('#rookie').attr('onclick', 'event_16()');
+	}
+	
+	function event_16() {
+		$('#dialogBox').css('display', 'inline-block');
+		$('#characterName').html("&emsp;루키");
+		$('#dialogText').html("&emsp;애옹~");
+		$('#dialogBox').attr('onclick', 'event_17()');
+		$('#rookie').attr('onclick', '');
+	}
+	
+	function event_17() {
+		$('#quest').html("퀘스트 완료!");
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(루키는 만족스러운 듯 꼬리를 흔들고 있다.)");
+		$('#dialogBox').attr('onclick', 'event_18()');
+	}
+	
+	function event_18() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(옆에 있는 후추가 기대에 찬 눈빛으로 나를 바라보고 있다.)");
+		$('#dialogBox').attr('onclick', 'event_19()');
+	}
+	
+	function event_19() {
+		$('#dialogBox').css('display', 'none');
+		$('#quest').html("후추에게 말을 걸어보자");
+		$('#hoochu').attr('onclick', 'event_20()');
+	}
+	
+	function event_20() {
+		$('#dialogBox').css('display', 'inline-block');
+		$('#characterName').html("&emsp;후추");
+		$('#dialogText').html("&emsp;...");
+		$('#dialogBox').attr('onclick', 'event_21()');
+		$('#hoochu').attr('onclick', '');
+	}
+	
+	function event_21() {
+		$('#quest').html("퀘스트 완료!");
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(후추는 내 손에 얼굴을 부비부비하고 있다.)");
+		$('#dialogBox').attr('onclick', 'event_22()');
+	}
+	
+	function event_22() {
+		$('#quest').css('display', 'none');
+		$('#characterName').html("&emsp;감자");
+		$('#dialogText').html("&emsp;루키와 후추도 녕이님이 마음에 들었나 보네요. ^^!");
+		$('#dialogBox').attr('onclick', 'event_23()');
+	}
+	
+	function event_23() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(감자는 해맑게 웃고 있다. 볼수록 빠져드는 느낌이다.)");
+		$('#dialogBox').attr('onclick', 'event_24()');
+	}
+	
+	function event_23() {
+		$('#characterName').html("&emsp;감자");
+		$('#dialogText').html("&emsp;녕이님, 혹시 실례가 안 된다면 제 부탁도 들어주실 수 있을까요?");
+		$('#dialogBox').attr('onclick', 'event_24()');
+	}
+	
+	function event_24() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;넵! 물론이죠! 무엇을 도와드리면 될까요?");
+		$('#dialogBox').attr('onclick', 'event_25()');
+	}
+	
+	function event_25() {
+		$('#dialogBox').css('display', 'none');
+		$('#quest').css('display', 'inline-block');
+		$('#quest').html("감자에게 말을 걸어보자");
+		$('#gamza').attr('onclick', 'event_26()');
+	}
+	
+	function event_26() {
+		$('#quest').html("퀘스트 완료!");
+		$('#dialogBox').css('display', 'inline-block');
+		$('#characterName').html("&emsp;감자");
+		$('#dialogText').html("&emsp;실은...");
+		$('#dialogBox').attr('onclick', 'event_27()');
+		$('#gamza').attr('onclick', '');
+	}
+	
+	function event_27() {
+		$('#quest').css('display', 'none');
+		$('#characterName').html("&emsp;감자");
+		$('#dialogText').html("&emsp;녕이님을 처음 봤을 때부터 한 눈에 반했습니다.");
+		$('#dialogBox').attr('onclick', 'event_28()');
+	}
+	
+	function event_28() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;?!");
+		$('#dialogBox').attr('onclick', 'event_29()');
+	}
+	
+	function event_29() {
+		$('#characterName').html("&emsp;감자");
+		$('#dialogText').html("&emsp;혹시 저와 결혼해 주실래요?");
+		$('#dialogBox').attr('onclick', 'event_30()');
+	}
+	
+	function event_30() {
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(이 남자에게 유부초밥을 만들어 주고 싶어졌다.)");
+		$('#dialogBox').attr('onclick', 'event_31()');
+	}
+	
+	function event_31() {
+		$('#dialogBox').css('display', 'none');
+		$('#quest').css('display', 'inline-block');
+		$('#quest').html("감자의 청혼을 수락하자");
+		$('#eventButton').css('display', 'inline-block');
+	}
+	
+	function clickAccept() {
+		$('#dialogBox').css('display', 'inline-block');
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(나는 그의 청혼을 수락했다.)");
+		$('#quest').html("퀘스트 완료!");
+		$('#eventButton').css('display', 'none');
+		$('#dialogBox').attr('onclick', 'ending()');
+	}
+	
+	function ending() {
+		$('#dialogBox').css('display', 'none');
+		$('#quest').css('display', 'none');
+		
+		$('#backgroundGame').css('display', 'none');
+		$('#backgroundGame').fadeIn(0);
+		$('#backgroundGame').fadeOut(5000);
+		
+		$('#nyung').css('display', 'none');
+		$('#nyung').fadeIn(0);
+		$('#nyung').fadeOut(5000);
+		
+		$('#gamza').css('display', 'none');
+		$('#gamza').fadeIn(0);
+		$('#gamza').fadeOut(5000);
+		
+		$('#rookie').css('display', 'none');
+		$('#rookie').fadeIn(0);
+		$('#rookie').fadeOut(5000);
+		
+		$('#hoochu').css('display', 'none');
+		$('#hoochu').fadeIn(0);
+		$('#hoochu').fadeOut(5000);
+		
+		$('#endingTitle').css('display', 'inline-block');
+		$('#endingTitle').fadeOut(0);
+		$('#endingTitle').fadeIn(5000);
+		
+		$('#endingSubTitle').css('display', 'inline-block');
+		$('#endingSubTitle').fadeOut(0);
+		$('#endingSubTitle').fadeIn(5000);
+	}
+	
+	function clickDeny() {
+		$('#dialogBox').css('display', 'inline-block');
+		$('#characterName').html("&emsp;녕이");
+		$('#dialogText').html("&emsp;(어째서인지 청혼을 거절할 수 없다.)");
+		$('#dialogBox').attr('onclick', 'offDialog()');
+	}
+	
+	function offDialog() {
+		$('#dialogBox').css('display', 'none');
+	}
+</script>
+</head>
+
+<body>
+<div id="mainTitle">Gamza Land!</div><br>
+<div id="mainStart" onclick="gameStart()">START</div>
+<image id="backgroundGame" style="display:none;" src="https://piskel-imgstore-b.appspot.com/img/f5b037c7-7df5-11eb-a12a-35bdd1f5bd5b.gif"></image>
+<div id="quest" style="display:none;"></div>
+<div id="eventButton" style="display:none;">
+	<a id="accept" onclick="clickAccept()">수락하기</a>
+	&emsp;
+	<a id="deny" onclick="clickDeny()">거절하기</a>
+</div>
+<image id="nyung" style="display:none;" src="https://piskel-imgstore-b.appspot.com/img/7144c217-7df2-11eb-8073-35bdd1f5bd5b.gif"></image>
+<image id="gamza" style="display:none;" src="https://piskel-imgstore-b.appspot.com/img/3dd150fa-7df2-11eb-896e-35bdd1f5bd5b.gif"></image>
+<image id="rookie" style="display:none;" src="https://piskel-imgstore-b.appspot.com/img/b5c4f4ae-7df4-11eb-928f-35bdd1f5bd5b.gif"></image>
+<image id="hoochu" style="display:none;" src="https://piskel-imgstore-b.appspot.com/img/52a3326e-7df4-11eb-934f-35bdd1f5bd5b.gif"></image>
+<div id="dialogBox" style="display:none;">
+	<br><div id="characterName" style="float:left;font-size:100%;font-weight:bold;"></div><br><br>
+	<div id="dialogText" style="float:left;font-size:100%;"></div>
+	<div id="arrow" style="float:right;font-size:100%;">▼&emsp;</div>
+</div>
+<div id="endingTitle" style="display:none;">Happy Ending</div>
+<div id="endingSubTitle" style="display:none;">감자와 녕이는 감자 마을에서 오래오래 행복하게 살았답니다.</div>
+</body>
+</html>
