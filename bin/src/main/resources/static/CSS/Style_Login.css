@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'IBMPlexSansKR-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+	.sectionLeft {
+		float: left;
+		width: 50%;
+		height: 100%;
+		background-color: #B18904;
+	}
+	
+	.sectionRight {
+		float: right;
+		width: 50%;
+		height: 100%;
+		background-color: #FFFFFF;
+	}
+	
+	.loginBox {
+		position: relative;
+		text-align: center;
+		border: 1px solid #A4A4A4;
+		border-radius: 8px;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		padding: 100px;
+	}
+	
+	table tr td {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 14px;
+		font-weight: bold;
+		margin: 0;
+		padding: 10px;
+	}
+	
+	input {
+		font-family: IBMPlexSansKR-Regular;
+		height: 30px;
+		border: 1px solid #A4A4A4;
+		border-radius: 4px;
+	}
