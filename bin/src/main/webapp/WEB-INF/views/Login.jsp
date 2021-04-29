@@ -13,10 +13,7 @@
 </head>
 
 <body>
-<div class="sectionLeft" style="background-color: #FFFFFF;">
-	<p style="position: relative; height: 58em; text-align: center;">	
-		<img alt="DrumTree" src="resources/Images/logo2.jpg" style="height: auto; width: 30em; position: absolute; top: 50%; transform: translateY(-50%); ">
-	</p>
+<div class="sectionLeft" style="background-color: #B18904;">
 
 </div>
 

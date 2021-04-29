@@ -1,0 +1,35 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>드럼트리</title>
+
+<link rel="stylesheet" type="text/css" href="resources\CSS\Style_Common.css">
+<link rel="stylesheet" type="text/css" href="resources\CSS\Style_Notice.css">
+<script type="text/javascript" src="resources\JavaScript\Menubar.js"></script>
+<script type="text/javascript" src="resources\JavaScript\Func_Notice.js"></script>
+<script type="text/javascript" src="resources\JQuery\jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
+	selectCurrentMenu();
+	createTableHead();
+	createTableBody();
+	createPopupBox();
+</script>
+</head>
+
+<body>
+<div class="menuBar"><script>createMenubar();</script></div>
+<input type="button" class="hideButton" value="≡" onclick="hideMenubar()">
+<div class="headerBar"><a>공지사항</a><hr></div>
+<div class="mainScreen">
+	<table>
+		<thead></thead>
+		<tbody></tbody>
+	</table>
+</div>
+<div class="popupBackground"></div>
+<div class="popupBox"></div>
+</body>
+</html>
