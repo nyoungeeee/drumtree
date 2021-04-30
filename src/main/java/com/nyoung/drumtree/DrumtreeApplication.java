@@ -9,5 +9,4 @@ public class DrumtreeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DrumtreeApplication.class, args);
 	}
-
 }
