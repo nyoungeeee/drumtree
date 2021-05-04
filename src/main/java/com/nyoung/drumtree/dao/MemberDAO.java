@@ -6,4 +6,5 @@ import com.nyoung.drumtree.dto.MemberDTO;
 
 public interface MemberDAO {
 	List<MemberDTO> selectMember(MemberDTO param) throws Exception;
+	
 }
