@@ -3,15 +3,18 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.nyoung.drumtree.dao.MemberDAO">
+<mapper namespace="com.nyoung.drumtree.MemberMapper">
 
 	<select id="selectMember"
-		parameterType="com.nyoung.drumtree.dto.MemberDTO"
+		parameterType="java.util.Map"
 		resultType="com.nyoung.drumtree.dto.MemberDTO">
-		select memberIdx, memberID, memberPW, memberName, memo from test;
+		select memberIdx, memberID, memberPW, memberName, memo from test
+		<if test="memberID != null">
+			where memberID like '%${memberID}%'
+		</if>
 	</select>
 	
-	<insert id="insertMember"
+	<insert id="signIn"
 		parameterType="com.nyoung.drumtree.dto.MemberDTO">
 		insert into test ('memberName', 'memberID', 'memberPW', 'memo') values (#{memberName}, #{memberID}, #{memberPW}, #{memo})
 	</insert>
