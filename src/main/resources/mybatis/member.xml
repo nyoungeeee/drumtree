@@ -4,19 +4,28 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.nyoung.drumtree.MemberMapper">
-
-	<select id="selectMember"
-		parameterType="java.util.Map"
+	
+	<!-- 멤버 리스트(검색/전체) -->
+	<select id="selectMember" parameterType="java.util.Map"
 		resultType="com.nyoung.drumtree.dto.MemberDTO">
 		select memberIdx, memberID, memberPW, memberName, memo from test
-		<if test="memberID != null">
-			where memberID like '%${memberID}%'
-		</if>
+		<where>
+			<if test="memberID != null">
+				memberID like '%${memberID}%'
+			</if>
+			<if test="memberName != null">
+				and memberName like '%${memberName}%'
+			</if>
+			<if test="memo != null">
+				and memo like '%${memo}%'
+			</if>
+		</where>
 	</select>
 	
-	<insert id="signIn"
-		parameterType="com.nyoung.drumtree.dto.MemberDTO">
-		insert into test ('memberName', 'memberID', 'memberPW', 'memo') values (#{memberName}, #{memberID}, #{memberPW}, #{memo})
+	<!-- 회원 등록 -->
+	<insert id="signIn" parameterType="java.util.Map">
+		INSERT INTO test (memberName, memberID, memberPW, memo)
+		VALUES (#{memberName}, #{memberID}, #{memberPW}, #{memo});
 	</insert>
 
 </mapper>

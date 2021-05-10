@@ -14,13 +14,15 @@ public class MemberServiceImpl implements MemberService{
 	@Autowired
 	MemberDAO memberDAO;
 	
+	/*멤버 리스트(검색/전체)*/
 	@Override
-	public List<MemberDTO> SelectMember(MemberDTO param, String quary) {
-		return memberDAO.SelectMember(param, quary);
+	public List<MemberDTO> SelectMember(MemberDTO param) {
+		return memberDAO.SelectMember(param);
 	}
 	
+	/*회원 등록*/
 	@Override
 	public int SignIn(MemberDTO param) {
-		return 0;
+		return memberDAO.SignIn(param);
 	}
 }

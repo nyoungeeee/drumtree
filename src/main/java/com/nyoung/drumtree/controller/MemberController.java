@@ -22,7 +22,7 @@ public class MemberController {
 	@Autowired
 	MemberServiceImpl memberService;
 
-	//멤버 리스트(검색/전체)
+	/*멤버 리스트(검색/전체)*/
 	@RequestMapping(value = "/members")
 	public ModelAndView Members(HttpServletRequest request) throws Exception {
 		// 한글 인코딩 설정
@@ -42,11 +42,8 @@ public class MemberController {
 		int total = 0;
 
 		// 쿼리 실행
-		String quary ="";
-		MemberDTO member1 = new MemberDTO(0, null, memberID, null, null);
-		quary = "where memberID";
-//		System.out.println(quary);
-		list = memberService.SelectMember(member1, quary);
+		MemberDTO member1 = new MemberDTO(0, memberName, memberID, null, memo);
+		list = memberService.SelectMember(member1);
 		total = list.size();
 		if(total > 0) {
 			rt = "MemberList_OK";
@@ -83,54 +80,56 @@ public class MemberController {
 		return modelAndView;
 	}
 
-
-	//	/*Member List*/
-	//	@RequestMapping("/members")
-	//	public List<MemberDTO> members(@RequestParam(value = "memberID", defaultValue = "")String memberID) throws Exception {
-	//		final MemberDTO param = new MemberDTO(0, null, memberID, null, null);
-	//		final List<MemberDTO> memberList = memberDAO.SelectMember(param);
-	//		
-	//		return memberList;
-	//	}
-	//	
 	/*회원 등록*/
 	@RequestMapping("/signin")
-	public String signIn(
-			@RequestParam(value = "memberName", defaultValue = "") String memberName, 
-			@RequestParam(value = "memberID", defaultValue = "") String memberID,
-			@RequestParam(value = "memberPW", defaultValue = "") String memberPW,
-			@RequestParam(value = "memo", defaultValue = "") String memo
-			) throws Exception  {
+	public ModelAndView SignIn(HttpServletRequest request) throws Exception {
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
 
-		//유효여부 체크
-		boolean isCorrect = true;
-
-		//가져온 값 체크
-		if(memberName.equals("")) {
-			isCorrect = false;
-		}
-		if(memberID.equals("")) {
-			isCorrect = false;
-		}
-		if(memberPW.equals("")) {
-			isCorrect = false;
-		}
-
-
-		//DTO에 넣기
-		final MemberDTO param = new MemberDTO(0, memberName, memberID, memberPW, memo);
-
-		//SQL 처리
-		String result = "";
-
-		if(isCorrect==true) {
-			int quaryResult = 0;
-
+		// 들어온 값
+		String memberID = null;
+		String memberName = null;
+		String memberPW = null;
+		String memo = null;
+		memberID = request.getParameter("memberID");
+		memberName = request.getParameter("memberName");
+		memberPW = request.getParameter("memberPW");
+		memo = request.getParameter("memo");
+		
+		// 결과값 세팅
+		String rt = null;
+		List<MemberDTO> list = null;
+		
+		// 쿼리 실행 -- 이미 등록된 회원인지 체크(ID체크)
+		MemberDTO param =new MemberDTO(0, null, memberID, null, null);
+		list = memberService.SelectMember(param);
+		
+		// 쿼리 실행 -- 회원 등록 진행
+		if(list.size() > 0) {
+			rt = "이미 등록된 회원입니다.";
 		} else {
-			result = "값이 없습니다.";
+			param.setMemberName(memberName);
+			param.setMemo(memo);
+			param.setMemberPW(memberPW);
+			memberService.SignIn(param);
+			// 쿼리 실행 -- 등록이 정상적으로 되었는지 체크
+			list = memberService.SelectMember(param);
+			if(list.size() >= 1) {
+				rt = "정상적으로 등록되었습니다.";
+			} else {
+				rt = "문제가 발생하여 등록되지 않았습니다.";
+			}
 		}
 
+		// JSON 세팅
+		JSONObject json = new JSONObject();
+		json.put("rt", rt);
 
-		return result;
+		// MV 세팅
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("json", json);
+		modelAndView.setViewName("view-json");
+		return modelAndView;
 	}
+
 }
