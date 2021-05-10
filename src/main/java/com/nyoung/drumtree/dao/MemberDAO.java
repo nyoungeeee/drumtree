@@ -15,24 +15,28 @@ public class MemberDAO {
 	@Autowired
 	SqlSession sqlSession;
 	
-	//멤버 리스트
-	public List<MemberDTO> SelectMember(MemberDTO param, String quary) {
+	/*멤버 리스트(검색/전체)*/
+	public List<MemberDTO> SelectMember(MemberDTO param) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("memberName", param.getMemberName());
 		map.put("memberID", param.getMemberID());
 		map.put("memberPW", param.getMemberPW());
 		map.put("memo", param.getMemo());
-		map.put("quary", quary);
 		return sqlSession.selectList("com.nyoung.drumtree.MemberMapper.selectMember", map);
 	}
 	
-	//멤버 추가
+	/*회원 등록*/
 	public int SignIn(MemberDTO param) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("memberName", param.getMemberName());
 		map.put("memberID", param.getMemberID());
 		map.put("memberPW", param.getMemberPW());
 		map.put("memo", param.getMemo());
-		return sqlSession.insert("com.nyoung.drumtree.mybatis.member.selectMember",map);
+		System.out.println(" 1getMemberIdx : " + param.getMemberIdx());
+		System.out.println(" 1getMemberName : " + param.getMemberName());
+		System.out.println(" 1getMemberID : " + param.getMemberID());
+		System.out.println(" 1getMemberPW : " + param.getMemberPW());
+		System.out.println(" 1getMemo : " + param.getMemo());
+		return sqlSession.insert("com.nyoung.drumtree.MemberMapper.signIn", map);
 	}
 }
