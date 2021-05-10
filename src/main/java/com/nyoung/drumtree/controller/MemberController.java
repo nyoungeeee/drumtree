@@ -32,9 +32,18 @@ public class MemberController {
 		String memberID = null;
 		String memberName = null;
 		String memo = null;
+		String memberIdxStr = null;
+		String memberPW = null;
+		int memberIdx = 0;
+		memberIdxStr = request.getParameter("memberIdx");
+		if(memberIdxStr!=null) {
+			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
+		}
+		memberPW = request.getParameter("memberPW");
 		memberID = request.getParameter("memberID");
 		memberName = request.getParameter("memberName");
 		memo = request.getParameter("memo");
+		
 		// 결과값 세팅
 		List<MemberDTO> list = null;
 		String rt = null;
@@ -42,7 +51,7 @@ public class MemberController {
 		int total = 0;
 
 		// 쿼리 실행
-		MemberDTO member1 = new MemberDTO(0, memberName, memberID, null, memo);
+		MemberDTO member1 = new MemberDTO(memberIdx, memberName, memberID, memberPW, memo);
 		list = memberService.SelectMember(member1);
 		total = list.size();
 		if(total > 0) {

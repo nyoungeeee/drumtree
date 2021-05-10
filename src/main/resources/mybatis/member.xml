@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.nyoung.drumtree.MemberMapper">
-	
+
 	<!-- 멤버 리스트(검색/전체) -->
 	<select id="selectMember" parameterType="java.util.Map"
 		resultType="com.nyoung.drumtree.dto.MemberDTO">
@@ -19,13 +19,28 @@
 			<if test="memo != null">
 				AND memo LIKE '%${memo}%'
 			</if>
+			<if test="memberIdx != 0">
+				AND memberIdx = #{memberIdx}
+			</if>
+			<if test="memberPW != null">
+				AND memberPW LIKE #{memberPW}
+			</if>
 		</where>
 	</select>
-	
+
 	<!-- 회원 등록 -->
 	<insert id="signIn" parameterType="java.util.Map">
-		INSERT INTO member (memberName, memberID, memberPW, memo)
-		VALUES (#{memberName}, #{memberID}, #{memberPW}, #{memo});
+		INSERT INTO member
+		(memberName, memberID, memberPW, memo)
+		VALUES (#{memberName},
+		#{memberID}, #{memberPW}, #{memo})
 	</insert>
+
+	<!-- 회원 정보 수정 -->
+	<update id="updateMember" parameterType="java.util.Map">
+		UPDATE member
+		SET memberName=#{memberName}, memo=#{memo}, memberID=#{memo}, memberPW=#{memo}
+		WHERE memberIdx=#{memberIdx}
+	</update>
 
 </mapper>
