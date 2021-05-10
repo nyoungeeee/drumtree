@@ -8,23 +8,23 @@
 	<!-- 멤버 리스트(검색/전체) -->
 	<select id="selectMember" parameterType="java.util.Map"
 		resultType="com.nyoung.drumtree.dto.MemberDTO">
-		select memberIdx, memberID, memberPW, memberName, memo from test
+		SELECT memberIdx, memberID, memberPW, memberName, memo from member
 		<where>
 			<if test="memberID != null">
-				memberID like '%${memberID}%'
+				memberID LIKE '%${memberID}%'
 			</if>
 			<if test="memberName != null">
-				and memberName like '%${memberName}%'
+				AND memberName LIKE '%${memberName}%'
 			</if>
 			<if test="memo != null">
-				and memo like '%${memo}%'
+				AND memo LIKE '%${memo}%'
 			</if>
 		</where>
 	</select>
 	
 	<!-- 회원 등록 -->
 	<insert id="signIn" parameterType="java.util.Map">
-		INSERT INTO test (memberName, memberID, memberPW, memo)
+		INSERT INTO member (memberName, memberID, memberPW, memo)
 		VALUES (#{memberName}, #{memberID}, #{memberPW}, #{memo});
 	</insert>
 

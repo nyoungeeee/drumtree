@@ -48,7 +48,7 @@ public class MemberController {
 		if(total > 0) {
 			rt = "MemberList_OK";
 		} else {
-			rt = "MemberList_FAIL";
+			rt = "MemberList_FAIL001";
 		}
 
 		// JSON 세팅
@@ -106,7 +106,7 @@ public class MemberController {
 		
 		// 쿼리 실행 -- 회원 등록 진행
 		if(list.size() > 0) {
-			rt = "이미 등록된 회원입니다.";
+			rt = "SignIn_FAIL001";
 		} else {
 			param.setMemberName(memberName);
 			param.setMemo(memo);
@@ -115,9 +115,9 @@ public class MemberController {
 			// 쿼리 실행 -- 등록이 정상적으로 되었는지 체크
 			list = memberService.SelectMember(param);
 			if(list.size() >= 1) {
-				rt = "정상적으로 등록되었습니다.";
+				rt = "SignIn_OK";
 			} else {
-				rt = "문제가 발생하여 등록되지 않았습니다.";
+				rt = "SignIn_FAIL002";
 			}
 		}
 
