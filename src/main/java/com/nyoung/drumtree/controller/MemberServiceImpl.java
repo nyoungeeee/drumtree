@@ -25,4 +25,16 @@ public class MemberServiceImpl implements MemberService{
 	public int SignIn(MemberDTO param) {
 		return memberDAO.SignIn(param);
 	}
+	
+	/*회원 정보 수정*/
+	@Override
+	public int UpdateMember(MemberDTO param) {
+		return memberDAO.UpdateMember(param);
+	}
+	
+	/*회원 정보 삭제*/
+	@Override
+	public int DeleteMember(int memberIdx) {
+		return memberDAO.DeleteMember(memberIdx);
+	}
 }

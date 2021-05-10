@@ -8,39 +8,55 @@
 	<!-- 멤버 리스트(검색/전체) -->
 	<select id="selectMember" parameterType="java.util.Map"
 		resultType="com.nyoung.drumtree.dto.MemberDTO">
-		SELECT memberIdx, memberID, memberPW, memberName, memo from member
-		<where>
-			<if test="memberID != null">
-				memberID LIKE '%${memberID}%'
-			</if>
-			<if test="memberName != null">
-				AND memberName LIKE '%${memberName}%'
-			</if>
-			<if test="memo != null">
-				AND memo LIKE '%${memo}%'
-			</if>
-			<if test="memberIdx != 0">
-				AND memberIdx = #{memberIdx}
-			</if>
-			<if test="memberPW != null">
-				AND memberPW LIKE #{memberPW}
-			</if>
-		</where>
+		SELECT * from member
+		WHERE isDelete = 0
+		<if test="memberID != ''">
+			AND memberID LIKE '${memberID}'
+		</if>
+		<if test="memberName != ''">
+			AND memberName LIKE '%${memberName}%'
+		</if>
+		<if test="memo != ''">
+			AND memo LIKE '%${memo}%'
+		</if>
+		<if test="memberIdx != 0">
+			AND memberIdx = ${memberIdx}
+		</if>
+		<if test="memberPW != ''">
+			AND memberPW LIKE '${memberPW}'
+		</if>
+
 	</select>
 
 	<!-- 회원 등록 -->
 	<insert id="signIn" parameterType="java.util.Map">
 		INSERT INTO member
-		(memberName, memberID, memberPW, memo)
-		VALUES (#{memberName},
-		#{memberID}, #{memberPW}, #{memo})
+		(memberName, memberID, memberPW, memo, signinDate, updateDate)
+		VALUES
+		(#{memberName}, #{memberID}, #{memberPW}, #{memo}, now(), now())
+
 	</insert>
 
 	<!-- 회원 정보 수정 -->
 	<update id="updateMember" parameterType="java.util.Map">
 		UPDATE member
-		SET memberName=#{memberName}, memo=#{memo}, memberID=#{memo}, memberPW=#{memo}
-		WHERE memberIdx=#{memberIdx}
+		SET
+		memo=#{memo}
+		, memberName=#{memberName}
+		, memberID=#{memberID}
+		,
+		memberPW=#{memberPW}
+		, updateDate = now()
+		WHERE memberIdx=${memberIdx}
 	</update>
 
+	<!-- 회원 삭제 -->
+	<delete id="deleteMember" parameterType="java.util.Map">
+		UPDATE member
+		SET
+		isDelete = 1
+		, deleteDate = now()
+		WHERE memberIdx=${memberIdx}
+	</delete>
+	
 </mapper>
