@@ -18,6 +18,7 @@ public class MemberDAO {
 	/*멤버 리스트(검색/전체)*/
 	public List<MemberDTO> SelectMember(MemberDTO param) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberIdx", param.getMemberIdx());
 		map.put("memberName", param.getMemberName());
 		map.put("memberID", param.getMemberID());
 		map.put("memberPW", param.getMemberPW());
@@ -32,11 +33,17 @@ public class MemberDAO {
 		map.put("memberID", param.getMemberID());
 		map.put("memberPW", param.getMemberPW());
 		map.put("memo", param.getMemo());
-		System.out.println(" 1getMemberIdx : " + param.getMemberIdx());
-		System.out.println(" 1getMemberName : " + param.getMemberName());
-		System.out.println(" 1getMemberID : " + param.getMemberID());
-		System.out.println(" 1getMemberPW : " + param.getMemberPW());
-		System.out.println(" 1getMemo : " + param.getMemo());
 		return sqlSession.insert("com.nyoung.drumtree.MemberMapper.signIn", map);
+	}
+	
+	/*회원 정보 수정*/
+	public int UpdateMember(MemberDTO param) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberIdx", param.getMemberIdx());
+		map.put("memberName", param.getMemberName());
+		map.put("memberID", param.getMemberID());
+		map.put("memberPW", param.getMemberPW());
+		map.put("memo", param.getMemo());
+		return sqlSession.update("", map);
 	}
 }
