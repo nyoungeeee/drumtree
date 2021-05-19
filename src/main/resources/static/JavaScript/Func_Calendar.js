@@ -1,7 +1,7 @@
 function selectCurrentMenu() {
 	$(document).ready(function(){
-		$(".menuName").eq(1).css("background-color", "#CFBEB7");
-		$(".menuName").eq(1).children().css("color", "#481B07");
+		$(".menuName").eq(1).css("background-color", "#BDBDBD");
+		$(".menuName").eq(1).children().css("color", "#000000");
 	});
 }
 
@@ -103,7 +103,7 @@ function createMonthlyCalendar(currentYear, currentMonth, eventType) {
 			var nowDay = today.getDate();
 		}
 		var now = nowYear + "-" +  nowMonth + "-" + nowDay;
-		$("tbody td:contains('" + now + "')").css("background", "#DDE5C0");
+		$("tbody td:contains('" + now + "')").css("background", "#D8D8D8");
 		$("tbody td").not("td:contains('" + $("#month").val() + "')").css("color", "#D8D8D8");
 		
 		var reservation = "<input type='button' id='reservation' value='" + "[00:00] " + "닉네임" + "'>";

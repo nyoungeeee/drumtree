@@ -1,5 +1,6 @@
 function createMenubar() {
 	var result = "";
+	result += "<div class='logo'>" + "<img src='resources/Images/logo2.jpg' width='5%'>" + "</div>";
 	result += "<div class='menuName' onclick=location.href='" + "../Notice" + "'>" + "<a>공지사항</a>" + "</div>";
 	result += "<br>";
 	result += "<div class='menuName' onclick=location.href='" + "../Calendar" + "'>" + "<a>달력</a>" + "</div>";
@@ -10,19 +11,17 @@ function createMenubar() {
 	result += "<div class='subMenuName' onclick=location.href='" + "../Admin_Notice" + "'>" + "<a>공지사항 작성</a>" + "</div>";
 	result += "<div class='subMenuName' onclick=location.href='" + "../Admin_Approval" + "'>" + "<a>회원등록 승인</a>" + "</div>";
 	result += "<div class='subMenuName' onclick=location.href='" + "../Admin_Account" + "'>" + "<a>회원 관리</a>" + "</div>";
+	result += "<div class='footer'>" + "경기도 안양시 범계" + "<br>" + "000-0000-0000" + "</div>";
 	
 	document.write(result);
 	
-	$(function(){
-		$(".menuName").click(function(){
-			$(".menuName").css("background-color", "#481B07");
-			$(".menuName").children().css("color", "#CFBEB7");
-			$(this).css("background-color", "#CFBEB7");
-			$(this).children().css("color", "#481B07");
-		})
-		
+	$(function(){		
 		$("#adminMenu").click(function(){
-			$(".subMenuName").css("display", "block");
+			$(".menuName").css("background-color", "");
+			$(".menuName").children().css("color", "");
+			$(this).css("background-color", "#BDBDBD");
+			$(this).children().css("color", "#000000");
+			$(".subMenuName").css("visibility", "visible");
 			$(".subMenuName").fadeOut(0);
 			$(".subMenuName").fadeIn(250);
 		})

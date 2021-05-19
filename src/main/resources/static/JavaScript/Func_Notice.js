@@ -1,7 +1,7 @@
 function selectCurrentMenu() {
 	$(document).ready(function(){
-		$(".menuName").eq(0).css("background-color", "#CFBEB7");
-		$(".menuName").eq(0).children().css("color", "#481B07");
+		$(".menuName").eq(0).css("background-color", "#BDBDBD");
+		$(".menuName").eq(0).children().css("color", "#000000");
 	});
 }
 
