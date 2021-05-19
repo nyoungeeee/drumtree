@@ -1,9 +1,12 @@
 package com.nyoung.drumtree.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mybatis.spring.annotation.MapperScan;
@@ -17,18 +20,18 @@ import com.nyoung.drumtree.dao.MemberDAO;
 import com.nyoung.drumtree.dto.MemberDTO;
 
 @RestController
-@MapperScan(basePackages = "com.nyoung.drumtree.dao")
 public class MemberController {
 	@Autowired
 	MemberServiceImpl memberService;
 
 	/*멤버 리스트(검색/전체)*/
 	@RequestMapping(value = "/members")
-	public ModelAndView Members(HttpServletRequest request) throws Exception {
+	public Map<Object, Object> Members(HttpServletRequest request) throws Exception {
 		// 한글 인코딩 설정
 		request.setCharacterEncoding("UTF-8");
 
 		// 들어온 값
+		String reqCode = request.getParameter("reqCode")==null ? "" : request.getParameter("reqCode");
 		String memberID = request.getParameter("memberID")==null ? "" : request.getParameter("memberID");
 		String memberName = request.getParameter("memberName")==null ? "" : request.getParameter("memberName");
 		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
@@ -60,43 +63,52 @@ public class MemberController {
 			rt = "MemberList_FAIL001";
 		}
 
-		// JSON 세팅
-		JSONObject json = new JSONObject();
-		json.put("rt", rt);
-		json.put("total", total);
-		json.put("totalAll",totalAll);
-		if(total > 0) {
-			JSONArray item = new JSONArray();
-			for(int i=0; i<list.size(); i++) {
-				JSONObject temp = new JSONObject();
-				MemberDTO member = list.get(i);
-				temp.put("memberIdx", member.getMemberIdx());
-				temp.put("memberName", member.getMemberName());
-				temp.put("memberID", member.getMemberID());
-				temp.put("memberPW",  member.getMemberPW());
-				temp.put("memo",  member.getMemo());
-				temp.put("signinDate", member.getSigninDate());
-				temp.put("isDelete", member.getIsDelete());
-				temp.put("deleteDate", member.getDeleteDate());
-				temp.put("updateDate", member.getUpdateDate());
-				temp.put("isApproval", member.getIsApproval());
-				//jsonArray에 추가
-				item.put(temp);
-				//json에 추가
-				json.put("item", item);
+		//Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
+		data.put("total", total);
+		data.put("totalAll", totalAll);
+
+		if(reqCode.equals("0")) {	// 요청코드가 0(PW 일치여부 확인)
+			for (int i=0; i<list.size(); i++) {
+				Map<String, Object> member = new HashMap<>();
+				MemberDTO member1 = list.get(i);
+				member.put("memberIdx", member1.getMemberIdx());
+				member.put("memberName", member1.getMemberName());
+				member.put("memberID", member1.getMemberID());
+				member.put("memberPW", member1.getMemberPW());
+				member.put("memo", member1.getMemo());
+				member.put("signinDate", member1.getSigninDate());
+				member.put("deleteDate", member1.getDeleteDate());
+				member.put("updateDate", member1.getUpdateDate());
+				member.put("isDelete", member1.getIsDelete());
+				member.put("isApproval", member1.getIsApproval());
+				data.put(i, member);
+			}
+		} else {	//일반적인 경우, PW 노출하지 않음
+			for (int i=0; i<list.size(); i++) {
+				Map<String, Object> member = new HashMap<>();
+				MemberDTO member1 = list.get(i);
+				member.put("memberIdx", member1.getMemberIdx());
+				member.put("memberName", member1.getMemberName());
+				member.put("memberID", member1.getMemberID());
+				member.put("memo", member1.getMemo());
+				member.put("signinDate", member1.getSigninDate());
+				member.put("deleteDate", member1.getDeleteDate());
+				member.put("updateDate", member1.getUpdateDate());
+				member.put("isDelete", member1.getIsDelete());
+				member.put("isApproval", member1.getIsApproval());
+				data.put(i, member);
 			}
 		}
 
-		// MV 세팅
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("json", json);
-		modelAndView.setViewName("view-json");
-		return modelAndView;
+		return data;
 	}
 
 	/*회원 등록*/
 	@RequestMapping("/signin")
-	public ModelAndView SignIn(HttpServletRequest request) throws Exception {
+	public Map<Object, Object> SignIn(HttpServletRequest request) throws Exception {
+
 		// 한글 인코딩 설정
 		request.setCharacterEncoding("UTF-8");
 
@@ -136,20 +148,17 @@ public class MemberController {
 			}
 		}
 
-		// JSON 세팅
-		JSONObject json = new JSONObject();
-		json.put("rt", rt);
+		//Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
 
-		// MV 세팅
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("json", json);
-		modelAndView.setViewName("view-json");
-		return modelAndView;
+		return data;
 	}
 
 	/*회원 정보 수정*/
 	@RequestMapping("/update-member")
-	public ModelAndView UpdateMember(HttpServletRequest request) throws Exception {
+	public Map<Object, Object> UpdateMember(HttpServletRequest request) throws Exception {
+
 		// 한글 인코딩 설정
 		request.setCharacterEncoding("UTF-8");
 
@@ -218,19 +227,19 @@ public class MemberController {
 			rt = "UpdateMember_FAIL001";
 		}
 
-		// JSON 세팅
-		JSONObject json = new JSONObject();
-		json.put("rt", rt);
-		// MV 세팅
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("json", json);
-		modelAndView.setViewName("view-json");
-		return modelAndView;
+		//Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
+
+		return data;
+
 	}
+
 
 	/*회원 정보 삭제*/
 	@RequestMapping("/delete-member")
-	public ModelAndView DeleteMember(HttpServletRequest request) throws Exception {
+	public Map<Object, Object> DeleteMember(HttpServletRequest request) throws Exception {
+
 		// 한글 인코딩 설정
 		request.setCharacterEncoding("UTF-8");
 
@@ -268,14 +277,62 @@ public class MemberController {
 			rt = "DeleteMember_FAIL001";
 		}
 
-		// JSON 세팅
-		JSONObject json = new JSONObject();
-		json.put("rt", rt);
+		//Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
 
-		// MV 세팅
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("json", json);
-		modelAndView.setViewName("view-json");
-		return modelAndView;
+		return data;
+	}
+
+
+	/*RestFul API 테스트*/
+	@RequestMapping(value = "/membertest")
+	public Map<Integer, Object> testByResponseBody(HttpServletRequest request) throws Exception {
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
+
+		// 들어온 값
+		String memberID = request.getParameter("memberID")==null ? "" : request.getParameter("memberID");
+		String memberName = request.getParameter("memberName")==null ? "" : request.getParameter("memberName");
+		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
+		String memberPW = request.getParameter("memberPW")==null ? "" : request.getParameter("memberPW");
+		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
+		int memberIdx = 0;
+		if(!memberIdxStr.equals("")) {
+			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
+		}
+
+		// 결과값 세팅
+		List<MemberDTO> list = null;
+		String rt = null;
+		int totalAll = 0;
+		int total = 0;
+
+		// 쿼리 실행
+		MemberDTO param = new MemberDTO();
+		param.setMemberIdx(memberIdx);
+		param.setMemberName(memberName);
+		param.setMemberID(memberID);
+		param.setMemberPW(memberPW);
+		param.setMemo(memo);
+		list = memberService.SelectMember(param);
+		total = list.size();
+		if(total > 0) {
+			rt = "MemberList_OK";
+		} else {
+			rt = "MemberList_FAIL001";
+		}
+
+		//Map 세팅
+		Map<Integer, Object> data = new HashMap<>();
+		for (int i=0; i<list.size(); i++) {
+			Map<String, Object> member = new HashMap<>();
+			MemberDTO member1 = list.get(i);
+			member.put("memberIdx", member1.getMemberIdx());
+			member.put("memberID", member1.getMemberID());
+			data.put(i, member);
+		}
+
+		return data;
 	}
 }
