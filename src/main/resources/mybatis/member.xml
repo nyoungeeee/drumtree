@@ -28,7 +28,9 @@
 		<if test="isApproval != -1">
 			AND isApproval = ${isApproval}
 		</if>
-
+		<if test="memberGrade != -1">
+			AND memberGrade = ${memberGrade}
+		</if>
 	</select>
 
 	<!-- 회원 등록 -->
