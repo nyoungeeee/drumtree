@@ -5,20 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.nyoung.drumtree.dao.MemberDAO;
 import com.nyoung.drumtree.dto.MemberDTO;
-
+@CrossOrigin("*")
 @RestController
 public class MemberController {
 	@Autowired
@@ -321,6 +313,7 @@ public class MemberController {
 			// 쿼리 실행 -- 쿼리 실행
 			memberService.ApprovalMember(memberIdx);
 			// 쿼리 실행 -- 삭제가 정상적으로 되었는지 체크
+			param.setIsApproval(-1);
 			list = memberService.SelectMember(param);
 			if(list.get(0).getIsApproval() == 1) {
 				rt = "ApprovalMember_OK";

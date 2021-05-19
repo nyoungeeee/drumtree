@@ -1,4 +1,4 @@
 function loadIPstring() {
-	IPstring = "localhost:8888";
+	IPstring = "3.34.217.94:8888";
 	return IPstring;
 }
