@@ -24,6 +24,7 @@ public class MemberDAO {
 		map.put("memberPW", param.getMemberPW());
 		map.put("memo", param.getMemo());
 		map.put("isApproval", param.getIsApproval());
+		map.put("memberGrade", param.getMemberGrade());
 		return sqlSession.selectList("com.nyoung.drumtree.MemberMapper.selectMember", map);
 	}
 	
