@@ -18,9 +18,9 @@
 		text-align: center;
 		font-size: 1em;
 		font-weight: 500;
-		color: #DDE5C0;
-		background-color: #556B07;
-		border: 1px solid #556B07;
+		color: #FFFFFF;
+		background-color: #2E2E2E;
+		border: 1px solid #2E2E2E;
 		height: auto;
 		padding: 0.5%;
 		user-select: none;
@@ -43,11 +43,11 @@
 		float: right;
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
-		font-weight: 500;
+		font-weight: bold;
 		width: 10em;
 		height: 2.5em;
 		border: 0;
-		background-color: #DDE5C0;
+		background-color: #BDBDBD;
 		color: #000000;
 		margin-bottom: 1%;
 		margin-left: 1%;
@@ -64,10 +64,10 @@
 		text-align: center;
 		width: 2.5em;
 		height: 2.5em;
-		border: 1px solid #556B07;
-		background-color: #556B07;
+		border: 1px solid #2E2E2E;
+		background-color: #2E2E2E;
 		outline: 0;
-		color: #DDE5C0;
+		color: #FFFFFF;
 		margin-bottom: 1%;
 		padding: 0;
 		cursor: pointer;
@@ -102,8 +102,8 @@
 		text-align: left;
 		width: 98%;
 		height: 25%;
-		background-color: #CFBEB7;
-		color: #481B07;
+		background-color: #6E6E6E;
+		color: #FFFFFF;
 		outline: 0;
 		margin: 1%;
 		border: 0;
@@ -112,7 +112,7 @@
 	}
 	
 	#reservation:hover {
-		background-color: #F5A9BC;
+		background-color: #2E2E2E;
 		box-shadow: 1em 1em 1em 1em rgba(0, 0, 0, 0.2);
 	}
 	
