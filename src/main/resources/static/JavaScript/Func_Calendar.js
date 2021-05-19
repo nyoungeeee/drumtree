@@ -103,7 +103,8 @@ function createMonthlyCalendar(currentYear, currentMonth, eventType) {
 			var nowDay = today.getDate();
 		}
 		var now = nowYear + "-" +  nowMonth + "-" + nowDay;
-		$("tbody td:contains('" + now + "')").css("background", "#D8D8D8");
+		$("tbody td:contains('" + now + "')").css("background", "#F2F2F2");
+		$("tbody td:contains('" + now + "')").css("font-weight", "bold");
 		$("tbody td").not("td:contains('" + $("#month").val() + "')").css("color", "#D8D8D8");
 		
 		var reservation = "<input type='button' id='reservation' value='" + "[00:00] " + "닉네임" + "'>";
