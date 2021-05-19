@@ -37,7 +37,7 @@ function createTableBody() {
 	    			result += "<td>" + data[i].memberID + "</td>";
 	    			result += "<td>" + data[i].memo + "</td>";
 	    			result += "<td>" + "<input type='button' class='approvalBtn' value='승인' onclick='approvalMember(" + data[i].memberIdx + ")'>" + "</td>";
-	    			result += "<td>" + "<input type='button' class='rejectBtn' value='반려'>" + "</td>";
+	    			result += "<td>" + "<input type='button' class='rejectBtn' value='반려' onclick='rejectMember(" + data[i].memberIdx + ")'>" + "</td>";
 	    			result += "</tr>";
 	    		}
 	    		$("tbody").html(result);
@@ -60,6 +60,21 @@ function approvalMember(arg) {
         }
     	,error: function(){
     		alert("회원 등록 요청 실패 ㅠㅠ");
+        }
+    })
+}
+
+function rejectMember(arg) {
+    $.ajax({
+        url: "http://" + IPstring + "/delete-member"
+        ,data: { memberIdx: arg }
+        ,method: "POST"
+        ,success: function(){
+        	alert("회원 등록 반려 성공 ^^!");
+        	window.location.reload();
+        }
+    	,error: function(){
+    		alert("회원 등록 반려 실패 ㅠㅠ");
         }
     })
 }
