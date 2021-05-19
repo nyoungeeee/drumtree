@@ -36,10 +36,15 @@ public class MemberController {
 		String memberName = request.getParameter("memberName")==null ? "" : request.getParameter("memberName");
 		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
 		String memberPW = request.getParameter("memberPW")==null ? "" : request.getParameter("memberPW");
+		String isApprovalStr = request.getParameter("isApproval")==null ? "" : request.getParameter("isApproval");
 		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
 		int memberIdx = 0;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
+		}
+		int isApproval = -1;
+		if(!isApprovalStr.equals("")) {
+			isApproval = Integer.parseInt(request.getParameter("isApproval"));
 		}
 
 		// 결과값 세팅
@@ -55,6 +60,7 @@ public class MemberController {
 		param.setMemberID(memberID);
 		param.setMemberPW(memberPW);
 		param.setMemo(memo);
+		param.setIsApproval(isApproval);
 		list = memberService.SelectMember(param);
 		total = list.size();
 		if(total > 0) {
@@ -284,55 +290,52 @@ public class MemberController {
 		return data;
 	}
 
+	/*회원 승인*/
+	@RequestMapping(value = "/approval-member")
+	public Map<Object, Object> ApprovalMember(HttpServletRequest request) throws Exception {
 
-	/*RestFul API 테스트*/
-	@RequestMapping(value = "/membertest")
-	public Map<Integer, Object> testByResponseBody(HttpServletRequest request) throws Exception {
 		// 한글 인코딩 설정
 		request.setCharacterEncoding("UTF-8");
 
 		// 들어온 값
-		String memberID = request.getParameter("memberID")==null ? "" : request.getParameter("memberID");
-		String memberName = request.getParameter("memberName")==null ? "" : request.getParameter("memberName");
-		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
-		String memberPW = request.getParameter("memberPW")==null ? "" : request.getParameter("memberPW");
 		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
 		int memberIdx = 0;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
 		}
+		System.out.println("memberIdxStr : " + memberIdxStr);
 
 		// 결과값 세팅
-		List<MemberDTO> list = null;
 		String rt = null;
-		int totalAll = 0;
-		int total = 0;
+		List<MemberDTO> list = null;
 
-		// 쿼리 실행
-		MemberDTO param = new MemberDTO();
+		// 쿼리 실행 -- 정상적으로 등록된 회원인지 체크
+		MemberDTO param =new MemberDTO();
 		param.setMemberIdx(memberIdx);
-		param.setMemberName(memberName);
-		param.setMemberID(memberID);
-		param.setMemberPW(memberPW);
-		param.setMemo(memo);
+		param.setMemberID("");
+		param.setMemberName("");
+		param.setMemberPW("");
+		param.setMemo("");
 		list = memberService.SelectMember(param);
-		total = list.size();
-		if(total > 0) {
-			rt = "MemberList_OK";
+		if(list.size() > 0) {
+			// 쿼리 실행 -- 쿼리 실행
+			memberService.ApprovalMember(memberIdx);
+			// 쿼리 실행 -- 삭제가 정상적으로 되었는지 체크
+			list = memberService.SelectMember(param);
+			if(list.get(0).getIsApproval() == 1) {
+				rt = "ApprovalMember_OK";
+			} else {
+				rt = "ApprovalMember_FAIL002";
+			}
 		} else {
-			rt = "MemberList_FAIL001";
+			rt = "ApprovalMember_FAIL001";
 		}
 
 		//Map 세팅
-		Map<Integer, Object> data = new HashMap<>();
-		for (int i=0; i<list.size(); i++) {
-			Map<String, Object> member = new HashMap<>();
-			MemberDTO member1 = list.get(i);
-			member.put("memberIdx", member1.getMemberIdx());
-			member.put("memberID", member1.getMemberID());
-			data.put(i, member);
-		}
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
 
 		return data;
 	}
+
 }

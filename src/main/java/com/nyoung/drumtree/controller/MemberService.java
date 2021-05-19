@@ -13,4 +13,6 @@ public interface MemberService {
 	public int UpdateMember(MemberDTO param);
 	/*회원 정보 삭제*/
 	public int DeleteMember(int memberIdx);
+	/*회원 승인*/
+	public int ApprovalMember(int memberIdx);
 }

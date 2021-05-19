@@ -37,4 +37,10 @@ public class MemberServiceImpl implements MemberService{
 	public int DeleteMember(int memberIdx) {
 		return memberDAO.DeleteMember(memberIdx);
 	}
+
+	/*회원 승인*/
+	@Override
+	public int ApprovalMember(int memberIdx) {
+		return memberDAO.ApprovalMember(memberIdx);
+	}
 }

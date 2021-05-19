@@ -25,6 +25,9 @@
 		<if test="memberPW != ''">
 			AND memberPW LIKE '${memberPW}'
 		</if>
+		<if test="isApproval != -1">
+			AND isApproval = ${isApproval}
+		</if>
 
 	</select>
 
@@ -58,5 +61,14 @@
 		, deleteDate = now()
 		WHERE memberIdx=${memberIdx}
 	</delete>
-	
+
+	<!-- 회원 승인 -->
+	<update id="approvalMember" parameterType="java.util.Map">
+		UPDATE member
+		SET
+		isApproval = 1
+		, updateDate = now()
+		WHERE memberIdx=${memberIdx}
+	</update>
+
 </mapper>
