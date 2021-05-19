@@ -43,7 +43,7 @@
 		padding: 0.5%;
 	}
 	
-	.approvalBtn {
+	.editBtn {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
 		color: #000000;
@@ -52,7 +52,7 @@
 		cursor: pointer;
 	}
 	
-	.rejectBtn {
+	.deleteBtn {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
 		color: #000000;

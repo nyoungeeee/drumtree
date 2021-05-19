@@ -11,12 +11,11 @@ function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
 		result += "<tr>";
-		result += "<td style='width:10%;'>" + "???" + "</td>";
 		result += "<td style='width:10%;'>" + "회원 번호" + "</td>";
-		result += "<td style='width:15%;'>" + "닉네임" + "</td>";
-		result += "<td style='width:45%;'>" + "메모" + "</td>";
-		result += "<td style='width:10%;'>" + "승인" + "</td>";
-		result += "<td style='width:10%;'>" + "반려" + "</td>";
+		result += "<td style='width:10%;'>" + "닉네임" + "</td>";
+		result += "<td style='width:50%;'>" + "메모" + "</td>";
+		result += "<td style='width:15%;'>" + "정보 변경" + "</td>";
+		result += "<td style='width:15%;'>" + "제거" + "</td>";
 		result += "</tr>";
 		
 		$("thead").html(result);
@@ -26,18 +25,17 @@ function createTableHead() {
 function createTableBody(IPstring) {
 	$(document).ready(function(){
 	    $.ajax({
-	        url: "http://" + IPstring + "/members"
+	        url: "http://" + IPstring + "/members?isApproval=1"
 	        ,method: "POST"
 	        ,success: function(data){
 	    		var result = "";
 	    		for (var i = 0; i < data.total; i++) {
 	    			result += "<tr>";
-	    			result += "<td>" + data[i].signinDate + "</td>";
 	    			result += "<td>" + data[i].memberIdx + "</td>";
 	    			result += "<td>" + data[i].memberID + "</td>";
 	    			result += "<td>" + data[i].memo + "</td>";
-	    			result += "<td>" + "<input type='button' class='approvalBtn' value='승인'>" + "</td>";
-	    			result += "<td>" + "<input type='button' class='rejectBtn' value='반려'>" + "</td>";
+	    			result += "<td>" + "<input type='button' class='editBtn' value='정보 변경'" + "</td>";
+	    			result += "<td>" + "<input type='button' class='deleteBtn' value='제거'>" + "</td>";
 	    			result += "</tr>";
 	    		}
 	    		$("tbody").html(result);

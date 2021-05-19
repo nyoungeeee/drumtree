@@ -23,10 +23,10 @@ function createTableHead() {
 	});
 }
 
-function createTableBody(IPstring) {
+function createTableBody() {
 	$(document).ready(function(){
 	    $.ajax({
-	        url: "http://" + IPstring + "/members"
+	        url: "http://" + IPstring + "/members?isApproval=0"
 	        ,method: "POST"
 	        ,success: function(data){
 	    		var result = "";
@@ -36,7 +36,7 @@ function createTableBody(IPstring) {
 	    			result += "<td>" + data[i].memberIdx + "</td>";
 	    			result += "<td>" + data[i].memberID + "</td>";
 	    			result += "<td>" + data[i].memo + "</td>";
-	    			result += "<td>" + "<input type='button' class='approvalBtn' value='승인'>" + "</td>";
+	    			result += "<td>" + "<input type='button' class='approvalBtn' value='승인' onclick='approvalMember(" + data[i].memberIdx + ")'>" + "</td>";
 	    			result += "<td>" + "<input type='button' class='rejectBtn' value='반려'>" + "</td>";
 	    			result += "</tr>";
 	    		}
@@ -47,4 +47,19 @@ function createTableBody(IPstring) {
 	        }
 	    })
 	});
+}
+
+function approvalMember(arg) {
+    $.ajax({
+        url: "http://" + IPstring + "/approval-member"
+        ,data: { memberIdx: arg }
+        ,method: "POST"
+        ,success: function(){
+        	alert("회원 등록 요청 성공 ^^!");
+        	window.location.reload();
+        }
+    	,error: function(){
+    		alert("회원 등록 요청 실패 ㅠㅠ");
+        }
+    })
 }
