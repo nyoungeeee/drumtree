@@ -21,5 +21,6 @@ public class MemberDTO {
 	private String deleteDate;
 	private String updateDate;
 	private int isApproval;
-
+	private String memoAdmin;
+	private int memberGrade;
 }

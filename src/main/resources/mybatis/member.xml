@@ -47,8 +47,9 @@
 		memo=#{memo}
 		, memberName=#{memberName}
 		, memberID=#{memberID}
-		,
-		memberPW=#{memberPW}
+		, memberPW=#{memberPW}
+		, memoAdmin=#{memoAdmin}
+		, memberGrade = ${memberGrade}
 		, updateDate = now()
 		WHERE memberIdx=${memberIdx}
 	</update>
@@ -67,6 +68,7 @@
 		UPDATE member
 		SET
 		isApproval = 1
+		, memberGrade = ${memberGrade}
 		, updateDate = now()
 		WHERE memberIdx=${memberIdx}
 	</update>

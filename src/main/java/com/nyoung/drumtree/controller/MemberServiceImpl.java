@@ -40,7 +40,7 @@ public class MemberServiceImpl implements MemberService{
 
 	/*회원 승인*/
 	@Override
-	public int ApprovalMember(int memberIdx) {
-		return memberDAO.ApprovalMember(memberIdx);
+	public int ApprovalMember(int memberIdx, int memberGrade) {
+		return memberDAO.ApprovalMember(memberIdx, memberGrade);
 	}
 }

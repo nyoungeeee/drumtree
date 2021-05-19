@@ -1,6 +1,6 @@
 function createMenubar() {
 	var result = "";
-	result += "<div class='logo'>" + "<img src='resources/Images/logo2.jpg' width='5%'>" + "</div>";
+	result += "<div class='logo'>" + "<img src='resources/Images/logo5.png' width='10%'>" + "</div>";
 	result += "<div class='menuName' onclick=location.href='" + "../Notice" + "'>" + "<a>공지사항</a>" + "</div>";
 	result += "<br>";
 	result += "<div class='menuName' onclick=location.href='" + "../Calendar" + "'>" + "<a>달력</a>" + "</div>";
