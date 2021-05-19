@@ -27,6 +27,7 @@ public class MemberController {
 		String memberID = request.getParameter("memberID")==null ? "" : request.getParameter("memberID");
 		String memberName = request.getParameter("memberName")==null ? "" : request.getParameter("memberName");
 		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
+		String memoAdmin = request.getParameter("memoAdmin")==null ? "" : request.getParameter("memoAdmin");
 		String memberPW = request.getParameter("memberPW")==null ? "" : request.getParameter("memberPW");
 		String isApprovalStr = request.getParameter("isApproval")==null ? "" : request.getParameter("isApproval");
 		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
@@ -53,6 +54,7 @@ public class MemberController {
 		param.setMemberPW(memberPW);
 		param.setMemo(memo);
 		param.setIsApproval(isApproval);
+		param.setMemoAdmin(memoAdmin);
 		list = memberService.SelectMember(param);
 		total = list.size();
 		if(total > 0) {
@@ -81,6 +83,7 @@ public class MemberController {
 				member.put("updateDate", member1.getUpdateDate());
 				member.put("isDelete", member1.getIsDelete());
 				member.put("isApproval", member1.getIsApproval());
+				member.put("memoAdmin", member1.getMemoAdmin());
 				data.put(i, member);
 			}
 		} else {	//일반적인 경우, PW 노출하지 않음
@@ -96,6 +99,7 @@ public class MemberController {
 				member.put("updateDate", member1.getUpdateDate());
 				member.put("isDelete", member1.getIsDelete());
 				member.put("isApproval", member1.getIsApproval());
+				member.put("memoAdmin", member1.getMemoAdmin());
 				data.put(i, member);
 			}
 		}
@@ -163,12 +167,18 @@ public class MemberController {
 		// 들어온 값
 		String memberID = request.getParameter("memberID")==null ? "" : request.getParameter("memberID");
 		String memberName = request.getParameter("memberName")==null ? "" : request.getParameter("memberName");
+		String memoAdmin = request.getParameter("memoAdmin")==null ? "" : request.getParameter("memoAdmin");
 		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
 		String memberPW = request.getParameter("memberPW")==null ? "" : request.getParameter("memberPW");
 		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
+		String memberGradeStr = request.getParameter("memberGrade")==null ? "" : request.getParameter("memberGrade");
 		int memberIdx = 0;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
+		}
+		int memberGrade = 0;
+		if(!memberGradeStr.equals("")) {
+			memberGrade = Integer.parseInt(request.getParameter("memberGrade"));
 		}
 
 		// 결과값 세팅
@@ -182,6 +192,7 @@ public class MemberController {
 		param.setMemberName("");
 		param.setMemberPW("");
 		param.setMemo("");
+		param.setMemoAdmin("");
 		list = memberService.SelectMember(param);
 
 		if(list.size()>0) {
@@ -210,6 +221,16 @@ public class MemberController {
 				param.setMemo(memo);
 			} else {
 				param.setMemo(list.get(0).getMemo());
+			}
+			if(!memoAdmin.equals("")) {
+				param.setMemoAdmin(memoAdmin);
+			} else {
+				param.setMemoAdmin(list.get(0).getMemoAdmin());
+			}
+			if(memberGrade!=-1) {
+				param.setMemberGrade(memberGrade);
+			} else {
+				param.setMemberGrade(list.get(0).getMemberGrade());
 			}
 			// 쿼리 실행 -- 변경된 정보로 쿼리 실행
 			memberService.UpdateMember(param);
@@ -291,11 +312,15 @@ public class MemberController {
 
 		// 들어온 값
 		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
+		String memberGradeStr = request.getParameter("memberGrade")==null ? "" : request.getParameter("memberGrade");
 		int memberIdx = 0;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
 		}
-		System.out.println("memberIdxStr : " + memberIdxStr);
+		int memberGrade = 0;
+		if(!memberGradeStr.equals("")) {
+			memberGrade = Integer.parseInt(request.getParameter("memberGrade"));
+		}
 
 		// 결과값 세팅
 		String rt = null;
@@ -308,12 +333,14 @@ public class MemberController {
 		param.setMemberName("");
 		param.setMemberPW("");
 		param.setMemo("");
+		param.setMemberGrade(-1);
 		list = memberService.SelectMember(param);
 		if(list.size() > 0) {
 			// 쿼리 실행 -- 쿼리 실행
-			memberService.ApprovalMember(memberIdx);
+			memberService.ApprovalMember(memberIdx, memberGrade);
 			// 쿼리 실행 -- 삭제가 정상적으로 되었는지 체크
 			param.setIsApproval(-1);
+
 			list = memberService.SelectMember(param);
 			if(list.get(0).getIsApproval() == 1) {
 				rt = "ApprovalMember_OK";

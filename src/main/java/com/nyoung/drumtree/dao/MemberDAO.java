@@ -45,6 +45,8 @@ public class MemberDAO {
 		map.put("memberID", param.getMemberID());
 		map.put("memberPW", param.getMemberPW());
 		map.put("memo", param.getMemo());
+		map.put("memoAdmin", param.getMemoAdmin());
+		map.put("memberGrade", param.getMemberGrade());
 		return sqlSession.update("com.nyoung.drumtree.MemberMapper.updateMember", map);
 	}
 	
@@ -56,9 +58,10 @@ public class MemberDAO {
 	}
 	
 	/*회원 승인*/
-	public int ApprovalMember(int memberIdx) {
+	public int ApprovalMember(int memberIdx, int memberGrade) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("memberIdx", memberIdx);
+		map.put("memberGrade", memberGrade);
 		return sqlSession.update("com.nyoung.drumtree.MemberMapper.approvalMember", map);
 	}
 }

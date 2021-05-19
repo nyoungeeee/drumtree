@@ -14,5 +14,5 @@ public interface MemberService {
 	/*회원 정보 삭제*/
 	public int DeleteMember(int memberIdx);
 	/*회원 승인*/
-	public int ApprovalMember(int memberIdx);
+	public int ApprovalMember(int memberIdx, int memberGrade);
 }
