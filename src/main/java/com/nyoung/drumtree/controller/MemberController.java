@@ -36,10 +36,15 @@ public class MemberController {
 		String memberName = request.getParameter("memberName")==null ? "" : request.getParameter("memberName");
 		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
 		String memberPW = request.getParameter("memberPW")==null ? "" : request.getParameter("memberPW");
+		String isApprovalStr = request.getParameter("isApproval")==null ? "" : request.getParameter("isApproval");
 		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
 		int memberIdx = 0;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
+		}
+		int isApproval = -1;
+		if(!isApprovalStr.equals("")) {
+			isApproval = Integer.parseInt(request.getParameter("isApproval"));
 		}
 
 		// 결과값 세팅
@@ -55,6 +60,7 @@ public class MemberController {
 		param.setMemberID(memberID);
 		param.setMemberPW(memberPW);
 		param.setMemo(memo);
+		param.setIsApproval(isApproval);
 		list = memberService.SelectMember(param);
 		total = list.size();
 		if(total > 0) {

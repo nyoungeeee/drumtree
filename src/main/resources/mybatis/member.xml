@@ -25,6 +25,9 @@
 		<if test="memberPW != ''">
 			AND memberPW LIKE '${memberPW}'
 		</if>
+		<if test="isApproval != -1">
+			AND isApproval = ${isApproval}
+		</if>
 
 	</select>
 
