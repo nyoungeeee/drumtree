@@ -19,8 +19,8 @@ function createMenubar() {
 		$("#adminMenu").click(function(){
 			$(".menuName").css("background-color", "");
 			$(".menuName").children().css("color", "");
-			$(this).css("background-color", "#BDBDBD");
-			$(this).children().css("color", "#000000");
+			$(this).css("background-color", "#424242");
+			$(this).children().css("color", "#FFFFFF");
 			$(".subMenuName").css("visibility", "visible");
 			$(".subMenuName").fadeOut(0);
 			$(".subMenuName").fadeIn(250);
