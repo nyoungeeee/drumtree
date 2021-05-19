@@ -53,4 +53,11 @@ public class MemberDAO {
 		map.put("memberIdx", memberIdx);
 		return sqlSession.update("com.nyoung.drumtree.MemberMapper.deleteMember", map);
 	}
+	
+	/*회원 승인*/
+	public int ApprovalMember(int memberIdx) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberIdx", memberIdx);
+		return sqlSession.update("com.nyoung.drumtree.MemberMapper.approvalMember", map);
+	}
 }
