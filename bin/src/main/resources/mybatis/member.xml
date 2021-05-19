@@ -3,17 +3,60 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.nyoung.drumtree.dao.MemberDAO">
+<mapper namespace="com.nyoung.drumtree.MemberMapper">
 
-	<select id="selectMember"
-		parameterType="com.nyoung.drumtree.dto.MemberDTO"
+	<!-- 멤버 리스트(검색/전체) -->
+	<select id="selectMember" parameterType="java.util.Map"
 		resultType="com.nyoung.drumtree.dto.MemberDTO">
-		select memberIdx, memberID, memberPW, memberName, memo from test;
+		SELECT * from member
+		WHERE isDelete = 0
+		<if test="memberID != ''">
+			AND memberID LIKE '${memberID}'
+		</if>
+		<if test="memberName != ''">
+			AND memberName LIKE '%${memberName}%'
+		</if>
+		<if test="memo != ''">
+			AND memo LIKE '%${memo}%'
+		</if>
+		<if test="memberIdx != 0">
+			AND memberIdx = ${memberIdx}
+		</if>
+		<if test="memberPW != ''">
+			AND memberPW LIKE '${memberPW}'
+		</if>
+
 	</select>
-	
-	<insert id="insertMember"
-		parameterType="com.nyoung.drumtree.dto.MemberDTO">
-		insert into test ('memberName', 'memberID', 'memberPW', 'memo') values (#{memberName}, #{memberID}, #{memberPW}, #{memo})
+
+	<!-- 회원 등록 -->
+	<insert id="signIn" parameterType="java.util.Map">
+		INSERT INTO member
+		(memberName, memberID, memberPW, memo, signinDate, updateDate)
+		VALUES
+		(#{memberName}, #{memberID}, #{memberPW}, #{memo}, now(), now())
+
 	</insert>
 
+	<!-- 회원 정보 수정 -->
+	<update id="updateMember" parameterType="java.util.Map">
+		UPDATE member
+		SET
+		memo=#{memo}
+		, memberName=#{memberName}
+		, memberID=#{memberID}
+		,
+		memberPW=#{memberPW}
+		, updateDate = now()
+		WHERE memberIdx=${memberIdx}
+	</update>
+
+	<!-- 회원 삭제 -->
+	<delete id="deleteMember" parameterType="java.util.Map">
+		UPDATE member
+		SET
+		isDelete = 1
+		, deleteDate = now()
+		WHERE memberIdx=${memberIdx}
+	</delete>
+	
 </mapper>
