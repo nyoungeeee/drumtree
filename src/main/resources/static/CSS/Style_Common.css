@@ -44,11 +44,11 @@
 	}
 	
 	.menuName:hover { /*메뉴바 영역 마우스오버*/
-		background-color: #BDBDBD;
+		background-color: #424242;
 	}
 	
 	.menuName:hover a { /*메뉴바 이름 마우스오버*/
-		color: #000000;
+		color: #FFFFFF;
 	}
 	
 	.subMenuName { /*서브 메뉴 이름 영역*/
