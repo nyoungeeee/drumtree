@@ -13,8 +13,9 @@ function createTableHead() {
 		result += "<tr>";
 		result += "<td style='width:10%;'>" + "요청 시간" + "</td>";
 		result += "<td style='width:10%;'>" + "회원 번호" + "</td>";
+		result += "<td style='width:15%;'>" + "아이디" + "</td>";
 		result += "<td style='width:15%;'>" + "닉네임" + "</td>";
-		result += "<td style='width:45%;'>" + "메모" + "</td>";
+		result += "<td style='width:45%;'>" + "회원 메모" + "</td>";
 		result += "<td style='width:10%;'>" + "승인" + "</td>";
 		result += "<td style='width:10%;'>" + "반려" + "</td>";
 		result += "</tr>";
@@ -35,6 +36,7 @@ function createTableBody() {
 	    			result += "<td>" + data[i].signinDate + "</td>";
 	    			result += "<td>" + data[i].memberIdx + "</td>";
 	    			result += "<td>" + data[i].memberID + "</td>";
+	    			result += "<td>" + data[i].memberName + "</td>";
 	    			result += "<td>" + data[i].memo + "</td>";
 	    			result += "<td>" + "<input type='button' class='approvalBtn' value='승인' onclick='approvalMember(" + data[i].memberIdx + ")'>" + "</td>";
 	    			result += "<td>" + "<input type='button' class='rejectBtn' value='반려' onclick='rejectMember(" + data[i].memberIdx + ")'>" + "</td>";
