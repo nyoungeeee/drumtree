@@ -1,6 +1,8 @@
 package com.nyoung.drumtree.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -277,5 +279,56 @@ public class MemberController {
 		modelAndView.addObject("json", json);
 		modelAndView.setViewName("view-json");
 		return modelAndView;
+	}
+
+	/*RestFul API 테스트*/
+	@RequestMapping(value = "/membertest")
+	public Map<Integer, Object> testByResponseBody(HttpServletRequest request) throws Exception {
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
+
+		// 들어온 값
+		String memberID = request.getParameter("memberID")==null ? "" : request.getParameter("memberID");
+		String memberName = request.getParameter("memberName")==null ? "" : request.getParameter("memberName");
+		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
+		String memberPW = request.getParameter("memberPW")==null ? "" : request.getParameter("memberPW");
+		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
+		int memberIdx = 0;
+		if(!memberIdxStr.equals("")) {
+			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
+		}
+
+		// 결과값 세팅
+		List<MemberDTO> list = null;
+		String rt = null;
+		int totalAll = 0;
+		int total = 0;
+		
+		// 쿼리 실행
+		MemberDTO param = new MemberDTO();
+		param.setMemberIdx(memberIdx);
+		param.setMemberName(memberName);
+		param.setMemberID(memberID);
+		param.setMemberPW(memberPW);
+		param.setMemo(memo);
+		list = memberService.SelectMember(param);
+		total = list.size();
+		if(total > 0) {
+			rt = "MemberList_OK";
+		} else {
+			rt = "MemberList_FAIL001";
+		}
+
+		//Map 세팅
+		Map<Integer, Object> data = new HashMap<>();
+		for (int i=0; i<list.size(); i++) {
+			Map<String, Object> member = new HashMap<>();
+			MemberDTO member1 = list.get(i);
+			member.put("memberIdx", member1.getMemberIdx());
+			member.put("memberID", member1.getMemberID());
+			data.put(i, member);
+		}
+
+		return data;
 	}
 }
