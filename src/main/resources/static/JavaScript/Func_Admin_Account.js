@@ -1,12 +1,3 @@
-function selectCurrentMenu() {
-	$(document).ready(function(){
-		$(".menuName").eq(3).css("background-color", "#424242");
-		$(".menuName").eq(3).children().css("color", "#FFFFFF");
-		$(".subMenuName").css("visibility", "visible");
-		$(".subMenuName").eq(2).children().css("font-weight", "bold");
-	});
-}
-
 function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
