@@ -6,6 +6,15 @@
     font-style: normal;
 }
 
+	input, textarea, button {
+		appearance: none;
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		border-radius: 0;
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+	}
+
 	html, body {
 		height:100%;
 	}
@@ -118,19 +127,6 @@
 		z-index: 1;
 	}
 	
-	.closeButton { /*버튼 디자인*/
-		float: right;
-		font-family: IBMPlexSansKR-Regular;
-		font-size: 1em;
-		font-weight: 500;
-		width: 3em;
-		height: 2em;
-		border: 1px solid #CCCCCC;
-		background-color: #FFFFFF;
-		color: #333333;
-		cursor: pointer;
-	}
-	
 	.logo {
 		position: fixed; 
 		left: 5%;
@@ -139,7 +135,8 @@
 	}
 	
 	.footer {
-		position: fixed; 
+		position: fixed;
+		font-size: 0.8em;
 		left: 5%;
 		bottom: 3%;
 		transform: translate(-50%, 0);

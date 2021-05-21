@@ -1,10 +1,3 @@
-function selectCurrentMenu() {
-	$(document).ready(function(){
-		$(".menuName").eq(1).css("background-color", "#424242");
-		$(".menuName").eq(1).children().css("color", "#FFFFFF");
-	});
-}
-
 function selectMonth() {
 	$(document).ready(function(){
 		var today = new Date();
