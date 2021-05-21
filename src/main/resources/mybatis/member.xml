@@ -46,12 +46,25 @@
 	<update id="updateMember" parameterType="java.util.Map">
 		UPDATE member
 		SET
-		memo=#{memo}
-		, memberName=#{memberName}
-		, memberID=#{memberID}
-		, memberPW=#{memberPW}
-		, memoAdmin=#{memoAdmin}
-		, memberGrade = ${memberGrade}
+		memberIdx = ${memberIdx}
+		<if test="memo != ''">
+			, memo=#{memo}
+		</if>
+		<if test="memberName != ''">
+			, memberName=#{memberName}
+		</if>
+		<if test="memberID != ''">
+			, memberID=#{memberID}
+		</if>
+		<if test="memberPW != ''">
+			, memberPW=#{memberPW}
+		</if>
+		<if test="memoAdmin != ''">
+			, memoAdmin=#{memoAdmin}
+		</if>
+		<if test="memberGrade != -1">
+			, memberGrade = ${memberGrade}
+		</if>
 		, updateDate = now()
 		WHERE memberIdx=${memberIdx}
 	</update>
@@ -72,7 +85,8 @@
 		isApproval = 1
 		, memberGrade = ${memberGrade}
 		, updateDate = now()
-		WHERE memberIdx=${memberIdx}
+		WHERE
+		memberIdx=${memberIdx}
 	</update>
 
 </mapper>

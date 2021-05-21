@@ -91,7 +91,7 @@ public class NoticeController {
 				notice.put("memberGrade", memberList.get(0).getMemberGrade());
 			} else {
 				notice.put("memberName", "삭제된 회원");
-				notice.put("memberGrade", "삭제된 회원");
+				notice.put("memberGrade", "-1");
 			}
 			
 			data.put(i, notice);
