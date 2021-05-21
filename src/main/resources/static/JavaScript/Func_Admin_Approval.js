@@ -16,9 +16,11 @@ function createTableHead() {
 function createTableBody() {
 	$(document).ready(function(){
 	    $.ajax({
-	        url: "http://" + IPstring + "/members?isApproval=0"
-	        ,method: "POST"
-	        ,success: function(data){
+	        url: "http://" + IPstring + "/members?isApproval=0",
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
 	    		var result = "";
 	    		for (var i = 0; i < data.total; i++) {
 	    			result += "<tr onclick='openPopup()'>";
@@ -54,14 +56,11 @@ function createTableBody() {
 	    			resultOption += "<option value=1>" + "손님" + "</option>";
 	    			resultOption += "<option value=2>" + "연습생" + "</option>";
 	    			resultOption += "<option value=3>" + "레슨생" + "</option>";
-	    			
 	    			$("select").append(resultOption);
+	    			
 	    			$(".approvalBtn").attr("onclick", "approvalMember(" + $(this).children().eq(1).html() + ")");
 	    			$(".rejectBtn").attr("onclick", "rejectMember(" + $(this).children().eq(1).html() + ")");
 	    		})
-	        }
-	    	,error: function(){
-	    		alert("데이터 로드 실패");
 	        }
 	    })
 	});
@@ -81,7 +80,7 @@ function closePopup() {
 
 function approvalMember(idx) {
 	var grade = $("#memberGrade").val();
-	var memo = $("#memoAdmin").val();
+	var memo = $("#memoAdmin").val().replaceAll("\n", "<br>");
 	if (grade=="none") {
 		alert("회원 등급을 설정해 주세요.");
 	}
@@ -91,7 +90,7 @@ function approvalMember(idx) {
 	        data: { memberIdx: idx, memberGrade: grade, memoAdmin: memo },
 	        method: "POST",
 	        dataType: "JSON",
-	        error: function() { alert("APPROVAL FAIL"); },
+	        error: function() { alert("데이터 로드 실패"); },
 	        success: function() {
 	        	alert("APPROVAL SUCCESS");
 	        	window.location.reload();
@@ -106,7 +105,7 @@ function rejectMember(idx) {
         data: { memberIdx: idx },
         method: "POST",
         dataType: "JSON",
-        error: function() { alert("REJECT FAIL"); },
+        error: function() { alert("데이터 로드 실패"); },
         success: function() {
         	alert("REJECT SUCCESS");
         	window.location.reload();
