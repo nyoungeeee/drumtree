@@ -322,6 +322,7 @@ public class MemberController {
 		// 들어온 값
 		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
 		String memberGradeStr = request.getParameter("memberGrade")==null ? "" : request.getParameter("memberGrade");
+		String memoAdmin = request.getParameter("memoAdmin")==null ? "" : request.getParameter("memoAdmin");
 		int memberIdx = 0;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
@@ -342,11 +343,15 @@ public class MemberController {
 		param.setMemberName("");
 		param.setMemberPW("");
 		param.setMemo("");
+		param.setMemoAdmin("");
 		param.setMemberGrade(-1);
 		list = memberService.SelectMember(param);
 		if(list.size() > 0) {
-			// 쿼리 실행 -- 쿼리 실행
+			// 쿼리 실행 -- 승인 쿼리 실행
 			memberService.ApprovalMember(memberIdx, memberGrade);
+			// 쿼리 실행 -- 정보 업데이트 쿼리 실행
+			param.setMemoAdmin(memoAdmin);
+			memberService.UpdateMember(param);
 			// 쿼리 실행 -- 삭제가 정상적으로 되었는지 체크
 			param.setIsApproval(-1);
 
