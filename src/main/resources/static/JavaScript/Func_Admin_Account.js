@@ -6,25 +6,25 @@ function createTableHead() {
 		result += "<td style='width:10%;'>" + "회원 등급" + "</td>";
 		result += "<td style='width:10%;'>" + "아이디" + "</td>";
 		result += "<td style='width:10%;'>" + "닉네임" + "</td>";
-		result += "<td style='width:25%;'>" + "회원 메모" + "</td>";
-		result += "<td style='width:25%;'>" + "관리자 메모" + "</td>";
-		result += "<td style='width:5%;'>" + "정보 변경" + "</td>";
-		result += "<td style='width:5%;'>" + "제거" + "</td>";
+		result += "<td style='width:30%;'>" + "회원 메모" + "</td>";
+		result += "<td style='width:30%;'>" + "관리자 메모" + "</td>";
 		result += "</tr>";
 		
 		$("thead").html(result);
 	});
 }
 
-function createTableBody(IPstring) {
+function createTableBody() {
 	$(document).ready(function(){
 	    $.ajax({
-	        url: "http://" + IPstring + "/members?isApproval=1"
-	        ,method: "POST"
-	        ,success: function(data){
+	        url: "http://" + IPstring + "/members?isApproval=1",
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data){
 	    		var result = "";
 	    		for (var i = 0; i < data.total; i++) {
-	    			result += "<tr>";
+	    			result += "<tr onclick='openPopup()'>";
 	    			result += "<td>" + data[i].memberIdx + "</td>";
 	    			
 	    			if (data[i].memberGrade==0) {
@@ -43,16 +43,106 @@ function createTableBody(IPstring) {
 	    			result += "<td>" + data[i].memberID + "</td>";
 	    			result += "<td>" + data[i].memberName + "</td>";
 	    			result += "<td>" + data[i].memo + "</td>";
-	    			result += "<td>" + data[i].memoAdmin + "</td>";
-	    			result += "<td>" + "<input type='button' class='editBtn' value='정보 변경'" + "</td>";
-	    			result += "<td>" + "<input type='button' class='deleteBtn' value='제거'>" + "</td>";
+	    			result += "<td style='text-align:left;'>" + data[i].memoAdmin + "</td>";
 	    			result += "</tr>";
 	    		}
 	    		$("tbody").html(result);
-	        }
-	    	,error: function(){
-	    		alert("데이터 로드 실패");
+	    		
+	    		$("tbody tr").click(function(){
+	    			var resultPopup = "";
+	    			resultPopup += "<strong>회원 정보 변경</strong>";
+	    			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
+	    			resultPopup += "<br><br><hr><br>";
+	    			resultPopup += "<table id='memberInfo'>";
+	    			resultPopup += "<tr>" + "<td>회원 번호</td>" + "<td>" + $(this).children().eq(0).html() + "</td></tr>";
+	    			resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
+	    			resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + "<input type='text' id='memberName' spellcheck='false'>" + "</td></tr>";
+	    			resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + "<textarea id='memoMember' spellcheck='false'></textarea>" + "</td></tr>";
+	    			resultPopup += "<tr>" + "<td>회원 등급</td>" + "<td>" + "<select id='memberGrade'></select>" + "</td></tr>";
+	    			resultPopup += "<tr>" + "<td>관리자 메모</td>" + "<td>" + "<textarea id='memoAdmin' spellcheck='false'></textarea>" + "</td></tr>";
+	    			resultPopup += "</table><br><hr><br>";
+	    			resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
+	    			resultPopup += "<input type='button' class='updateBtn' value='저장'>";
+	    			$(".popupBox").html(resultPopup);
+	    			
+	    			$("#memberName").val($(this).children().eq(3).html());
+	    			$("#memoMember").val($(this).children().eq(4).html().replaceAll("<br>", "\n"));
+	    			$("#memoAdmin").val($(this).children().eq(5).html().replaceAll("<br>", "\n"));
+
+	    			var resultOption = "";
+	    			if ($(this).children().eq(1).html()=="손님") {
+	    				resultOption += "<option value=1 selected>" + "손님" + "</option>";
+		    			resultOption += "<option value=2>" + "연습생" + "</option>";
+		    			resultOption += "<option value=3>" + "레슨생" + "</option>";
+	    			} else if ($(this).children().eq(1).html()=="연습생") {
+	    				resultOption += "<option value=1>" + "손님" + "</option>";
+		    			resultOption += "<option value=2 selected>" + "연습생" + "</option>";
+		    			resultOption += "<option value=3>" + "레슨생" + "</option>";
+	    			} else if ($(this).children().eq(1).html()=="레슨생") {
+	    				resultOption += "<option value=1>" + "손님" + "</option>";
+		    			resultOption += "<option value=2>" + "연습생" + "</option>";
+		    			resultOption += "<option value=3 selected>" + "레슨생" + "</option>";
+	    			} else if ($(this).children().eq(1).html()=="비회원") {
+	    				resultOption += "<option value=0 selected>" + "비회원" + "</option>";
+	    				resultOption += "<option value=1>" + "손님" + "</option>";
+		    			resultOption += "<option value=2>" + "연습생" + "</option>";
+		    			resultOption += "<option value=3>" + "레슨생" + "</option>";
+	    			} else if ($(this).children().eq(1).html()=="관리자") {
+	    				resultOption += "<option value=99 selected>" + "관리자" + "</option>";
+	    				resultOption += "<option value=1>" + "손님" + "</option>";
+		    			resultOption += "<option value=2>" + "연습생" + "</option>";
+		    			resultOption += "<option value=3>" + "레슨생" + "</option>";
+	    			}
+	    			$("select").append(resultOption);
+	    			
+	    			$(".updateBtn").attr("onclick", "updateMember(" + $(this).children().eq(0).html() + ")");
+	    			$(".deleteBtn").attr("onclick", "deleteMember(" + $(this).children().eq(0).html() + ")");
+	    		})
 	        }
 	    })
 	});
+}
+
+function openPopup() {
+	$('.popupBox').css('display', 'inline-block');
+	$('.popupBackground').css('display', 'inline-block');
+	$('html, body').css('overflow', 'hidden');
+}
+
+function closePopup() {
+	$('.popupBox').css('display', 'none');
+	$('.popupBackground').css('display', 'none');
+	$('html, body').css('overflow', '');
+}
+
+function updateMember(idx) {
+	var name = $("#memberName").val();
+	var grade = $("#memberGrade").val();
+	var memo1 = $("#memoMember").val().replaceAll("\n", "<br>");
+	var memo2 = $("#memoAdmin").val().replaceAll("\n", "<br>");
+	$.ajax({
+        url: "http://" + IPstring + "/update-member",
+        data: { memberIdx: idx, memberName: name, memberGrade: grade, memo: memo1, memoAdmin: memo2 },
+        method: "POST",
+        dataType: "JSON",
+        error: function() { alert("데이터 로드 실패"); },
+        success: function() {
+        	alert("UPDATE SUCCESS");
+        	window.location.reload();
+        }
+	})
+}
+
+function deleteMember(idx) {
+    $.ajax({
+        url: "http://" + IPstring + "/delete-member",
+        data: { memberIdx: idx },
+        method: "POST",
+        dataType: "JSON",
+        error: function() { alert("데이터 로드 실패"); },
+        success: function() {
+        	alert("DELETE SUCCESS");
+        	window.location.reload();
+        }
+    })
 }

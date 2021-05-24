@@ -42,18 +42,6 @@
 		padding: 0.5%;
 	}
 	
-	input[type=text] {
-		font-family: IBMPlexSansKR-Regular;
-		font-size: 1em;
-		width: 50%;
-		height: 2em;
-		border: 0;
-		outline: 0;
-		background-color: #D8D8D8;
-		color: #000000;
-		padding: 1%;
-	}
-	
 	select {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
@@ -157,7 +145,7 @@
 		user-select: none;
 	}
 	
-	.updateBtn {
+	.approvalBtn {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
 		font-weight: 500;
@@ -172,7 +160,7 @@
 		user-select: none;
 	}
 	
-	.deleteBtn {
+	.rejectBtn {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
 		font-weight: 500;
