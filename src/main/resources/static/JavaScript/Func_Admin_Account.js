@@ -126,9 +126,17 @@ function updateMember(idx) {
         method: "POST",
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
-        success: function() {
-        	alert("UPDATE SUCCESS");
-        	window.location.reload();
+        success: function(data) {
+        	if (data.rt=="UpdateMember_FAIL001") {
+        		alert("존재하지 않는 회원 번호입니다.");
+        	}
+        	else if (data.rt=="UpdateMember_FAIL002") {
+        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+        	}
+        	else if (data.rt=="UpdateMember_OK") {
+            	alert("회원 정보 변경이 정상적으로 완료되었습니다.");
+            	window.location.reload();
+        	}
         }
 	})
 }
@@ -140,9 +148,17 @@ function deleteMember(idx) {
         method: "POST",
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
-        success: function() {
-        	alert("DELETE SUCCESS");
-        	window.location.reload();
+        success: function(data) {
+        	if (data.rt=="DeleteMember_FAIL001") {
+        		alert("존재하지 않는 회원 번호입니다.");
+        	}
+        	else if (data.rt=="DeleteMember_FAIL002") {
+        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+        	}
+        	else if (data.rt=="DeleteMember_OK") {
+            	alert("회원 제거가 정상적으로 완료되었습니다.");
+            	window.location.reload();
+        	}
         }
     })
 }
