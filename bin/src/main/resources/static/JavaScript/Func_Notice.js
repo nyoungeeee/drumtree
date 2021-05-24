@@ -1,10 +1,3 @@
-function selectCurrentMenu() {
-	$(document).ready(function(){
-		$(".menuName").eq(0).css("background-color", "#CFBEB7");
-		$(".menuName").eq(0).children().css("color", "#481B07");
-	});
-}
-
 function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
