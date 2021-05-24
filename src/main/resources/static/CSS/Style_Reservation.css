@@ -1,0 +1,53 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'IBMPlexSansKR-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+    .form-wrap{
+        margin: 0 auto;
+        text-align: center;
+    }
+    .form-wrap ul{
+        margin: 0;
+        padding: 0;
+    }
+    .form-wrap li{
+        list-style-type: none;
+    }
+    .form-wrap li p{
+    	font-size: 20px;
+    	font-weight: bold;
+    }
+    .form-wrap li p, .form-wrap li input{
+        width: 300px;
+        height: 30px;
+        margin: 20px 0 20px;
+        display: inline-block;
+    }
+    .li-text{
+    	width: 300px;
+    }
+    .form-wrap li input:focus{
+    	outline-color: #556B07;
+    }
+    .button{
+        width: 120px;
+        height: 50px;
+        margin: 10px;
+        border:0;
+    }
+    .reservation{
+    	background-color: #556B07;
+    	color: #D8D8D8;
+    }
+    .reservation:hover{
+    	background-color: #DDE5C0;
+    	color: #556B07;
+    	font-weight: bold;
+    }
+    .cancel{
+    	background-color: #D8D8D8;
+    }
