@@ -6,6 +6,15 @@
     font-style: normal;
 }
 
+	input, textarea, button {
+		appearance: none;
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		border-radius: 0;
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+	}
+
 	html, body {
 		height:100%;
 	}
@@ -20,12 +29,13 @@
 	.menuBar { /*좌측 고정 메뉴바*/
 		width: 10%;
 		height: 100%;
-		background-color: #481B07;
+		background-color: #2E2E2E;
 		text-align: center;
 		text-decoration: none;
+		color: #FFFFFF;
 		font-weight: 500;
 		font-size: 1em;
-		padding: 5% 0 5% 0;
+		padding: 7.5% 0 7.5% 0;
 		user-select: none;
 		position: fixed;
 		z-index: 3;
@@ -39,20 +49,20 @@
 	
 	.menuName a { /*메뉴바 이름 디자인*/
 		text-decoration: none;
-		color: #CFBEB7;
+		color: #FFFFFF;
 	}
 	
 	.menuName:hover { /*메뉴바 영역 마우스오버*/
-		background-color: #CFBEB7;
+		background-color: #424242;
 	}
 	
 	.menuName:hover a { /*메뉴바 이름 마우스오버*/
-		color: #481B07;
+		color: #FFFFFF;
 	}
 	
 	.subMenuName { /*서브 메뉴 이름 영역*/
-		display: none;
-		background-color: #603D06;
+		visibility: hidden;
+		background-color: #D8D8D8;
 		cursor: pointer;
 		padding-top: 2%;
 		padding-bottom: 2%;
@@ -62,15 +72,11 @@
 		text-decoration: none;
 		font-size: 0.8em;
 		font-weight: 500;
-		color: #CFBEB7;
-	}
-	
-	.subMenuName:hover { /*서브 메뉴 영역 마우스오버*/
-		background-color: #DFD5B3;
+		color: #000000;
 	}
 	
 	.subMenuName:hover a { /*서브 메뉴 이름 마우스오버*/
-		color: #603D06;
+		font-weight: bold;
 	}
 	
 	.headerBar { /*상단 고정 헤더*/
@@ -92,8 +98,8 @@
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
 		font-weight: 500;
-		color: #481B07;
-		background-color: #CFBEB7;
+		color: #000000;
+		background-color: #D8D8D8;
 		cursor: pointer;
 		width: 2.5em;
 		height: 2.5em;
@@ -121,15 +127,17 @@
 		z-index: 1;
 	}
 	
-	.closeButton { /*버튼 디자인*/
-		float: right;
-		font-family: IBMPlexSansKR-Regular;
-		font-size: 1em;
-		font-weight: 500;
-		width: 3em;
-		height: 2em;
-		border: 1px solid #CCCCCC;
-		background-color: #FFFFFF;
-		color: #333333;
-		cursor: pointer;
+	.logo {
+		position: fixed; 
+		left: 5%;
+		top: 3%;
+		transform: translate(-50%, 0);
+	}
+	
+	.footer {
+		position: fixed;
+		font-size: 0.8em;
+		left: 5%;
+		bottom: 3%;
+		transform: translate(-50%, 0);
 	}

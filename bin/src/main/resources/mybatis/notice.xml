@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nyoung.drumtree.NoticeMapper">
+	<!-- 공지사항 등록 -->
+	<insert id="writeNotice" parameterType="java.util.Map">
+		INSERT INTO notice
+		(subject, content, regDate, updateDate, memberIdx)
+		VALUES
+		(#{subject},
+		#{content}, now(), now(), #{memberIdx})
+	</insert>
+	<!-- 조회수 증가 -->
+	<update id="updateHit" parameterType="java.util.Map">
+		UPDATE notice
+		SET
+		hit = hit +
+		1
+		WHERE
+		noticeIdx=#{noticeIdx}
+	</update>
+	<!-- 공지사항 삭제 -->
+	<delete id="deleteNotice" parameterType="java.util.Map">
+		UPDATE notice
+		SET
+		isDelete = 1
+		WHERE noticeIdx=#{noticeIdx}
+	</delete>
+	<!-- 공지사항 수정 -->
+	<update id="updateMember" parameterType="java.util.Map">
+		UPDATE notice
+		SET
+		subject=#{subject}
+		, content=#{content}
+		, memberIdx=#{memberIdx}
+		,
+		updateDate = now()
+		WHERE noticeIdx=${noticeIdx}
+	</update>
+	<!-- 공지사항 출력 -->
+	<select id="selectNotice" parameterType="java.util.Map"
+		resultType="com.nyoung.drumtree.dto.NoticeDTO">
+		SELECT * from notice
+		WHERE isDelete = 0
+		<if test="subject != ''">
+			AND subject LIKE '%${subject}%'
+		</if>
+		<if test="content != ''">
+			AND content LIKE '%${content}%'
+		</if>
+		<if test="memberIdx != 0">
+			AND memberIdx = ${memberIdx}
+		</if>
+	</select>
+</mapper>

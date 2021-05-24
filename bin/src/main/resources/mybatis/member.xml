@@ -25,7 +25,12 @@
 		<if test="memberPW != ''">
 			AND memberPW LIKE '${memberPW}'
 		</if>
-
+		<if test="isApproval != -1">
+			AND isApproval = ${isApproval}
+		</if>
+		<if test="memberGrade != -1">
+			AND memberGrade = ${memberGrade}
+		</if>
 	</select>
 
 	<!-- 회원 등록 -->
@@ -41,11 +46,25 @@
 	<update id="updateMember" parameterType="java.util.Map">
 		UPDATE member
 		SET
-		memo=#{memo}
-		, memberName=#{memberName}
-		, memberID=#{memberID}
-		,
-		memberPW=#{memberPW}
+		memberIdx = ${memberIdx}
+		<if test="memo != ''">
+			, memo=#{memo}
+		</if>
+		<if test="memberName != ''">
+			, memberName=#{memberName}
+		</if>
+		<if test="memberID != ''">
+			, memberID=#{memberID}
+		</if>
+		<if test="memberPW != ''">
+			, memberPW=#{memberPW}
+		</if>
+		<if test="memoAdmin != ''">
+			, memoAdmin=#{memoAdmin}
+		</if>
+		<if test="memberGrade != -1">
+			, memberGrade = ${memberGrade}
+		</if>
 		, updateDate = now()
 		WHERE memberIdx=${memberIdx}
 	</update>
@@ -58,5 +77,16 @@
 		, deleteDate = now()
 		WHERE memberIdx=${memberIdx}
 	</delete>
-	
+
+	<!-- 회원 승인 -->
+	<update id="approvalMember" parameterType="java.util.Map">
+		UPDATE member
+		SET
+		isApproval = 1
+		, memberGrade = ${memberGrade}
+		, updateDate = now()
+		WHERE
+		memberIdx=${memberIdx}
+	</update>
+
 </mapper>
