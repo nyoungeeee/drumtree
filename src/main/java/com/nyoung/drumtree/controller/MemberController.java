@@ -290,6 +290,8 @@ public class MemberController {
 		param.setMemberName("");
 		param.setMemberPW("");
 		param.setMemo("");
+		param.setIsApproval(-1);
+		param.setMemberGrade(-1);
 		list = memberService.SelectMember(param);
 		if(list.size() > 0) {
 			// 쿼리 실행 -- 쿼리 실행
