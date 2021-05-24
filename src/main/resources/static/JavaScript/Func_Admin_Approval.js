@@ -45,7 +45,7 @@ function createTableBody() {
 	    			resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + $(this).children().eq(3).html() + "</td></tr>";
 	    			resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + $(this).children().eq(4).html() + "</td></tr>";
 	    			resultPopup += "<tr>" + "<td>회원 등급</td>" + "<td>" + "<select id='memberGrade'></select>" + "</td></tr>";
-	    			resultPopup += "<tr>" + "<td>관리자 메모</td>" + "<td>" + "<textarea id='memoAdmin' spellcheck='false'></textarea>" + "</td></tr>";
+	    			resultPopup += "<tr>" + "<td style='vertical-align:top;padding-top:2%;'>관리자 메모</td>" + "<td>" + "<textarea id='memoAdmin' spellcheck='false'></textarea>" + "</td></tr>";
 	    			resultPopup += "</table><br><hr><br>";
 	    			resultPopup += "<input type='button' class='rejectBtn' value='반려'>";
 	    			resultPopup += "<input type='button' class='approvalBtn' value='승인'>";
@@ -81,8 +81,13 @@ function closePopup() {
 function approvalMember(idx) {
 	var grade = $("#memberGrade").val();
 	var memo = $("#memoAdmin").val().replaceAll("\n", "<br>");
+	
+	$("#errorMessageGrade").remove();
+	
 	if (grade=="none") {
-		alert("회원 등급을 설정해 주세요.");
+		$("#memberInfo tr").eq(5).children().eq(1).append("<a id='errorMessageGrade' style='color:red;'>&emsp;<strong>회원 등급 선택 필수</strong></a>");
+		$("#errorMessageGrade").fadeOut(0);
+		$("#errorMessageGrade").fadeIn(500);
 	}
 	else {
 		$.ajax({
@@ -91,9 +96,17 @@ function approvalMember(idx) {
 	        method: "POST",
 	        dataType: "JSON",
 	        error: function() { alert("데이터 로드 실패"); },
-	        success: function() {
-	        	alert("APPROVAL SUCCESS");
-	        	window.location.reload();
+	        success: function(data) {
+	        	if (data.rt=="ApprovalMember_FAIL001") {
+	        		alert("존재하지 않는 회원 번호입니다.");
+	        	}
+	        	else if (data.rt=="ApprovalMember_FAIL002") {
+	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+	        	}
+	        	else if (data.rt=="ApprovalMember_OK") {
+	            	alert("승인이 정상적으로 완료되었습니다.");
+	            	window.location.reload();
+	        	}
 	        }
 		})
 	}
@@ -106,9 +119,17 @@ function rejectMember(idx) {
         method: "POST",
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
-        success: function() {
-        	alert("REJECT SUCCESS");
-        	window.location.reload();
+        success: function(data) {
+        	if (data.rt=="DeleteMember_FAIL001") {
+        		alert("존재하지 않는 회원 번호입니다.");
+        	}
+        	else if (data.rt=="DeleteMember_FAIL002") {
+        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+        	}
+        	else if (data.rt=="DeleteMember_OK") {
+            	alert("반려가 정상적으로 완료되었습니다.");
+            	window.location.reload();
+        	}
         }
     })
 }
