@@ -43,7 +43,7 @@ function createTableBody() {
 	    			result += "<td>" + data[i].memberID + "</td>";
 	    			result += "<td>" + data[i].memberName + "</td>";
 	    			result += "<td>" + data[i].memo + "</td>";
-	    			result += "<td style='text-align:left;'>" + data[i].memoAdmin + "</td>";
+	    			result += "<td>" + data[i].memoAdmin + "</td>";
 	    			result += "</tr>";
 	    		}
 	    		$("tbody").html(result);
