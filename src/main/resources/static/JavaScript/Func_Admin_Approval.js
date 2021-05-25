@@ -45,7 +45,7 @@ function createTableBody() {
 	    			resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + $(this).children().eq(3).html() + "</td></tr>";
 	    			resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + $(this).children().eq(4).html() + "</td></tr>";
 	    			resultPopup += "<tr>" + "<td>회원 등급</td>" + "<td>" + "<select id='memberGrade'></select>" + "</td></tr>";
-	    			resultPopup += "<tr>" + "<td style='vertical-align:top;padding-top:2%;'>관리자 메모</td>" + "<td>" + "<textarea id='memoAdmin' spellcheck='false'></textarea>" + "</td></tr>";
+	    			resultPopup += "<tr>" + "<td>관리자 메모</td>" + "<td>" + "<textarea id='memoAdmin' spellcheck='false'></textarea>" + "</td></tr>";
 	    			resultPopup += "</table><br><hr><br>";
 	    			resultPopup += "<input type='button' class='rejectBtn' value='반려'>";
 	    			resultPopup += "<input type='button' class='approvalBtn' value='승인'>";
