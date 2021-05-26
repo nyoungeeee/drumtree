@@ -11,7 +11,7 @@
 		SELECT * from member
 		WHERE isDelete = 0
 		<if test="memberID != ''">
-			AND memberID LIKE '${memberID}'
+			AND memberID LIKE '%${memberID}%'
 		</if>
 		<if test="memberName != ''">
 			AND memberName LIKE '%${memberName}%'
