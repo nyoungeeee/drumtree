@@ -1,3 +1,57 @@
+function processAjax(param0, param1, param2) {
+    $.ajax({
+        url: "http://" + IPstring + "/members?isApproval=0",
+        data: { memberID: param0, memberName: param1, memo: param2 },
+        method: "POST",
+        dataType: "JSON",
+        error: function() { alert("데이터 로드 실패"); },
+        success: function(data) {
+    		var result = "";
+    		for (var i = 0; i < data.total; i++) {
+    			result += "<tr onclick='openPopup()'>";
+    			result += "<td>" + data[i].signinDate + "</td>";
+    			result += "<td>" + data[i].memberIdx + "</td>";
+    			result += "<td>" + data[i].memberID + "</td>";
+    			result += "<td>" + data[i].memberName + "</td>";
+    			result += "<td>" + data[i].memo + "</td>";
+    			result += "</tr>";
+    		}
+    		$("tbody").html(result);
+    		$("tbody tr").fadeOut(0);
+    		$("tbody tr").fadeIn(500);
+    		
+    		$("tbody tr").click(function(){
+    			var resultPopup = "";
+    			resultPopup += "<strong>회원 정보</strong>";
+    			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
+    			resultPopup += "<br><br><hr><br>";
+    			resultPopup += "<table id='memberInfo'>";
+    			resultPopup += "<tr>" + "<td>요청 시간</td>" + "<td>" + $(this).children().eq(0).html() + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>회원 번호</td>" + "<td>" + $(this).children().eq(1).html() + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + $(this).children().eq(3).html() + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + $(this).children().eq(4).html() + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>회원 등급</td>" + "<td>" + "<select id='memberGrade'></select>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>관리자 메모</td>" + "<td>" + "<textarea id='memoAdmin' spellcheck='false'></textarea>" + "</td></tr>";
+    			resultPopup += "</table><br><hr><br>";
+    			resultPopup += "<input type='button' class='rejectBtn' value='반려'>";
+    			resultPopup += "<input type='button' class='approvalBtn' value='승인'>";
+    			$(".popupBox").html(resultPopup);
+    			
+    			var resultOption = "";
+    			resultOption += "<option value='none' selected>" + "" + "</option>";
+    			resultOption += "<option value=1>" + "손님" + "</option>";
+    			resultOption += "<option value=2>" + "연습생" + "</option>";
+    			resultOption += "<option value=3>" + "레슨생" + "</option>";
+    			$("#memberGrade").append(resultOption);
+    			
+    			$(".approvalBtn").attr("onclick", "approvalMember(" + $(this).children().eq(1).html() + ")");
+    			$(".rejectBtn").attr("onclick", "rejectMember(" + $(this).children().eq(1).html() + ")");
+    		})
+        }
+    })
+}
+
 function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
@@ -15,54 +69,10 @@ function createTableHead() {
 
 function createTableBody() {
 	$(document).ready(function(){
-	    $.ajax({
-	        url: "http://" + IPstring + "/members?isApproval=0",
-	        method: "POST",
-	        dataType: "JSON",
-	        error: function() { alert("데이터 로드 실패"); },
-	        success: function(data) {
-	    		var result = "";
-	    		for (var i = 0; i < data.total; i++) {
-	    			result += "<tr onclick='openPopup()'>";
-	    			result += "<td>" + data[i].signinDate + "</td>";
-	    			result += "<td>" + data[i].memberIdx + "</td>";
-	    			result += "<td>" + data[i].memberID + "</td>";
-	    			result += "<td>" + data[i].memberName + "</td>";
-	    			result += "<td>" + data[i].memo + "</td>";
-	    			result += "</tr>";
-	    		}
-	    		$("tbody").html(result);
-	    		
-	    		$("tbody tr").click(function(){
-	    			var resultPopup = "";
-	    			resultPopup += "<strong>회원 정보</strong>";
-	    			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
-	    			resultPopup += "<br><br><hr><br>";
-	    			resultPopup += "<table id='memberInfo'>";
-	    			resultPopup += "<tr>" + "<td>요청 시간</td>" + "<td>" + $(this).children().eq(0).html() + "</td></tr>";
-	    			resultPopup += "<tr>" + "<td>회원 번호</td>" + "<td>" + $(this).children().eq(1).html() + "</td></tr>";
-	    			resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
-	    			resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + $(this).children().eq(3).html() + "</td></tr>";
-	    			resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + $(this).children().eq(4).html() + "</td></tr>";
-	    			resultPopup += "<tr>" + "<td>회원 등급</td>" + "<td>" + "<select id='memberGrade'></select>" + "</td></tr>";
-	    			resultPopup += "<tr>" + "<td>관리자 메모</td>" + "<td>" + "<textarea id='memoAdmin' spellcheck='false'></textarea>" + "</td></tr>";
-	    			resultPopup += "</table><br><hr><br>";
-	    			resultPopup += "<input type='button' class='rejectBtn' value='반려'>";
-	    			resultPopup += "<input type='button' class='approvalBtn' value='승인'>";
-	    			$(".popupBox").html(resultPopup);
-	    			
-	    			var resultOption = "";
-	    			resultOption += "<option value='none' selected>" + "" + "</option>";
-	    			resultOption += "<option value=1>" + "손님" + "</option>";
-	    			resultOption += "<option value=2>" + "연습생" + "</option>";
-	    			resultOption += "<option value=3>" + "레슨생" + "</option>";
-	    			$("select").append(resultOption);
-	    			
-	    			$(".approvalBtn").attr("onclick", "approvalMember(" + $(this).children().eq(1).html() + ")");
-	    			$(".rejectBtn").attr("onclick", "rejectMember(" + $(this).children().eq(1).html() + ")");
-	    		})
-	        }
-	    })
+		var filterID = "";
+		var filterName = "";
+		var filterMemo = "";
+		processAjax(filterID, filterName, filterMemo);
 	});
 }
 
@@ -132,4 +142,21 @@ function rejectMember(idx) {
         	}
         }
     })
+}
+
+function filterMember() {
+	var filterType = $("#filterType").val();
+	var filterID = "";
+	var filterName = "";
+	var filterMemo = "";
+	if (filterType=="id") {
+		var filterID = $("#filter").val();
+	}
+	else if (filterType=="name") {
+		var filterName = $("#filter").val();
+	}
+	else if (filterType=="memo") {
+		var filterMemo = $("#filter").val();
+	}
+	processAjax(filterID, filterName, filterMemo);
 }
