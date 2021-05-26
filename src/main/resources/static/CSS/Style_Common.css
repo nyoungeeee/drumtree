@@ -129,10 +129,12 @@
 	}
 	
 	.logo {
-		position: fixed; 
+		position: fixed;
+		width: 10%;
 		left: 5%;
 		top: 3%;
 		transform: translate(-50%, 0);
+		cursor: pointer;
 	}
 	
 	.footer {
