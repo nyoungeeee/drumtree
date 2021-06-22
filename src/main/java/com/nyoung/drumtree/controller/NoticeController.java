@@ -33,21 +33,21 @@ public class NoticeController {
 		String subject = request.getParameter("subject")==null ? "" : request.getParameter("subject");
 		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
 		String isImportStr = request.getParameter("isImport")==null ? "" : request.getParameter("isImport");
-		
+
 		int memberIdx = 0;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
 		}
-		
+
 		int isImport = 0;
 		if(!isImportStr.equals("")) {
 			isImport = Integer.parseInt(request.getParameter("isImport"));
 		}
-		
+
 		// 결과값 세팅
 		String rt = null;
 		int total = 0;
-		
+
 		// 쿼리 실행
 		NoticeDTO param = new NoticeDTO();
 		param.setMemberIdx(memberIdx);
@@ -60,6 +60,84 @@ public class NoticeController {
 		} else {
 			rt = "WriteNotice_FAIL001";
 		}
+
+		// Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
+
+		return data;
+	}
+
+	/* 공지사항 삭제 */
+	@RequestMapping(value = "/delete-notice")
+	public Map<Object, Object> DeleteNotice(HttpServletRequest request) throws Exception {
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
+
+		// 들어온 값
+		String noticeIdxStr = request.getParameter("noticeIdx")==null ? "" : request.getParameter("noticeIdx");
+		int noticeIdx = 0;
+		if(!noticeIdxStr.equals("")) {
+			noticeIdx = Integer.parseInt(request.getParameter("noticeIdx"));
+		}
+
+		// 결과값 세팅
+		String rt = null;
+		int total = 0;
+
+		// 쿼리 실행
+		NoticeDTO param = new NoticeDTO();
+		param.setNoticeIdx(noticeIdx);
+		total = noticeService.DeleteNotice(param);
+		if(total > 0) {
+			rt = "DeleteNotice_OK";
+		} else {
+			rt = "DeleteNotice_FAIL001";
+		}
+
+		//Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
+
+		return data;
+	}
+
+	/* 공지사항 수정 */
+	@RequestMapping(value = "/update-notice")
+	public Map<Object, Object> UpdateNotice(HttpServletRequest request) throws Exception {
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
+
+		// 들어온 값
+		String subject = request.getParameter("subject")==null ? "" : request.getParameter("subject");
+		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
+		String isImportStr = request.getParameter("isImport")==null ? "" : request.getParameter("isImport");
+		String noticeIdxStr = request.getParameter("noticeIdx")==null ? "" : request.getParameter("noticeIdx");
+		int noticeIdx = 0;
+		if(!noticeIdxStr.equals("")) {
+			noticeIdx = Integer.parseInt(request.getParameter("noticeIdx"));
+		}
+		int isImport = 0;
+		if(!isImportStr.equals("")) {
+			isImport = Integer.parseInt(request.getParameter("isImport"));
+		}
+
+		// 결과값 세팅
+		String rt = null;
+		int total = 0;
+
+		// 쿼리 실행
+		NoticeDTO param = new NoticeDTO();
+		param.setNoticeIdx(noticeIdx);
+		param.setContent(content);
+		param.setSubject(subject);
+		param.setIsImport(isImport);
+		total = noticeService.UpdateNotice(param);
+		if(total > 0) {
+			rt = "UpdateNotice_OK";
+		} else {
+			rt = "UpdateNotice_FAIL001";
+		}
 		
 		// Map 세팅
 		Map<Object, Object> data = new HashMap<>();;
@@ -70,7 +148,7 @@ public class NoticeController {
 
 	/* 공지사항 출력 */
 	@RequestMapping(value = "/notices")
-	public Map<Object, Object> Members(HttpServletRequest request) throws Exception {
+	public Map<Object, Object> Notices(HttpServletRequest request) throws Exception {
 		// 한글 인코딩 설정
 		request.setCharacterEncoding("UTF-8");
 
@@ -78,6 +156,11 @@ public class NoticeController {
 		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
 		String subject = request.getParameter("subject")==null ? "" : request.getParameter("subject");
 		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
+		String noticeIdxStr = request.getParameter("noticeIdx")==null ? "" : request.getParameter("noticeIdx");
+		int noticeIdx = 0;
+		if(!noticeIdxStr.equals("")) {
+			noticeIdx = Integer.parseInt(request.getParameter("noticeIdx"));
+		}
 
 		int memberIdx = 0;
 		if(!memberIdxStr.equals("")) {
@@ -96,6 +179,10 @@ public class NoticeController {
 		param.setMemberIdx(memberIdx);
 		param.setSubject(subject);
 		param.setContent(content);
+		param.setNoticeIdx(noticeIdx);
+		if(noticeIdxStr!=null) {
+			noticeService.UpdateHit(param);
+		}
 		list= noticeService.SelectNotice(param);
 		total = list.size();
 		if(total > 0) {
@@ -121,6 +208,7 @@ public class NoticeController {
 			notice.put("regDate", dto.getRegDate());
 			notice.put("subject", dto.getSubject());
 			notice.put("updateDate", dto.getUpdateDate());
+			notice.put("isImport", dto.getIsImport());
 			//회원 정보 넣기
 			memberList = null;
 			MemberDTO memberParam = new MemberDTO();

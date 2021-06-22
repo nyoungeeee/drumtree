@@ -57,7 +57,7 @@ public class NoticeDAO {
 		map.put("isDelete", param.getIsDelete());
 		map.put("hit", param.getHit());
 		map.put("isImport", param.getIsImport());
-		return sqlSession.delete("com.nyoung.drumtree.NoticeMapper.deleteNotice", map);
+		return sqlSession.update("com.nyoung.drumtree.NoticeMapper.deleteNotice", map);
 	}
 	
 	/* 공지사항 수정 */	
