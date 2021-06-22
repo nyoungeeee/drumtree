@@ -22,6 +22,52 @@ public class NoticeController {
 	@Autowired
 	NoticeServiceImpl noticeService;
 
+	/* 공지사항 등록 */
+	@RequestMapping(value = "/write-notice")
+	public Map<Object, Object> WriteNotice(HttpServletRequest request) throws Exception {
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
+
+		// 들어온 값
+		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
+		String subject = request.getParameter("subject")==null ? "" : request.getParameter("subject");
+		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
+		String isImportStr = request.getParameter("isImport")==null ? "" : request.getParameter("isImport");
+		
+		int memberIdx = 0;
+		if(!memberIdxStr.equals("")) {
+			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
+		}
+		
+		int isImport = 0;
+		if(!isImportStr.equals("")) {
+			isImport = Integer.parseInt(request.getParameter("isImport"));
+		}
+		
+		// 결과값 세팅
+		String rt = null;
+		int total = 0;
+		
+		// 쿼리 실행
+		NoticeDTO param = new NoticeDTO();
+		param.setMemberIdx(memberIdx);
+		param.setSubject(subject);
+		param.setContent(content);
+		param.setIsImport(isImport);
+		total = noticeService.WriteNotice(param);
+		if(total > 0) {
+			rt = "WriteNotice_OK";
+		} else {
+			rt = "WriteNotice_FAIL001";
+		}
+		
+		// Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
+		
+		return data;
+	}
+
 	/* 공지사항 출력 */
 	@RequestMapping(value = "/notices")
 	public Map<Object, Object> Members(HttpServletRequest request) throws Exception {
@@ -93,7 +139,7 @@ public class NoticeController {
 				notice.put("memberName", "삭제된 회원");
 				notice.put("memberGrade", "-1");
 			}
-			
+
 			data.put(i, notice);
 		}
 		return data;
