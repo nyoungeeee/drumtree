@@ -18,5 +18,5 @@ public class NoticeDTO {
 	private String updateDate;
 	private int isDelete;
 	private int hit;
-	
+	private int isImport;
 }
