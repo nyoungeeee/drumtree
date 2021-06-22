@@ -34,9 +34,8 @@
 		SET
 		subject=#{subject}
 		, content=#{content}
-		, memberIdx=#{memberIdx}
-		,
-		updateDate = now()
+		, isImport=#{isImport}
+		, updateDate = now()
 		WHERE noticeIdx=${noticeIdx}
 	</update>
 	<!-- 공지사항 출력 -->
@@ -53,5 +52,9 @@
 		<if test="memberIdx != 0">
 			AND memberIdx = ${memberIdx}
 		</if>
+		<if test="noticeIdx != 0">
+			AND noticeIdx = ${noticeIdx}
+		</if>
+		ORDER BY isImport desc, noticeIdx desc
 	</select>
 </mapper>
