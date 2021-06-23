@@ -8,9 +8,12 @@ function processAjax(param0, param1) {
         success: function(data) {
     		var result = "";
     		for (var i = 0; i < data.total; i++) {
-    			result += "<tr class='noticeList'>";
+    			result += "<tr class='noticeList' name='noticeNo." + data[i].noticeIdx + "'>";
     			result += "<td>" + data[i].noticeIdx + "</td>";
-    			result += "<td>" + "일반 공지" + "</td>";
+    			
+    			if (data[i].isImport==0) { result += "<td>" + "일반 공지" + "</td>"; }
+    			else if (data[i].isImport==1) { result += "<td>" + "중요 공지" + "</td>"; }
+    			
     			result += "<td>" + data[i].memberName + "</td>";
     			result += "<td>" + data[i].subject + "</td>";
     			result += "<td>" + data[i].hit + "</td>";
@@ -18,7 +21,7 @@ function processAjax(param0, param1) {
     			result += "<td>" + data[i].updateDate + "</td>";
     			result += "</tr>";
     			
-    			result += "<tr class='threadList' name='noticeNo." + data[i].noticeIdx + "'>";
+    			result += "<tr class='threadList' name='threadNo." + data[i].noticeIdx + "'>";
     			result += "<td colspan=7>";
     			result += "<div id='noticeSubject'>" + data[i].subject + "</div>";
     			result += "<br><hr>";
@@ -41,12 +44,24 @@ function processAjax(param0, param1) {
     			$(".noticeList").css("background-color", "#FFFFFF");
     			$(".noticeList").children().css("color", "#000000");
     			
-    			var noticeNo = "noticeNo." + $(this).children().eq(0).html();
+    			var threadNo = "threadNo." + $(this).children().eq(0).html();
     			$(this).css("background-color", "#585858");
     			$(this).children().css("color", "#FFFFFF");
-    			$("tbody [name='" + noticeNo + "']").css("display", "table-row");
-    			$("tbody [name='" + noticeNo + "'] td").fadeOut(0);
-    			$("tbody [name='" + noticeNo + "'] td").fadeIn(250);
+    			$(".threadList[name='" + threadNo + "']").css("display", "table-row");
+    			$(".threadList[name='" + threadNo + "'] td").fadeOut(0);
+    			$(".threadList[name='" + threadNo + "'] td").fadeIn(250);
+    			
+    			$.ajax({
+	    			url: "http://" + IPstring + "/notices",
+	    			data: { noticeIdx: $(this).children().eq(0).html() },
+	    			method: "POST",
+					dataType: "JSON",
+					error: function() { alert("데이터 로드 실패"); },
+					success: function(data) {
+						$(".noticeList[name='" + "noticeNo." + data[0].noticeIdx + "']").children().eq(4).html(data[0].hit);
+						$(".threadList[name='" + "threadNo." + data[0].noticeIdx + "']").find("#noticeHit").html("<strong>조회수:</strong>&nbsp;" + data[0].hit);
+					}
+    			})
     		})
         }
     })
