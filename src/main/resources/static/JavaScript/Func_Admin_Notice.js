@@ -10,7 +10,10 @@ function processAjax(param0, param1) {
     		for (var i = 0; i < data.total; i++) {
     			result += "<tr onclick='openPopup()'>";
     			result += "<td>" + data[i].noticeIdx + "</td>";
-    			result += "<td>" + "일반 공지" + "</td>";
+    			
+    			if (data[i].isImport==0) { result += "<td>" + "일반 공지" + "</td>"; }
+    			else if (data[i].isImport==1) { result += "<td>" + "중요 공지" + "</td>"; }
+    			
     			result += "<td>" + data[i].memberName + "</td>";
     			result += "<td>" + data[i].subject + "</td>";
     			result += "<td>" + data[i].hit + "</td>";
@@ -30,14 +33,24 @@ function processAjax(param0, param1) {
     			resultPopup += "<br><br><hr><br>";
     			resultPopup += "<table id='memberInfo'>";
     			resultPopup += "<tr>" + "<td>공지 번호</td>" + "<td>" + $(this).children().eq(0).html() + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>공지 구분</td>" + "<td>" + $(this).children().eq(1).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>글쓴이</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>공지 구분</td>" + "<td>" + "<select id='noticeType'></select>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>제목</td>" + "<td>" + "<input type='text' id='noticeSubject' spellcheck='false'>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>내용</td>" + "<td>" + "<textarea id='noticeContent' spellcheck='false'></textarea>" + "</td></tr>";
     			resultPopup += "</table><br><hr><br>";
     			resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
     			resultPopup += "<input type='button' class='updateBtn' value='저장'>";
     			$(".popupBox").html(resultPopup);
+    			
+    			var resultOption = "";
+    			if ($(this).children().eq(1).html()=="일반 공지") {
+        			resultOption += "<option value=0 selected>" + "일반 공지" + "</option>";
+        			resultOption += "<option value=1>" + "중요 공지" + "</option>";
+    			} else if ($(this).children().eq(1).html()=="중요 공지") {
+        			resultOption += "<option value=0>" + "일반 공지" + "</option>";
+        			resultOption += "<option value=1 selected>" + "중요 공지" + "</option>";
+    			}
+    			$("#noticeType").append(resultOption);
     			
     			$("#noticeSubject").val($(this).children().eq(3).html().replaceAll("<br>", "\n"));
     			$("#noticeContent").val($(this).children().eq(7).html().replaceAll("<br>", "\n"));
@@ -127,7 +140,10 @@ function addNotice() {
 }
 
 function saveNotice() {
-	var noticeType = $("#noticeType").val();
+	var noticeType = $("#noticeType").val();	
+	var noticeSubject = $("#noticeSubject").val();
+	var noticeContent = $("#noticeContent").val().replaceAll("\n", "<br>");
+	var noticeMember = 19;
 	
 	$("#errorMessageType").remove();
 	
@@ -137,7 +153,22 @@ function saveNotice() {
 		$("#errorMessageType").fadeIn(500);
 	}
 	else {
-		alert("미구현 기능입니다.");
+		$.ajax({
+	        url: "http://" + IPstring + "/write-notice",
+	        data: { memberIdx: noticeMember, subject: noticeSubject, content: noticeContent, isImport: noticeType },
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	if (data.rt=="WriteNotice_FAIL001") {
+	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+	        	}
+	        	else if (data.rt=="WriteNotice_OK") {
+	            	alert("공지 등록이 정상적으로 완료되었습니다.");
+	            	window.location.reload();
+	        	}
+	        }
+		})
 	}
 }
 
@@ -149,9 +180,42 @@ function resetNotice() {
 }
 
 function updateNotice(idx) {
-	alert("미구현 기능입니다.");
+	var noticeType = $("#noticeType").val();
+	var noticeSubject = $("#noticeSubject").val();
+	var noticeContent = $("#noticeContent").val().replaceAll("\n", "<br>");
+	$.ajax({
+        url: "http://" + IPstring + "/update-notice",
+        data: { noticeIdx: idx, subject: noticeSubject, content: noticeContent, isImport: noticeType },
+        method: "POST",
+        dataType: "JSON",
+        error: function() { alert("데이터 로드 실패"); },
+        success: function(data) {
+        	if (data.rt=="UpdateNotice_FAIL001") {
+        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+        	}
+        	else if (data.rt=="UpdateNotice_OK") {
+            	alert("공지 변경이 정상적으로 완료되었습니다.");
+            	window.location.reload();
+        	}
+        }
+	})
 }
 
 function deleteNotice(idx) {
-	alert("미구현 기능입니다.");
+	$.ajax({
+        url: "http://" + IPstring + "/delete-notice",
+        data: { noticeIdx: idx },
+        method: "POST",
+        dataType: "JSON",
+        error: function() { alert("데이터 로드 실패"); },
+        success: function(data) {
+        	if (data.rt=="DeleteNotice_FAIL001") {
+        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+        	}
+        	else if (data.rt=="DeleteNotice_OK") {
+            	alert("공지 제거가 정상적으로 완료되었습니다.");
+            	window.location.reload();
+        	}
+        }
+	})
 }

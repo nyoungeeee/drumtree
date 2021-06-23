@@ -16,7 +16,7 @@
 	table thead tr td {
 		font-family: IBMPlexSansKR-Regular;
 		text-align: center;
-		font-size: 1em;
+		font-size: 0.8em;
 		font-weight: 500;
 		color: #FFFFFF;
 		background-color: #2E2E2E;
@@ -26,6 +26,10 @@
 		user-select: none;
 	}
 	
+	table tbody tr {
+		border-bottom: 1px solid #A4A4A4;
+	}
+	
 	table tbody tr td {
 		font-family: IBMPlexSansKR-Regular;
 		text-align: center;
@@ -33,19 +37,26 @@
 		font-weight: 500;
 		color: #000000;
 		background-color: #FFFFFF;
-		border: 1px solid #A4A4A4;
+		border-radius: 100%;
 		height: auto;
-		padding: 1% 0.5% 1% 0.5%;
+		padding: 0.8% 0.5% 0.8% 0.5%;
 		user-select: none;
 	}
 	
 	table tbody tr .timeTable {
 		cursor: pointer;
-		color: #A4A4A4;
 	}
 	
 	table tbody tr .timeTable:hover {
 		background-color: #F2F2F2;
+	}
+	
+	#reserved {
+		cursor: default;
+	}
+	
+	#reserved:hover {
+		background-color: #FFFFFF;
 	}
 	
 	input[type=date] {
@@ -83,7 +94,22 @@
 		user-select: none;
 	}
 	
-	#reserved {
+	#reservation {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		font-weight: 500;
+		text-align: center;
 		background-color: #6E6E6E;
 		color: #FFFFFF;
+		outline: 0;
+		padding: 1%;
+		border: 0;
+		border-radius: 100px;
+		cursor: pointer;
+		transition: all 0.5s ease;
+	}
+	
+	#reservation:hover {
+		background-color: #2E2E2E;
+		transform: translateY(-0.2em);
 	}

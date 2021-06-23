@@ -44,41 +44,45 @@ function createTimeTable(currentDate) {
 	var thisMonth = currentDate.getMonth();
 	var thisDay = currentDate.getDate();
 	
-	var startDate = new Date(2021, 4, 26, 10, 0, 0);
-	var endDate = new Date(2021, 4, 26, 12, 30, 0);
+	var startDate = new Date(2021, 5, 23, 9, 0, 0);
+	var endDate = new Date(2021, 5, 23, 12, 0, 0);
 	var memberName = "녕이"
 	var roomNo = 1;
+	var timeDifference = endDate.getTime() - startDate.getTime();
+	var timeCount = ((timeDifference/1000)/60)/30;
 	
 	var resultBody = "";
 	for (var i = 0; i < 3; i++) {
 		resultBody += "<tr>";
 		if (i==0) {
-			resultBody += "<td style='background-color:#D8D8D8;'>" + "레슨" + "</td>";
+			resultBody += "<td>" + "레슨" + "</td>";
 		}
 		else {
-			resultBody += "<td style='background-color:#D8D8D8;'>" + "연습실" + i + "</td>";
+			resultBody += "<td>" + "연습실" + i + "</td>";
 		}
 		
 		if (i==roomNo) {
-			for (var j = 0; j < 15; j++) {
+			for (var j = 0; j < 30; j++) {
 				var thisDate = new Date(thisYear, thisMonth, thisDay, 0, 0, 0);
-				
-				thisDate.setHours(j+8, 0, 0);
-				if (thisDate>=startDate&&thisDate<=endDate) { resultBody += "<td class='timeTable' id='reserved'>" + memberName + "</td>"; }
-				else { resultBody += "<td class='timeTable'>" + "</td>"; }
-				
-				thisDate.setHours(j+8, 30, 0);
-				if (thisDate>=startDate&&thisDate<=endDate) { resultBody += "<td class='timeTable' id='reserved'>" + memberName + "</td>"; }
-				else { resultBody += "<td class='timeTable'>" + "</td>"; }
+				thisDate.setHours(parseInt(j/2)+8, (j%2)*30, 0);
+				if (thisDate.getTime()==startDate.getTime()) {
+					resultBody += "<td class='timeTable' id='reserved' colspan=" + timeCount + ">"
+					resultBody += "<div id='reservation'>" + memberName + "</div>";
+					resultBody += "</td>";
+				}
+				else if (thisDate>startDate&&thisDate<endDate) {
+					resultBody += "";
+				}
+				else {
+					resultBody += "<td class='timeTable'>" + "</td>";
+				}
 			}
 			resultBody += "</tr>";
 		}
 		else {
-			for (var j = 0; j < 15; j++) {
+			for (var j = 0; j < 30; j++) {
 				var thisDate = new Date(thisYear, thisMonth, thisDay, 0, 0, 0);
-				thisDate.setHours(j+8, 0, 0);
-				resultBody += "<td class='timeTable'>" + "</td>";
-				thisDate.setHours(j+8, 30, 0);
+				thisDate.setHours(parseInt(j/2)+8, (j%2)*30, 0);
 				resultBody += "<td class='timeTable'>" + "</td>";
 			}
 			resultBody += "</tr>";
@@ -88,7 +92,7 @@ function createTimeTable(currentDate) {
 	$("tbody tr").fadeOut(0);
 	$("tbody tr").fadeIn(500);
 	
-	$("tbody tr .timeTable").click(function(){
+	$("tbody tr .timeTable").not("#reserved").click(function(){
 		alert("미구현 기능");
 	})
 }
