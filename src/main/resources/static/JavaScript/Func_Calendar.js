@@ -94,7 +94,7 @@ function createMonthlyCalendar(currentYear, currentMonth) {
 		var nowDay = today.getDate();
 	}
 	var now = nowYear + "-" +  nowMonth + "-" + nowDay;
-	$("tbody td:contains('" + now + "')").css("background", "#F2F2F2");
+	$("tbody td:contains('" + now + "')").css("background", "#E6E6E6");
 	$("tbody td:contains('" + now + "')").css("font-weight", "bold");
 	$("tbody td").not("td:contains('" + $("#month").val() + "')").css("color", "#D8D8D8");
 	
