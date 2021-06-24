@@ -101,7 +101,7 @@
 		font-weight: 500;
 		text-align: left;
 		width: 98%;
-		height: 25%;
+		height: 20em;
 		background-color: #6E6E6E;
 		color: #FFFFFF;
 		outline: 0;
@@ -109,13 +109,10 @@
 		border: 0;
 		border-radius: 100px;
 		cursor: pointer;
+		transition: all 0.25s ease;
 	}
 	
 	#reservation:hover {
 		background-color: #2E2E2E;
-		box-shadow: 1em 1em 1em 1em rgba(0, 0, 0, 0.2);
-	}
-	
-	#reservation:active {
-		box-shadow: none;
+		height: 30em;
 	}

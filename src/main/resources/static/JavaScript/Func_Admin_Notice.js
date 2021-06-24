@@ -124,7 +124,7 @@ function addNotice() {
 	resultPopup += "<tr>" + "<td>내용</td>" + "<td>" + "<textarea id='noticeContent' spellcheck='false'></textarea>" + "</td></tr>";
 	resultPopup += "</table><br><hr><br>";
 	resultPopup += "<input type='button' class='resetBtn' value='초기화'>";
-	resultPopup += "<input type='button' class='saveBtn' value='저장'>";
+	resultPopup += "<input type='button' class='saveBtn' value='등록'>";
 	$(".popupBox").html(resultPopup);
 	
 	var resultOption = "";
