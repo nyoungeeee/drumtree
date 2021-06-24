@@ -33,6 +33,7 @@
 	.menuBar { /*좌측 고정 메뉴바*/
 		width: 10%;
 		height: 100%;
+		left: 0;
 		background-color: #2E2E2E;
 		text-align: center;
 		text-decoration: none;
@@ -43,13 +44,14 @@
 		user-select: none;
 		position: fixed;
 		z-index: 3;
+		transition: all 0.5s ease;
 	}
 	
 	.menuName { /*메뉴바 이름 영역*/
 		cursor: pointer;
 		padding-top: 2%;
 		padding-bottom: 2%;
-		transition: all 0.5s ease;
+		transition: all 0.25s ease;
 	}
 	
 	.menuName a { /*메뉴바 이름 디자인*/
@@ -67,10 +69,12 @@
 	
 	.subMenuName { /*서브 메뉴 이름 영역*/
 		visibility: hidden;
+		height: 1.5em;
 		background-color: #D8D8D8;
 		cursor: pointer;
 		padding-top: 2%;
 		padding-bottom: 2%;
+		transition: all 0.5s ease;
 	}
 	
 	.subMenuName a { /*서브 메뉴 이름 디자인*/
@@ -98,6 +102,7 @@
 		user-select: none;
 		position: fixed;
 		z-index: 2;
+		transition: all 0.5s ease;
 	}
 	
 	.hideButton { /*메뉴바 숨기기 버튼*/
@@ -119,7 +124,7 @@
 		user-select: none;
 		position: fixed;
 		z-index: 4;
-		transition: all 0.25s ease;
+		transition: all 0.5s ease;
 	}
 	
 	.hideButton:hover {
@@ -139,6 +144,7 @@
 		padding-bottom: 2%;
 		position: relative;
 		z-index: 1;
+		transition: all 0.5s ease;
 	}
 	
 	.logo {
@@ -148,7 +154,7 @@
 		top: 3%;
 		transform: translate(-50%, 0);
 		cursor: pointer;
-		transition: all 0.25s ease;
+		transition: all 0.5s ease;
 	}
 	
 	.logo:hover {
@@ -162,4 +168,5 @@
 		left: 5%;
 		bottom: 3%;
 		transform: translate(-50%, 0);
+		transition: all 0.5s ease;
 	}

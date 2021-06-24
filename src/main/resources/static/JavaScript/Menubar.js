@@ -15,39 +15,38 @@ function createMenubar() {
 	
 	document.write(result);
 	
-	$(function(){		
+	$(function(){
 		$("#adminMenu").click(function(){
 			$(".menuName").css("background-color", "");
 			$(".menuName").children().css("color", "");
 			$(this).css("background-color", "#424242");
 			$(this).children().css("color", "#FFFFFF");
 			$(".subMenuName").css("visibility", "visible");
-			$(".subMenuName").fadeOut(0);
-			$(".subMenuName").fadeIn(250);
+			$(".subMenuName").css("height", "1.5em");
 		})
 	});
 }
 
 function hideMenubar() {
-	$(".menuBar").css("display", "none");
+	$(".menuBar").css("left", "-10%");
+	$(".logo").css("left", "-5%");
+	$(".footer").css("left", "-5%");
 	$(".headerBar").css("width", "94%");
 	$(".headerBar").css("left", "2%");
 	$(".mainScreen").css("width", "94%");
 	$(".mainScreen").css("left", "2%");
 	$(".hideButton").css("left", "0");
 	$(".hideButton").attr("onclick", "displayMenubar()");
-	$(".menuBar").fadeIn(0);
-	$(".menuBar").fadeOut(250);
 }
 
 function displayMenubar() {
-	$(".menuBar").css("display", "");
+	$(".menuBar").css("left", "0");
+	$(".logo").css("left", "5%");
+	$(".footer").css("left", "5%");
 	$(".headerBar").css("width", "84%");
 	$(".headerBar").css("left", "12%");
 	$(".mainScreen").css("width", "84%");
 	$(".mainScreen").css("left", "12%");
 	$(".hideButton").css("left", "10%");
 	$(".hideButton").attr("onclick", "hideMenubar()");
-	$(".menuBar").fadeOut(0);
-	$(".menuBar").fadeIn(250);
 }
