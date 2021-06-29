@@ -16,6 +16,12 @@ function createMenubar() {
 	document.write(result);
 	
 	$(function(){
+		$("#adminMenu").mouseover(function(){
+			if ($(".subMenuName").css("visibility")!="visible") {
+				$(".subMenuName").css("height", "0");
+			}
+		})
+		
 		$("#adminMenu").click(function(){
 			$(".menuName").css("background-color", "");
 			$(".menuName").children().css("color", "");

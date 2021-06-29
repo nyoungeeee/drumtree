@@ -45,22 +45,21 @@ function createTimeTable(currentDate) {
 	var thisMonth = currentDate.getMonth();
 	var thisDay = currentDate.getDate();
 	
-	var startDate = new Date(2021, 5, 24, 9, 0, 0);
-	var endDate = new Date(2021, 5, 24, 12, 0, 0);
-	var memberName = "녕이"
+	var today = new Date();
+	var startDate = new Date(2021, today.getMonth(), today.getDate(), 9, 0, 0);
+	var endDate = new Date(2021, today.getMonth(), today.getDate(), 12, 0, 0);
+	var memberName = "조*영";
 	var roomNo = 1;
 	var timeDifference = endDate.getTime() - startDate.getTime();
 	var timeCount = ((timeDifference/1000)/60)/30;
 	
 	var resultBody = "";
-	for (var i = 0; i < 3; i++) {
+	for (var i = 0; i < 4; i++) {
 		resultBody += "<tr>";
-		if (i==0) {
-			resultBody += "<td>" + "레슨" + "</td>";
-		}
-		else {
-			resultBody += "<td>" + "연습실" + i + "</td>";
-		}
+		if (i==0) { resultBody += "<td>" + "레슨" + "</td>"; }
+		else if (i==1) { resultBody += "<td>" + "연습실 3번" + "</td>"; }
+		else if (i==2) { resultBody += "<td>" + "연습실 4번" + "<br>" + "(미니드럼)" + "</td>"; }
+		else if (i==3) { resultBody += "<td>" + "연습실 5번" + "</td>"; }
 		
 		if (i==roomNo) {
 			for (var j = 0; j < 30; j++) {
@@ -157,7 +156,7 @@ function createTimeTable(currentDate) {
 		resultType += "<option value=0>" + "레슨" + "</option>";
 		resultType += "<option value=1>" + "연습" + "</option>";
 		$("#selectType").append(resultType);
-		if ($(this).parent().index()==2) { var thisType = 1; }
+		if ($(this).parent().index()>1) { var thisType = 1; }
 		else { var thisType = $(this).parent().index(); }
 		$("#selectType").val(thisType).prop("selected", true);
 		
@@ -168,8 +167,9 @@ function createTimeTable(currentDate) {
 		}
 		else {
 			resultRoom += "<option value='none'>" + "" + "</option>";
-			resultRoom += "<option value=1>" + "연습실1" + "</option>";
-			resultRoom += "<option value=2>" + "연습실2" + "</option>";
+			resultRoom += "<option value=1>" + "연습실 3번" + "</option>";
+			resultRoom += "<option value=2>" + "연습실 4번" + "</option>";
+			resultRoom += "<option value=3>" + "연습실 5번" + "</option>";
 		}
 		$("#selectRoom").append(resultRoom);
 		var thisRoom = $(this).parent().index();
@@ -184,8 +184,9 @@ function createTimeTable(currentDate) {
 			}
 			else {
 				resultRoom += "<option value='none'>" + "" + "</option>";
-				resultRoom += "<option value=1>" + "연습실1" + "</option>";
-				resultRoom += "<option value=2>" + "연습실2" + "</option>";
+				resultRoom += "<option value=1>" + "연습실 3번" + "</option>";
+				resultRoom += "<option value=2>" + "연습실 4번" + "</option>";
+				resultRoom += "<option value=3>" + "연습실 5번" + "</option>";
 			}
 			$("#selectRoom").append(resultRoom);
 		})

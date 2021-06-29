@@ -72,7 +72,7 @@ function createMonthlyCalendar(currentYear, currentMonth) {
 		}
 		
 		var row = parseInt((j+firstWeek)/7);
-		$("tbody tr").eq(row).children().eq(currentWeek).append(month + "-" + day + "<hr>");
+		$("tbody tr").eq(row).children().eq(currentWeek).append(month + "-" + day + "<a style='float:right'></a>" + "<hr>");
 		$("tbody tr").eq(row).children().eq(currentWeek).append("<div id='realTime'>" + year + "-" + month + "-" + day + "</div>");
 		$("tbody tr").eq(row).children().eq(currentWeek).append("<div id='reservationList'>" + "</div>");
 	}
@@ -96,13 +96,14 @@ function createMonthlyCalendar(currentYear, currentMonth) {
 	var now = nowYear + "-" +  nowMonth + "-" + nowDay;
 	$("tbody td:contains('" + now + "')").css("background", "#E6E6E6");
 	$("tbody td:contains('" + now + "')").css("font-weight", "bold");
+	$("tbody td:contains('" + now + "') a").html("오늘");
 	$("tbody td").not("td:contains('" + $("#month").val() + "')").css("color", "#D8D8D8");
 	
-	var reservation = "<input type='button' id='reservation' value='" + "[00:00] " + "닉네임" + "'>";
-	reservation += "<input type='button' id='reservation' value='" + "[00:00] " + "닉네임" + "'>";
-	reservation += "<input type='button' id='reservation' value='" + "[00:00] " + "닉네임" + "'>";
-	reservation += "<input type='button' id='reservation' value='" + "[00:00] " + "닉네임" + "'>";
-	reservation += "<input type='button' id='reservation' value='" + "[00:00] " + "닉네임" + "'>";
+	var reservation = "<div id='reservation'>" + "[ 연습실 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
+	reservation += "<div id='reservation'>" + "[ 연습실 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
+	reservation += "<div id='reservation'>" + "[ 연습실 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
+	reservation += "<div id='reservation'>" + "[ 연습실 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
+	reservation += "<div id='reservation'>" + "[ 연습실 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
 	$("tbody td:contains('" + now + "')").find("#reservationList").append(reservation);
 	
 	var lastRow = $("tbody tr").eq(5).children().not("td:contains('" + $("#month").val() + "')").length;

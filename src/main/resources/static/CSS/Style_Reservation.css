@@ -64,7 +64,7 @@
 		font-size: 0.8em;
 		font-weight: 500;
 		color: #000000;
-		height: 3.5em;
+		height: 4.5em;
 		user-select: none;
 	}
 	
@@ -86,7 +86,7 @@
 	table tbody tr .timeTable:hover .hoverBall {
 		background-color: #E6E6E6;
 		width: 75%;
-		height: 75%;
+		height: 60%;
 	}
 	
 	#reserved {
@@ -239,7 +239,7 @@
 		background-color: #6E6E6E;
 		color: #FFFFFF;
 		outline: 0;
-		padding: 1%;
+		padding: 2%;
 		border: 0;
 		border-radius: 100px;
 		cursor: pointer;
@@ -248,7 +248,7 @@
 	
 	#reservation:hover {
 		background-color: #2E2E2E;
-		padding: 2%;
+		padding: 3%;
 	}
 	
 	.updateBtn {
