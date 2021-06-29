@@ -109,6 +109,23 @@
 		padding: 0.5%;
 	}
 	
+	table tbody tr div {
+		display: inline-block;
+		text-align: center;
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.85em;
+		font-weight: bold;
+		color: #000000;
+		background-color: #D8D8D8;
+		cursor: pointer;
+		width: 2.5em;
+		height: 1.5em;
+		padding: 0.5% 1% 0.5% 1%;
+		border: 1px solid #BDBDBD;
+		border-radius: 100px;
+		user-select: none;
+	}
+	
 	.popupBackground {
         display: none;
         position: absolute;

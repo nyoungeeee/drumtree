@@ -11,14 +11,13 @@ function processAjax(param0, param1) {
     			result += "<tr onclick='openPopup()'>";
     			result += "<td>" + data[i].noticeIdx + "</td>";
     			
-    			if (data[i].isImport==0) { result += "<td>" + "일반 공지" + "</td>"; }
-    			else if (data[i].isImport==1) { result += "<td>" + "중요 공지" + "</td>"; }
+    			if (data[i].isImport==1) { result += "<td style='text-align:left;'>" + "<div>중요</div>&emsp;" + "<a>" + data[i].subject + "</a>" + "</td>"; }
+    			else if (data[i].isImport==0) { result += "<td style='text-align:left;'>" + "<a>" + data[i].subject + "</a>" + "</td>"; }
     			
     			result += "<td>" + data[i].memberName + "</td>";
-    			result += "<td>" + data[i].subject + "</td>";
     			result += "<td>" + data[i].hit + "</td>";
-    			result += "<td>" + data[i].regDate + "</td>";
-    			result += "<td>" + data[i].updateDate + "</td>";
+    			result += "<td style='font-size:0.7em;'>" + data[i].regDate.replaceAll(" ", "<br>") + "</td>";
+    			result += "<td style='font-size:0.7em;'>" + data[i].updateDate.replaceAll(" ", "<br>") + "</td>";
     			result += "<td style='display:none;'>" + data[i].content + "</td>";
     			result += "</tr>";
     		}
@@ -43,17 +42,17 @@ function processAjax(param0, param1) {
     			$(".popupBox").html(resultPopup);
     			
     			var resultOption = "";
-    			if ($(this).children().eq(1).html()=="일반 공지") {
+    			if ($(this).children().eq(1).find("div").length==0) {
         			resultOption += "<option value=0 selected>" + "일반 공지" + "</option>";
         			resultOption += "<option value=1>" + "중요 공지" + "</option>";
-    			} else if ($(this).children().eq(1).html()=="중요 공지") {
+    			} else if ($(this).children().eq(1).find("div").length==1) {
         			resultOption += "<option value=0>" + "일반 공지" + "</option>";
         			resultOption += "<option value=1 selected>" + "중요 공지" + "</option>";
     			}
     			$("#noticeType").append(resultOption);
     			
-    			$("#noticeSubject").val($(this).children().eq(3).html().replaceAll("<br>", "\n"));
-    			$("#noticeContent").val($(this).children().eq(7).html().replaceAll("<br>", "\n"));
+    			$("#noticeSubject").val($(this).children().eq(1).find("a").html());
+    			$("#noticeContent").val($(this).children().eq(6).html().replaceAll("<br>", "\n"));
     			
     			$(".updateBtn").attr("onclick", "updateNotice(" + $(this).children().eq(0).html() + ")");
     			$(".deleteBtn").attr("onclick", "deleteNotice(" + $(this).children().eq(0).html() + ")");
@@ -66,13 +65,12 @@ function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
 		result += "<tr>";
-		result += "<td style='width:5%;'>" + "번호" + "</td>";
-		result += "<td style='width:10%;'>" + "구분" + "</td>";
+		result += "<td style='width:10%;'>" + "번호" + "</td>";
+		result += "<td style='width:40%;'>" + "제목" + "</td>";
 		result += "<td style='width:10%;'>" + "글쓴이" + "</td>";
-		result += "<td style='width:45%;'>" + "제목" + "</td>";
 		result += "<td style='width:10%;'>" + "조회수" + "</td>";
-		result += "<td style='width:10%;'>" + "등록 시간" + "</td>";
-		result += "<td style='width:10%;'>" + "갱신 시간" + "</td>";
+		result += "<td style='width:15%;'>" + "등록 시간" + "</td>";
+		result += "<td style='width:15%;'>" + "갱신 시간" + "</td>";
 		result += "<td style='display:none;'>" + "내용" + "</td>";
 		result += "</tr>";
 		

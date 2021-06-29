@@ -9,7 +9,7 @@ function processAjax(param0, param1, param2) {
     		var result = "";
     		for (var i = 0; i < data.total; i++) {
     			result += "<tr onclick='openPopup()'>";
-    			result += "<td>" + data[i].signinDate + "</td>";
+    			result += "<td style='font-size:0.7em;'>" + data[i].signinDate.replaceAll(" ", "<br>") + "</td>";
     			result += "<td>" + data[i].memberIdx + "</td>";
     			result += "<td>" + data[i].memberID + "</td>";
     			result += "<td>" + data[i].memberName + "</td>";
@@ -26,7 +26,7 @@ function processAjax(param0, param1, param2) {
     			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
     			resultPopup += "<br><br><hr><br>";
     			resultPopup += "<table id='memberInfo'>";
-    			resultPopup += "<tr>" + "<td>요청 시간</td>" + "<td>" + $(this).children().eq(0).html() + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>요청 시간</td>" + "<td>" + $(this).children().eq(0).html().replaceAll("<br>", " ") + "</td></tr>";
     			resultPopup += "<tr>" + "<td>회원 번호</td>" + "<td>" + $(this).children().eq(1).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + $(this).children().eq(3).html() + "</td></tr>";

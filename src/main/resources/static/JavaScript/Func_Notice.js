@@ -11,18 +11,17 @@ function processAjax(param0, param1) {
     			result += "<tr class='noticeList' name='noticeNo." + data[i].noticeIdx + "'>";
     			result += "<td>" + data[i].noticeIdx + "</td>";
     			
-    			if (data[i].isImport==0) { result += "<td>" + "일반 공지" + "</td>"; }
-    			else if (data[i].isImport==1) { result += "<td>" + "중요 공지" + "</td>"; }
+    			if (data[i].isImport==1) { result += "<td style='text-align:left;'>" + "<div>중요</div>&emsp;" + "<a>" + data[i].subject + "</a>" + "</td>"; }
+    			else if (data[i].isImport==0) { result += "<td style='text-align:left;'>" + "<a>" + data[i].subject + "</a>" + "</td>"; }
     			
     			result += "<td>" + data[i].memberName + "</td>";
-    			result += "<td>" + data[i].subject + "</td>";
     			result += "<td>" + data[i].hit + "</td>";
-    			result += "<td>" + data[i].regDate + "</td>";
-    			result += "<td>" + data[i].updateDate + "</td>";
+    			result += "<td style='font-size:0.7em;'>" + data[i].regDate.replaceAll(" ", "<br>") + "</td>";
+    			result += "<td style='font-size:0.7em;'>" + data[i].updateDate.replaceAll(" ", "<br>") + "</td>";
     			result += "</tr>";
     			
     			result += "<tr class='threadList' name='threadNo." + data[i].noticeIdx + "'>";
-    			result += "<td colspan=7>";
+    			result += "<td colspan=6>";
     			result += "<div id='noticeSubject'>" + data[i].subject + "</div>";
     			result += "<br><hr>";
     			result += "<div id='noticeName'>" + "<strong>글쓴이:</strong>&nbsp;" + data[i].memberName + "</div>";
@@ -64,7 +63,7 @@ function processAjax(param0, param1) {
 					dataType: "JSON",
 					error: function() { alert("데이터 로드 실패"); },
 					success: function(data) {
-						$(".noticeList[name='" + "noticeNo." + data[0].noticeIdx + "']").children().eq(4).html(data[0].hit);
+						$(".noticeList[name='" + "noticeNo." + data[0].noticeIdx + "']").children().eq(3).html(data[0].hit);
 						$(".threadList[name='" + "threadNo." + data[0].noticeIdx + "']").find("#noticeHit").html("<strong>조회수:</strong>&nbsp;" + data[0].hit);
 					}
     			})
@@ -77,13 +76,12 @@ function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
 		result += "<tr>";
-		result += "<td style='width:5%;'>" + "번호" + "</td>";
-		result += "<td style='width:10%;'>" + "구분" + "</td>";
+		result += "<td style='width:10%;'>" + "번호" + "</td>";
+		result += "<td style='width:40%;'>" + "제목" + "</td>";
 		result += "<td style='width:10%;'>" + "글쓴이" + "</td>";
-		result += "<td style='width:45%;'>" + "제목" + "</td>";
 		result += "<td style='width:10%;'>" + "조회수" + "</td>";
-		result += "<td style='width:10%;'>" + "등록 시간" + "</td>";
-		result += "<td style='width:10%;'>" + "갱신 시간" + "</td>";
+		result += "<td style='width:15%;'>" + "등록 시간" + "</td>";
+		result += "<td style='width:15%;'>" + "갱신 시간" + "</td>";
 		result += "</tr>";
 		
 		$("thead").html(result);
