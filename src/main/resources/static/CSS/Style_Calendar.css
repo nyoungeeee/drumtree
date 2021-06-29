@@ -97,15 +97,14 @@
 	
 	#reservation {
 		font-family: IBMPlexSansKR-Regular;
-		font-size: 0.1em;
+		font-size: 0.85em;
 		font-weight: 500;
 		text-align: left;
-		width: 98%;
-		height: 20em;
 		background-color: #6E6E6E;
 		color: #FFFFFF;
 		outline: 0;
-		margin: 1%;
+		margin: 1% 0 1% 0;
+		padding: 2% 5% 2% 5%;
 		border: 0;
 		border-radius: 100px;
 		cursor: pointer;
@@ -114,5 +113,6 @@
 	
 	#reservation:hover {
 		background-color: #2E2E2E;
-		height: 30em;
+		padding: 3% 5% 3% 5%;
+		font-size: 0.95em;
 	}

@@ -41,11 +41,17 @@ function processAjax(param0, param1) {
     		
     		$("tbody .noticeList").click(function(){
     			$(".threadList").css("display", "none");
-    			$(".noticeList").css("background-color", "#FFFFFF");
-    			$(".noticeList").children().css("color", "#000000");
+    			$(".noticeList").css("background-color", "");
+    			$(".noticeList").css("border", "");
+    			$(".noticeList").css("border-bottom", "1px solid #A4A4A4");
+    			$(".noticeList").children().css("color", "");
     			
     			var threadNo = "threadNo." + $(this).children().eq(0).html();
     			$(this).css("background-color", "#585858");
+    			$(this).css("border-top", "2px solid #585858");
+    			$(this).css("border-bottom", "1px solid #585858");
+    			$(this).css("border-left", "1px solid #585858");
+    			$(this).css("border-right", "1px solid #585858");
     			$(this).children().css("color", "#FFFFFF");
     			$(".threadList[name='" + threadNo + "']").css("display", "table-row");
     			$(".threadList[name='" + threadNo + "'] td").fadeOut(0);
