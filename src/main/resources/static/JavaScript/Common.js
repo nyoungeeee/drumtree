@@ -17,3 +17,11 @@ function selectCurrentMenu(menuNo, subMenuNo) {
 		}
 	});
 }
+
+function noCacheImg() {
+	$(document).ready(function(){
+		$("img").attr("src",function(){
+			return $(this).attr("src") + "?a=" + Math.random();
+		});
+	})
+}
