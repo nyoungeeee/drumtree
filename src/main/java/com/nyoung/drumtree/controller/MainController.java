@@ -31,6 +31,16 @@ public class MainController {
 		return "Admin_Notice";
 	}
 	
+	@RequestMapping(value="/Admin_Reservation")
+	public String admin_reservation() {
+		return "Admin_Reservation";
+	}
+	
+	@RequestMapping(value="/Admin_Payment")
+	public String admin_payment() {
+		return "Admin_Payment";
+	}
+	
 	@RequestMapping(value="/Calendar")
 	public String calendar() {
 		return "Calendar";
