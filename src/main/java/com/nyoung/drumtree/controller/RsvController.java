@@ -190,7 +190,7 @@ public class RsvController {
 				rsv.put("memberName", "삭제된 회원");
 				rsv.put("memberGrade", "-1");
 			}
-			
+
 			data.put(i, rsv);
 		}
 		return data;
@@ -198,11 +198,74 @@ public class RsvController {
 
 
 	/*예약 수정*/
+	@RequestMapping(value = "/update-rsv")
+	public Map<Object, Object> UpdateRsv(HttpServletRequest request) throws Exception {
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
 
-	/*예약 취소*/
+		// 들어온 값
+		String rsvIdxStr = request.getParameter("rsvIdx")==null ? "" : request.getParameter("rsvIdx");
+		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
+		String rsvTypeStr = request.getParameter("rsvType")==null ? "" : request.getParameter("rsvType");
+		String roomTypeStr = request.getParameter("roomType")==null ? "" : request.getParameter("roomType");
+		String start = request.getParameter("start")==null ? "" : request.getParameter("start");
+		String end = request.getParameter("end")==null ? "" : request.getParameter("end");
+		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
+		String isApprovalStr = request.getParameter("isApproval")==null ? "" : request.getParameter("isApproval");
+		String isDeleteStr = request.getParameter("isDelete")==null ? "" : request.getParameter("isDelete");
+		int rsvIdx = 0;
+		if(!rsvIdxStr.equals("")) {
+			rsvIdx = Integer.parseInt(request.getParameter("rsvIdx"));
+		}
+		int memberIdx = 0;
+		if(!memberIdxStr.equals("")) {
+			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
+		}
+		int rsvType = 0;
+		if(!rsvTypeStr.equals("")) {
+			rsvType = Integer.parseInt(request.getParameter("rsvType"));
+		}
+		int roomType = 0;
+		if(!roomTypeStr.equals("")) {
+			roomType = Integer.parseInt(request.getParameter("roomType"));
+		}
+		int isApproval = 0;
+		if(!isApprovalStr.equals("")) {
+			isApproval = Integer.parseInt(request.getParameter("isApproval"));
+		}
+		int isDelete = 0;
+		if(!isDeleteStr.equals("")) {
+			isDelete = Integer.parseInt(request.getParameter("isDelete"));
+		}
 
-	/*예약 승인, 승인 취소*/
+		// 결과값 세팅
+		String rt = null;
+		int total = 0;
 
+		// 쿼리 실행
+		RsvDTO param = new RsvDTO();
+		param.setRsvIdx(rsvIdx);
+		param.setMemberIdx(memberIdx);
+		param.setRsvType(rsvType);
+		param.setRoomType(roomType);
+		param.setStart(start);
+		param.setEnd(end);
+		param.setMemo(memo);
+		param.setIsApproval(isApproval);
+		param.setIsDelete(isDelete);
+		total = rsvService.UpdateRsv(param);
+		if(total > 0) {
+			rt = "UpdateRsv_OK";
+		} else {
+			rt = "UpdateRsv_FAIL001";
+		}
+
+		// Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
+
+		return data;
+	}
 
 
 }

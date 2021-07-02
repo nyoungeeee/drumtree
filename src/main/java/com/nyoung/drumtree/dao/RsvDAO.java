@@ -43,6 +43,7 @@ public class RsvDAO {
 	/*예약 수정*/
 	public int UpdateRsv(RsvDTO param) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("rsvIdx", param.getRsvIdx());
 		map.put("memberIdx", param.getMemberIdx());
 		map.put("rsvType", param.getRsvType());
 		map.put("roomType", param.getRoomType());
