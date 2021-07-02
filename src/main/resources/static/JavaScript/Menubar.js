@@ -11,6 +11,8 @@ function createMenubar() {
 	result += "<div class='subMenuName' onclick=location.href='" + "../Admin_Notice" + "'>" + "<a>공지사항 관리</a>" + "</div>";
 	result += "<div class='subMenuName' onclick=location.href='" + "../Admin_Approval" + "'>" + "<a>회원등록 승인</a>" + "</div>";
 	result += "<div class='subMenuName' onclick=location.href='" + "../Admin_Account" + "'>" + "<a>회원 관리</a>" + "</div>";
+	result += "<div class='subMenuName' onclick=location.href='" + "../Admin_Reservation" + "'>" + "<a>예약 승인</a>" + "</div>";
+	result += "<div class='subMenuName' onclick=location.href='" + "../Admin_Payment" + "'>" + "<a>납부 관리</a>" + "</div>";
 	result += "<div class='footer'>" + "경기 안양시 동안구 관양로 129" + "<br>" + "지하 1층 드럼트리" + "<br>" + "TEL.010-5362-7312" + "</div>";
 	
 	document.write(result);
