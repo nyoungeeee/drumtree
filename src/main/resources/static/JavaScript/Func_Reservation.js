@@ -46,51 +46,69 @@ function createTimeTable(currentDate) {
 	var thisDay = currentDate.getDate();
 	
 	var today = new Date();
-	var startDate = new Date(2021, today.getMonth(), today.getDate(), 9, 0, 0);
-	var endDate = new Date(2021, today.getMonth(), today.getDate(), 12, 0, 0);
-	var memberName = "조*영";
-	var roomNo = 1;
-	var timeDifference = endDate.getTime() - startDate.getTime();
-	var timeCount = ((timeDifference/1000)/60)/30;
+	var startDate1 = new Date(2021, today.getMonth(), today.getDate(), 9, 0, 0);
+	var startDate2 = new Date(2021, today.getMonth(), today.getDate(), 11, 0, 0);
+	var startDate3 = new Date(2021, today.getMonth(), today.getDate(), 15, 0, 0);
+	var startDate4 = new Date(2021, today.getMonth(), today.getDate(), 16, 0, 0);
+	var endDate1 = new Date(2021, today.getMonth(), today.getDate(), 12, 0, 0);
+	var endDate2 = new Date(2021, today.getMonth(), today.getDate(), 13, 30, 0);
+	var endDate3 = new Date(2021, today.getMonth(), today.getDate(), 16, 0, 0);
+	var endDate4 = new Date(2021, today.getMonth(), today.getDate(), 17, 30, 0);
+	var startDateArray = [ startDate1, startDate2, startDate3, startDate4 ];
+	var endDateArray = [ endDate1, endDate2, endDate3, endDate4 ];
+	var memberArray = [ "조*영", "김*훈", "드*리", "루*추" ];
+	var roomArray = [ 1, 0, 2, 2 ];
 	
+	var roomName = [ "레슨", "연슬실 3번", "연습실 4번<br>(미니드럼)", "연습실 5번" ];
 	var resultBody = "";
-	for (var i = 0; i < 4; i++) {
+	for (var i = 0; i < roomName.length; i++) {
 		resultBody += "<tr>";
-		if (i==0) { resultBody += "<td>" + "레슨" + "</td>"; }
-		else if (i==1) { resultBody += "<td>" + "연습실 3번" + "</td>"; }
-		else if (i==2) { resultBody += "<td>" + "연습실 4번" + "<br>" + "(미니드럼)" + "</td>"; }
-		else if (i==3) { resultBody += "<td>" + "연습실 5번" + "</td>"; }
-		
-		if (i==roomNo) {
-			for (var j = 0; j < 30; j++) {
-				var thisDate = new Date(thisYear, thisMonth, thisDay, 0, 0, 0);
-				thisDate.setHours(parseInt(j/2)+8, (j%2)*30, 0);
-				if (thisDate.getTime()==startDate.getTime()) {
-					resultBody += "<td class='timeTable' id='reserved' colspan=" + timeCount + ">"
-					resultBody += "<div id='reservation' onclick='openPopup()'>" + memberName + "</div>";
-					resultBody += "</td>";
-				}
-				else if (thisDate>startDate&&thisDate<endDate) {
-					resultBody += "<td class='timeTable' style='display:none;'>" + "<div class='hoverBall'></div>" + "</td>";
-				}
-				else {
-					resultBody += "<td class='timeTable' onclick='openPopup()'>" + "<div class='hoverBall'></div>" + "</td>";
-				}
-			}
-			resultBody += "</tr>";
-		}
-		else {
-			for (var j = 0; j < 30; j++) {
-				var thisDate = new Date(thisYear, thisMonth, thisDay, 0, 0, 0);
-				thisDate.setHours(parseInt(j/2)+8, (j%2)*30, 0);
-				resultBody += "<td class='timeTable' onclick='openPopup()'>" + "<div class='hoverBall'></div>" + "</td>";
-			}
-			resultBody += "</tr>";
-		}
+		resultBody += "<td>" + roomName[i] + "</td>";
+		for (var j = 0; j < 30; j++) { resultBody += "<td class='timeTable' onclick='openPopup()'>" + "<div class='hoverBall'></div>" + "</td>"; }
+		resultBody += "</tr>";
 	}
 	$("tbody").html(resultBody);
+	
+	for (var arrayIdx = 0; arrayIdx < roomArray.length; arrayIdx++) {
+		var startDate = startDateArray[arrayIdx];
+		var endDate = endDateArray[arrayIdx];
+		var memberName = memberArray[arrayIdx];
+		var roomNo = roomArray[arrayIdx];
+		var timeDifference = endDate.getTime() - startDate.getTime();
+		var timeCount = ((timeDifference/1000)/60)/30;
+		
+		var thisDate = new Date(thisYear, thisMonth, thisDay, 8, 0, 0);
+		if (startDate.getTime() >= thisDate.getTime()) {
+			var startPoint = ((((startDate.getTime() - thisDate.getTime())/1000)/60)/30)+1;
+			$("tbody tr").eq(roomNo).find("td").eq(startPoint).attr("colspan", timeCount);
+			$("tbody tr").eq(roomNo).find("td").eq(startPoint).attr("id", "reserved");
+			$("tbody tr").eq(roomNo).find("td").eq(startPoint).removeAttr("onclick");
+			$("tbody tr").eq(roomNo).find("td").eq(startPoint).html("<div id='reservation' onclick='openPopup()'>" + memberName + "</div>");
+			for (var k = 1; k < timeCount; k++) {
+				$("tbody tr").eq(roomNo).find("td").eq(startPoint+k).css("display", "none");
+				$("tbody tr").eq(roomNo).find("td").eq(startPoint+k).removeAttr("onclick");
+			}
+		}
+	}
 	$("tbody tr").fadeOut(0);
 	$("tbody tr").fadeIn(500);
+	
+	$("div #reservation").click(function() {
+		var resultPopup = "";
+		resultPopup += "<strong>예약 정보</strong>";
+		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
+		resultPopup += "<br><br><hr><br>";
+		resultPopup += "<table id='reservationInfo'>";
+		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
+		resultPopup += "</table><br><hr><br>";
+		resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
+		resultPopup += "<input type='button' class='updateBtn' value='저장'>";
+		$(".popupBox").html(resultPopup);
+	})
 	
 	$("tbody tr .timeTable").not("#reserved").click(function(){
 		var resultPopup = "";
@@ -190,23 +208,6 @@ function createTimeTable(currentDate) {
 			}
 			$("#selectRoom").append(resultRoom);
 		})
-	})
-	
-	$("#reservation").click(function() {
-		var resultPopup = "";
-		resultPopup += "<strong>예약 정보</strong>";
-		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
-		resultPopup += "<br><br><hr><br>";
-		resultPopup += "<table id='reservationInfo'>";
-		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>" + "</td></tr>";
-		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>" + "</td></tr>";
-		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
-		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "</td></tr>";
-		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
-		resultPopup += "</table><br><hr><br>";
-		resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
-		resultPopup += "<input type='button' class='updateBtn' value='저장'>";
-		$(".popupBox").html(resultPopup);
 	})
 }
 
