@@ -99,11 +99,10 @@ function createMonthlyCalendar(currentYear, currentMonth) {
 	$("tbody td:contains('" + now + "') a").html("오늘");
 	$("tbody td").not("td:contains('" + $("#month").val() + "')").css("color", "#D8D8D8");
 	
-	var reservation = "<div id='reservation'>" + "[ 연습실 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
-	reservation += "<div id='reservation'>" + "[ 연습실 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
-	reservation += "<div id='reservation'>" + "[ 연습실 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
-	reservation += "<div id='reservation'>" + "[ 연습실 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
-	reservation += "<div id='reservation'>" + "[ 연습실 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
+	var reservation = "<div id='reservation'>" + "[ 레슨 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
+	reservation += "<div id='reservation'>" + "[ 연습실3 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
+	reservation += "<div id='reservation'>" + "[ 연습실4 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
+	reservation += "<div id='reservation'>" + "[ 연습실5 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
 	$("tbody td:contains('" + now + "')").find("#reservationList").append(reservation);
 	
 	var lastRow = $("tbody tr").eq(5).children().not("td:contains('" + $("#month").val() + "')").length;
