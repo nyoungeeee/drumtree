@@ -96,7 +96,6 @@ function createMonthlyCalendar(currentYear, currentMonth) {
 	var now = nowYear + "-" +  nowMonth + "-" + nowDay;
 	$("tbody td:contains('" + now + "')").css("background", "#E6E6E6");
 	$("tbody td:contains('" + now + "')").css("font-weight", "bold");
-	$("tbody td:contains('" + now + "') a").html("오늘");
 	$("tbody td").not("td:contains('" + $("#month").val() + "')").css("color", "#D8D8D8");
 	
 	var reservation = "<div id='reservation'>" + "[ 레슨 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
@@ -104,6 +103,15 @@ function createMonthlyCalendar(currentYear, currentMonth) {
 	reservation += "<div id='reservation'>" + "[ 연습실4 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
 	reservation += "<div id='reservation'>" + "[ 연습실5 ]" + "&nbsp;" + "09:00 ~ 12:30" + "<a style='float:right'>" + "조*영" + "</a>" + "</div>";
 	$("tbody td:contains('" + now + "')").find("#reservationList").append(reservation);
+	
+	for (var m = 0; m < $("tbody tr").length; m++) {
+		for (var n = 0; n < 7; n++) {
+			var reservationCount = $("tbody tr").eq(m).find("td").eq(n).find("div #reservation").length;
+			if (reservationCount>0) {
+				$("tbody tr").eq(m).find("td").eq(n).find("a").not("#reservation a").html(reservationCount + "건");
+			}
+		}
+	}
 	
 	var lastRow = $("tbody tr").eq(5).children().not("td:contains('" + $("#month").val() + "')").length;
 	if (lastRow==7) {
