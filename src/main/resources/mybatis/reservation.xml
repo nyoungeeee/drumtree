@@ -62,9 +62,6 @@
 		<if test="end != ''">
 			, end=#{end}
 		</if>
-		<if test="regDate != ''">
-			, regDate=#{regDate}
-		</if>
 		<if test="memo != ''">
 			, memo=#{memo}
 		</if>
@@ -82,13 +79,15 @@
 		UPDATE reservation
 		SET
 		isDelete = 1
+		, updateDate= now()
 		WHERE rsvIdx=${rsvIdx}
 	</update>
-	<!-- 예약 승인 -->
+	<!-- 예약 승인, 승인 취소 -->
 	<update id="approvalRsv" parameterType="java.util.Map">
 		UPDATE reservation
 		SET
-		isApproval = 1
+		updateDate= now()
+		, isApproval = ${isApproval}
 		WHERE rsvIdx=${rsvIdx}
 	</update>
 
