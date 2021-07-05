@@ -37,15 +37,15 @@ public class RsvController {
 		String start = request.getParameter("start")==null ? "" : request.getParameter("start");
 		String end = request.getParameter("end")==null ? "" : request.getParameter("end");
 		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
-		int memberIdx = 0;
+		int memberIdx = -1;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
 		}
-		int rsvType = 0;
+		int rsvType = -1;
 		if(!rsvTypeStr.equals("")) {
 			rsvType = Integer.parseInt(request.getParameter("rsvType"));
 		}
-		int roomType = 0;
+		int roomType = -1;
 		if(!roomTypeStr.equals("")) {
 			roomType = Integer.parseInt(request.getParameter("roomType"));
 		}
@@ -92,15 +92,15 @@ public class RsvController {
 		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
 		String isApprovalStr = request.getParameter("isApproval")==null ? "" : request.getParameter("isApproval");
 
-		int memberIdx = 0;
+		int memberIdx = -1;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
 		}
-		int rsvType = 0;
+		int rsvType = -1;
 		if(!rsvTypeStr.equals("")) {
 			rsvType = Integer.parseInt(request.getParameter("rsvType"));
 		}
-		int roomType = 0;
+		int roomType = -1;
 		if(!roomTypeStr.equals("")) {
 			roomType = Integer.parseInt(request.getParameter("roomType"));
 		}
@@ -213,27 +213,27 @@ public class RsvController {
 		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
 		String isApprovalStr = request.getParameter("isApproval")==null ? "" : request.getParameter("isApproval");
 		String isDeleteStr = request.getParameter("isDelete")==null ? "" : request.getParameter("isDelete");
-		int rsvIdx = 0;
+		int rsvIdx = -1;
 		if(!rsvIdxStr.equals("")) {
 			rsvIdx = Integer.parseInt(request.getParameter("rsvIdx"));
 		}
-		int memberIdx = 0;
+		int memberIdx = -1;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
 		}
-		int rsvType = 0;
+		int rsvType =-1;
 		if(!rsvTypeStr.equals("")) {
 			rsvType = Integer.parseInt(request.getParameter("rsvType"));
 		}
-		int roomType = 0;
+		int roomType = -1;
 		if(!roomTypeStr.equals("")) {
 			roomType = Integer.parseInt(request.getParameter("roomType"));
 		}
-		int isApproval = 0;
+		int isApproval = -1;
 		if(!isApprovalStr.equals("")) {
 			isApproval = Integer.parseInt(request.getParameter("isApproval"));
 		}
-		int isDelete = 0;
+		int isDelete = -1;
 		if(!isDeleteStr.equals("")) {
 			isDelete = Integer.parseInt(request.getParameter("isDelete"));
 		}

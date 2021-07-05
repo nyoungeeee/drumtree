@@ -9,13 +9,13 @@
 		resultType="com.nyoung.drumtree.dto.RsvDTO">
 		SELECT * FROM reservation
 		WHERE isDelete = 0
-		<if test="memberIdx != 0">
+		<if test="memberIdx != -1">
 			AND memberIdx = ${memberIdx}
 		</if>
-		<if test="rsvType != 0">
+		<if test="rsvType != -1">
 			AND rsvType = ${rsvType}
 		</if>
-		<if test="roomType != 0">
+		<if test="roomType != -1">
 			AND roomType = ${roomType}
 		</if>
 		<if test="start != ''">
@@ -50,13 +50,13 @@
 		UPDATE reservation
 		SET
 		updateDate= now()
-		<if test="memberIdx != 0">
+		<if test="memberIdx != -1">
 			, memberIdx=${memberIdx}
 		</if>
-		<if test="rsvType != 0">
+		<if test="rsvType != -1">
 			, rsvType=${rsvType}
 		</if>
-		<if test="roomType != 0">
+		<if test="roomType != -1">
 			, roomType=${roomType}
 		</if>
 		<if test="start != ''">
@@ -68,10 +68,10 @@
 		<if test="memo != ''">
 			, memo=#{memo}
 		</if>
-		<if test="isApproval != 0">
+		<if test="isApproval != -1">
 			, isApproval=${isApproval}
 		</if>
-		<if test="isDelete != 0">
+		<if test="isDelete != -1">
 			, isDelete=${isDelete}
 		</if>
 		WHERE rsvIdx=#{rsvIdx}
