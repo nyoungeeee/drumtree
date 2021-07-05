@@ -104,7 +104,7 @@ public class RsvController {
 		if(!roomTypeStr.equals("")) {
 			roomType = Integer.parseInt(request.getParameter("roomType"));
 		}
-		int isApproval = 0;
+		int isApproval = -1;
 		if(!isApprovalStr.equals("")) {
 			isApproval = Integer.parseInt(request.getParameter("isApproval"));
 		}
