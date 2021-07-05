@@ -27,7 +27,7 @@
 		<if test="memo != ''">
 			AND memo LIKE '%${memo}%'
 		</if>
-		<if test="isApproval != 0">
+		<if test="isApproval != -1">
 			AND isApproval = ${isApproval}
 		</if>
 	</select>

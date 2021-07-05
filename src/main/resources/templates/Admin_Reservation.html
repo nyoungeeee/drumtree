@@ -25,12 +25,11 @@
 <div class="headerBar"><a>예약 승인</a><hr></div>
 <div class="mainScreen">
 	<select id="filterType">
-		<option value="subject">제목</option>
-		<option value="content">내용</option>
+		<option value="name">닉네임</option>
+		<option value="memo">예약 메모</option>
 	</select>
 	<input type="text" id="filter" spellcheck="false" placeholder="검색어를 입력해 주세요.">
-	<input type="button" class="searchBtn" value="검색" onclick="filterNotice()">
-	<input type="button" class="addBtn" value="추가" onclick="addNotice()">
+	<input type="button" class="searchBtn" value="검색" onclick="filterReservation()">
 	<table>
 		<thead></thead>
 		<tbody></tbody>
