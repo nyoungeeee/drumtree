@@ -59,7 +59,7 @@
 		width: 15%;
 		height: auto;
 		margin-bottom: 2.5%;
-		transition: all 0.25s ease;
+		transition: all 1s ease;
 	}
 	
 	.mainInfo {
@@ -151,6 +151,34 @@
 		box-shadow: 4px 4px 4px #000000;
         z-index: 6;
         user-select: none;
+    }
+    
+    .videoGameFrame {
+        display: none;
+        position: absolute;
+        font-family: IBMPlexSansKR-Regular;
+        text-align: center;
+        width: 95%;
+        height: 75%;
+        top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-image: url("/resources/Images/gameFrame.png");
+		background-size: 100% 100%;
+		background-position: center;
+		background-repeat: no-repeat;
+        z-index: 6;
+        user-select: none;
+    }
+    
+    .videoGameFrame iframe {
+    	position: absolute;
+		border: none;
+		width: 60%;
+        height: 85%;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
     }
     
     .closeBtn {

@@ -6,10 +6,16 @@ function processAjax(param0, param1, param2) {
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
         success: function(data) {
+        	var today = new Date();
+			today.setHours(9, 0, 0, 0);
     		var result = "";
     		for (var i = 0; i < data.total; i++) {
     			result += "<tr onclick='openPopup()'>";
-    			result += "<td style='font-size:0.7em;'>" + data[i].signinDate.replaceAll(" ", "<br>") + "</td>";
+    			
+    			var signinDay = new Date(data[i].signinDate.split(" ")[0]);
+    			if (today.getTime()==signinDay.getTime()) { result += "<td name='" + data[i].signinDate.substring(0,16) + "'>" + data[i].signinDate.split(" ")[1].substring(0,5) + "</td>"; }
+    			else { result += "<td name='" + data[i].signinDate.substring(0,16) + "'>" + data[i].signinDate.split(" ")[0] + "</td>"; }
+    			
     			result += "<td>" + data[i].memberIdx + "</td>";
     			result += "<td>" + data[i].memberID + "</td>";
     			result += "<td>" + data[i].memberName + "</td>";
@@ -26,7 +32,7 @@ function processAjax(param0, param1, param2) {
     			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
     			resultPopup += "<br><br><hr><br>";
     			resultPopup += "<table id='memberInfo'>";
-    			resultPopup += "<tr>" + "<td>요청 시간</td>" + "<td>" + $(this).children().eq(0).html().replaceAll("<br>", " ") + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>요청 일자</td>" + "<td>" + $(this).children().eq(0).attr("name") + "</td></tr>";
     			resultPopup += "<tr>" + "<td>회원 번호</td>" + "<td>" + $(this).children().eq(1).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + $(this).children().eq(3).html() + "</td></tr>";
@@ -56,7 +62,7 @@ function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
 		result += "<tr>";
-		result += "<td style='width:15%;'>" + "요청 시간" + "</td>";
+		result += "<td style='width:15%;'>" + "요청 일자" + "</td>";
 		result += "<td style='width:15%;'>" + "회원 번호" + "</td>";
 		result += "<td style='width:15%;'>" + "아이디" + "</td>";
 		result += "<td style='width:15%;'>" + "닉네임" + "</td>";

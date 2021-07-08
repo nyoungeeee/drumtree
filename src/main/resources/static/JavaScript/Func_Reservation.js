@@ -28,6 +28,7 @@ function processAjax(param0) {
         	var roomTypeArray = [];
         	var memberNameArray = [];
         	var memoArray = [];
+        	var rsvIdxArray = [];
         	
         	for (var jsonIdx = 0; jsonIdx < data.total; jsonIdx++) {
             	startArray.push(data[jsonIdx].start);
@@ -36,6 +37,7 @@ function processAjax(param0) {
             	roomTypeArray.push(data[jsonIdx].roomType);
             	memberNameArray.push(data[jsonIdx].memberName);
             	memoArray.push(data[jsonIdx].memo);
+            	rsvIdxArray.push(data[jsonIdx].rsvIdx);
         	}
         	
         	var roomName = [ "레슨", "연습실 3번", "연습실 4번<br>(미니드럼)", "연습실 5번" ];
@@ -84,11 +86,13 @@ function processAjax(param0) {
         		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
         		resultPopup += "</table><br><hr><br>";
-        		resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
-        		resultPopup += "<input type='button' class='updateBtn' value='저장'>";
+        		resultPopup += "<input type='button' class='deleteBtn' value='취소'>";
+        		resultPopup += "<input type='button' class='updateBtn' value='변경'>";
         		$(".popupBox").html(resultPopup);
         		$("#selectDate").val($("#date").val());
         		$("#reservationMemo").val(memoArray[$(this).attr("name")].replaceAll("<br>", "\n"));
+        		$(".updateBtn").attr("onclick", "updateReservation(" + rsvIdxArray[$(this).attr("name")] + ")");
+        		$(".deleteBtn").attr("onclick", "deleteReservation(" + rsvIdxArray[$(this).attr("name")] + ")");
         		
         		var resultStartTime = "";
         		var resultEndTime = "";
@@ -172,9 +176,11 @@ function processAjax(param0) {
         		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
         		resultPopup += "</table><br><hr><br>";
         		resultPopup += "<input type='button' class='resetBtn' value='초기화'>";
-        		resultPopup += "<input type='button' class='saveBtn' value='등록'>";
+        		resultPopup += "<input type='button' class='saveBtn' value='신청'>";
         		$(".popupBox").html(resultPopup);
         		$("#selectDate").val($("#date").val());
+        		$(".saveBtn").attr("onclick", "saveReservation()");
+        		$(".resetBtn").attr("onclick", "resetReservation()");
         		
         		var resultStartTime = "";
         		var resultEndTime = "";
@@ -310,4 +316,131 @@ function closePopup() {
 	$('.popupBox').css('display', 'none');
 	$('.popupBackground').css('display', 'none');
 	$('html, body').css('overflow', '');
+}
+
+function saveReservation() {
+	var rsv = $("#selectType").val();	
+	var room = $("#selectRoom").val();
+	var startTime = $("#selectDate").val() + " " + $("#selectStartTime").val() + ":00";
+	var endTime = $("#selectDate").val() + " " + $("#selectEndTime").val() + ":00";
+	var rsvMemo = $("#reservationMemo").val().replaceAll("\n", "<br>");
+	var rsvMember = 19;
+	
+	$("#errorMessageType").remove();
+	$("#errorMessageRoom").remove();
+	$("#errorMessageTime").remove();
+	
+	var startGetTime = new Date(startTime);
+	var endGetTime = new Date(endTime);
+	if (rsv==null) {
+		$("#reservationInfo tr").eq(0).children().eq(1).append("<a id='errorMessageType' style='color:red;'>&emsp;<strong>예약 구분 선택 필수</strong></a>");
+		$("#errorMessageType").fadeOut(0);
+		$("#errorMessageType").fadeIn(500);
+	}
+	else if (room==null||room=="none") {
+		$("#reservationInfo tr").eq(1).children().eq(1).append("<a id='errorMessageRoom' style='color:red;'>&emsp;<strong>예약 장소 선택 필수</strong></a>");
+		$("#errorMessageRoom").fadeOut(0);
+		$("#errorMessageRoom").fadeIn(500);
+	}
+	else if ($("#selectStartTime").val()==null||$("#selectEndTime").val()==null) {
+		$("#reservationInfo tr").eq(3).children().eq(1).append("<a id='errorMessageTime' style='color:red;'>&emsp;<strong>예약 시간 선택 필수</strong></a>");
+		$("#errorMessageTime").fadeOut(0);
+		$("#errorMessageTime").fadeIn(500);
+	}
+	else if (startGetTime.getTime()>=endGetTime.getTime()) {
+		$("#reservationInfo tr").eq(3).children().eq(1).append("<a id='errorMessageTime' style='color:red;'>&emsp;<strong>시간 재설정 필요</strong></a>");
+		$("#errorMessageTime").fadeOut(0);
+		$("#errorMessageTime").fadeIn(500);
+	}
+	else {
+		$.ajax({
+	        url: "http://" + IPstring + "/write-rsv",
+	        data: { memberIdx: rsvMember, rsvType: rsv, roomType: room, start: startTime, end: endTime, memo: rsvMemo },
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	if (data.rt=="WriteRsv_FAIL001") {
+	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+	        	}
+	        	else if (data.rt=="WriteRsv_OK") {
+	            	alert("예약 신청이 정상적으로 완료되었습니다.");
+	            	window.location.reload();
+	        	}
+	        }
+		})
+	}
+}
+
+function resetReservation() {
+	$("#selectType").val("");
+	$("#selectRoom").val("");
+	$("#selectStartTime").val("");
+	$("#selectEndTime").val("");
+	$("#reservationMemo").val("");
+	
+	$("#errorMessageType").remove();
+	$("#errorMessageRoom").remove();
+	$("#errorMessageTime").remove();
+}
+
+function updateReservation(idx) {
+	var rsv = $("#selectType").val();	
+	var room = $("#selectRoom").val();
+	var startTime = $("#selectDate").val() + " " + $("#selectStartTime").val() + ":00";
+	var endTime = $("#selectDate").val() + " " + $("#selectEndTime").val() + ":00";
+	var rsvMemo = $("#reservationMemo").val().replaceAll("\n", "<br>");
+	
+	$("#errorMessageRoom").remove();
+	$("#errorMessageTime").remove();
+	
+	var startGetTime = new Date(startTime);
+	var endGetTime = new Date(endTime);
+	if (room=="none") {
+		$("#reservationInfo tr").eq(1).children().eq(1).append("<a id='errorMessageRoom' style='color:red;'>&emsp;<strong>예약 장소 선택 필수</strong></a>");
+		$("#errorMessageRoom").fadeOut(0);
+		$("#errorMessageRoom").fadeIn(500);
+	}
+	else if (startGetTime.getTime()>=endGetTime.getTime()) {
+		$("#reservationInfo tr").eq(3).children().eq(1).append("<a id='errorMessageTime' style='color:red;'>&emsp;<strong>시간 재설정 필요</strong></a>");
+		$("#errorMessageTime").fadeOut(0);
+		$("#errorMessageTime").fadeIn(500);
+	}
+	else {
+		$.ajax({
+	        url: "http://" + IPstring + "/update-rsv",
+	        data: { rsvIdx: idx, rsvType: rsv, roomType: room, start: startTime, end: endTime, memo: rsvMemo },
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	if (data.rt=="UpdateRsv_FAIL001") {
+	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+	        	}
+	        	else if (data.rt=="UpdateRsv_OK") {
+	            	alert("예약 변경이 정상적으로 완료되었습니다.");
+	            	window.location.reload();
+	        	}
+	        }
+		})
+	}
+}
+
+function deleteReservation(idx) {
+	$.ajax({
+        url: "http://" + IPstring + "/update-rsv",
+        data: { rsvIdx: idx, isApproval: 3 },
+        method: "POST",
+        dataType: "JSON",
+        error: function() { alert("데이터 로드 실패"); },
+        success: function(data) {
+        	if (data.rt=="UpdateRsv_FAIL001") {
+        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+        	}
+        	else if (data.rt=="UpdateRsv_OK") {
+            	alert("예약 취소가 정상적으로 완료되었습니다.");
+            	window.location.reload();
+        	}
+        }
+	})
 }

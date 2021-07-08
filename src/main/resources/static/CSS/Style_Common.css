@@ -6,6 +6,18 @@
     font-style: normal;
 }
 
+  @media( orientation: portrait ) {
+    html {
+      transform: rotate(90deg);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vh;
+      height: 100vw;
+      transition: all 0.5s ease;
+    }
+  }
+
 	input, textarea, button {
 		appearance: none;
 		-moz-appearance: none;
