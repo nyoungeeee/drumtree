@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,29 +13,44 @@
 		font-style: normal;
 	}
 	
-	body { background-color:black; font-family:'DOSGothic'; color:white; text-align: center; user-select: none; }
-	div { display: inline-block; }
+	html {
+		overflow: hidden;
+	}
+	
+	body {
+		background-color:black;
+		font-family:'DOSGothic';
+		color:white;
+		text-align: center;
+		user-select: none;
+		overflow: hidden;
+	}
+	
+	div {
+		display: inline-block;
+	}
 	
 	#mainTitle {
 		font-size: 350%;
 		font-weight: bold;
-		margin-top: 10%;
+		margin-top: 17.5%;
 	}
 	
 	#mainStart {
 		font-size: 200%;
 		font-weight: bold;
 		margin-top: 10%;
+		cursor: pointer;
 	}
 	
 	#endingTitle {
 		font-size: 350%;
 		font-weight: bold;
-		margin-top: 10%;
+		margin-top: 17.5%;
 	}
 	
 	#endingSubTitle {
-		font-size: 100%;
+		font-size: 150%;
 		font-weight: bold;
 		margin-top: 10%;
 	}
@@ -52,7 +66,7 @@
 	
 	#quest {
 		position: absolute;
-		font-size: 180%;
+		font-size: 150%;
 		font-weight: bold;
 		color: black;
 		top: 25%;
@@ -72,6 +86,7 @@
 		transform:translateX(-50%);
 		text-shadow: 2px 2px 2px #ccc;
 		user-select: none;
+		cursor: pointer;
 	}
 	
 	#nyung {
@@ -79,7 +94,8 @@
 		width: 12.5%;
 		height: 25%;
 		top: 50%;
-		left: 15%;
+		left: -15%;
+		transition: all 1s ease;
 	}
 	
 	#gamza {
@@ -87,7 +103,9 @@
 		width: 12.5%;
 		height: 25%;
 		top: 50%;
-		left: 65%;
+		left: 130%;
+		transform: rotateY(180deg);
+		transition: all 1s ease;
 	}
 	
 	#rookie {
@@ -95,7 +113,8 @@
 		width: 9%;
 		height: 15%;
 		top: 62%;
-		left: 74.5%;
+		left: 149%;
+		transition: all 1s ease;
 	}
 	
 	#hoochu {
@@ -103,7 +122,8 @@
 		width: 9%;
 		height: 15%;
 		top: 62%;
-		left: 58%;
+		left: 116%;
+		transition: all 1s ease;
 	}
 	
 	#dialogBox {
@@ -116,6 +136,35 @@
 		top: 76%;
 		left: 1%;
 		user-select: none;
+		cursor: pointer;
+	}
+	
+	@keyframes catJump {
+	  	0% { top: 62%; }
+	  	10% { top: 61.6%; }
+	  	20% { top: 61.2%; }
+	  	30% { top: 60.8%; }
+	  	40% { top: 60.4%; }
+	  	50% { top: 60%; }
+	  	60% { top: 60.4%; }
+	  	70% { top: 60.8%; }
+	  	80% { top: 61.2%; }
+	  	90% { top: 61.6%; }
+	  	100% { top: 62%; }
+	}
+	
+	@keyframes catMove {
+	  	0% { left: 58%; }
+	  	10% { left: 57.6%; }
+	  	20% { left: 57.2%; }
+	  	30% { left: 56.8%; }
+	  	40% { left: 56.4%; }
+	  	50% { left: 56%; }
+	  	60% { left: 56.4%; }
+	  	70% { left: 56.8%; }
+	  	80% { left: 57.2%; }
+	  	90% { left: 57.6%; }
+	  	100% { left: 58%; }
 	}
 </style>
 <script type="text/javascript">
@@ -139,11 +188,13 @@
 		$('#mainTitle').remove();
 		$('#mainStart').remove();
 		$('#backgroundGame').css('display', 'inline-block');
-		$('#nyung').css('display', 'inline-block');
-		$('#dialogBox').css('display', 'inline-block');
-		$('#characterName').html("&emsp;녕이");
-		$('#dialogText').html("&emsp;(내 이름은 녕이. 감자 랜드를 탐험 중이다.)");
-		$('#dialogBox').attr('onclick', 'event_1()');
+		$('#nyung').css('left', '15%');
+		setTimeout(function(){
+			$('#dialogBox').css('display', 'inline-block');
+			$('#characterName').html("&emsp;녕이");
+			$('#dialogText').html("&emsp;(내 이름은 녕이. 감자 랜드를 탐험 중이다.)");
+			$('#dialogBox').attr('onclick', 'event_1()');
+		}, 1250)
 	}
 	
 	function event_1() {
@@ -153,18 +204,31 @@
 	}
 	
 	function event_2() {
-		$('#gamza').css('display', 'inline-block');
-		$('#hoochu').css('display', 'inline-block');
-		$('#rookie').css('display', 'inline-block');
-		$('#characterName').html("&emsp;녕이");
-		$('#dialogText').html("&emsp;실례합니다. 길을 좀 여쭙고 싶은데요.");
-		$('#dialogBox').attr('onclick', 'event_3()');
+		$('#dialogBox').css('display', 'none');
+		$('#nyung').css('left', '-15%');
+		$('#gamza').css('left', '65%');
+		$('#hoochu').css('left', '58%');
+		$('#rookie').css('left', '74.5%');
+		setTimeout(function(){
+			$('#nyung').css('left', '15%');
+		}, 1250)
+		setTimeout(function(){
+			$('#dialogBox').css('display', 'inline-block');
+			$('#characterName').html("&emsp;녕이");
+			$('#dialogText').html("&emsp;실례합니다. 길을 좀 여쭙고 싶은데요.");
+			$('#dialogBox').attr('onclick', 'event_3()');
+		}, 3000)
 	}
 	
 	function event_3() {
-		$('#characterName').html("&emsp;잘생긴 남자");
-		$('#dialogText').html("&emsp;안녕하세요. 처음보는 얼굴인데, 감자 랜드는 처음이신가요?");
-		$('#dialogBox').attr('onclick', 'event_4()');
+		$('#dialogBox').css('display', 'none');
+		$('#gamza').css('transform', 'rotateY(0)');
+		setTimeout(function(){
+			$('#dialogBox').css('display', 'inline-block');
+			$('#characterName').html("&emsp;잘생긴 남자");
+			$('#dialogText').html("&emsp;안녕하세요. 처음보는 얼굴인데, 감자 랜드는 처음이신가요?");
+			$('#dialogBox').attr('onclick', 'event_4()');
+		}, 1250)
 	}
 	
 	function event_4() {
@@ -237,11 +301,16 @@
 		$('#dialogBox').css('display', 'none');
 		$('#quest').css('display', 'inline-block');
 		$('#quest').html("루키에게 말을 걸어보자");
+		$('#rookie').css('cursor', 'pointer');
+		$('#rookie').css('animation-name', 'catJump');
+		$('#rookie').css('animation-duration', '1s');
+		$('#rookie').css('animation-iteration-count', 'infinite');
 		$('#rookie').attr('onclick', 'event_16()');
 	}
 	
 	function event_16() {
 		$('#dialogBox').css('display', 'inline-block');
+		$('#rookie').css('cursor', 'default');
 		$('#characterName').html("&emsp;루키");
 		$('#dialogText').html("&emsp;애옹~");
 		$('#dialogBox').attr('onclick', 'event_17()');
@@ -250,6 +319,9 @@
 	
 	function event_17() {
 		$('#quest').html("퀘스트 완료!");
+		$('#rookie').css('animation-name', '');
+		$('#rookie').css('animation-duration', '');
+		$('#rookie').css('animation-iteration-count', '');
 		$('#characterName').html("&emsp;녕이");
 		$('#dialogText').html("&emsp;(루키는 만족스러운 듯 꼬리를 흔들고 있다.)");
 		$('#dialogBox').attr('onclick', 'event_18()');
@@ -264,11 +336,16 @@
 	function event_19() {
 		$('#dialogBox').css('display', 'none');
 		$('#quest').html("후추에게 말을 걸어보자");
+		$('#hoochu').css('cursor', 'pointer');
+		$('#hoochu').css('animation-name', 'catMove');
+		$('#hoochu').css('animation-duration', '2s');
+		$('#hoochu').css('animation-iteration-count', 'infinite');
 		$('#hoochu').attr('onclick', 'event_20()');
 	}
 	
 	function event_20() {
 		$('#dialogBox').css('display', 'inline-block');
+		$('#hoochu').css('cursor', 'default');
 		$('#characterName').html("&emsp;후추");
 		$('#dialogText').html("&emsp;...");
 		$('#dialogBox').attr('onclick', 'event_21()');
@@ -277,6 +354,9 @@
 	
 	function event_21() {
 		$('#quest').html("퀘스트 완료!");
+		$('#hoochu').css('animation-name', '');
+		$('#hoochu').css('animation-duration', '');
+		$('#hoochu').css('animation-iteration-count', '');
 		$('#characterName').html("&emsp;녕이");
 		$('#dialogText').html("&emsp;(후추는 내 손에 얼굴을 부비부비하고 있다.)");
 		$('#dialogBox').attr('onclick', 'event_22()');
@@ -309,6 +389,7 @@
 	
 	function event_25() {
 		$('#dialogBox').css('display', 'none');
+		$('#gamza').css('cursor', 'pointer');
 		$('#quest').css('display', 'inline-block');
 		$('#quest').html("감자에게 말을 걸어보자");
 		$('#gamza').attr('onclick', 'event_26()');
@@ -316,6 +397,7 @@
 	
 	function event_26() {
 		$('#quest').html("퀘스트 완료!");
+		$('#gamza').css('cursor', '');
 		$('#dialogBox').css('display', 'inline-block');
 		$('#characterName').html("&emsp;감자");
 		$('#dialogText').html("&emsp;실은...");
@@ -420,16 +502,16 @@
 	&emsp;
 	<a id="deny" onclick="clickDeny()">거절하기</a>
 </div>
-<image id="nyung" style="display:none;" src="https://piskel-imgstore-b.appspot.com/img/7144c217-7df2-11eb-8073-35bdd1f5bd5b.gif"></image>
-<image id="gamza" style="display:none;" src="https://piskel-imgstore-b.appspot.com/img/3dd150fa-7df2-11eb-896e-35bdd1f5bd5b.gif"></image>
-<image id="rookie" style="display:none;" src="https://piskel-imgstore-b.appspot.com/img/b5c4f4ae-7df4-11eb-928f-35bdd1f5bd5b.gif"></image>
-<image id="hoochu" style="display:none;" src="https://piskel-imgstore-b.appspot.com/img/52a3326e-7df4-11eb-934f-35bdd1f5bd5b.gif"></image>
+<image id="nyung" src="https://piskel-imgstore-b.appspot.com/img/7144c217-7df2-11eb-8073-35bdd1f5bd5b.gif"></image>
+<image id="gamza" src="https://piskel-imgstore-b.appspot.com/img/3dd150fa-7df2-11eb-896e-35bdd1f5bd5b.gif"></image>
+<image id="rookie" src="https://piskel-imgstore-b.appspot.com/img/b5c4f4ae-7df4-11eb-928f-35bdd1f5bd5b.gif"></image>
+<image id="hoochu" src="https://piskel-imgstore-b.appspot.com/img/52a3326e-7df4-11eb-934f-35bdd1f5bd5b.gif"></image>
 <div id="dialogBox" style="display:none;">
 	<br><div id="characterName" style="float:left;font-size:100%;font-weight:bold;"></div><br><br>
 	<div id="dialogText" style="float:left;font-size:100%;"></div>
 	<div id="arrow" style="float:right;font-size:100%;">▼&emsp;</div>
 </div>
-<div id="endingTitle" style="display:none;">Happy Ending</div>
-<div id="endingSubTitle" style="display:none;">감자와 녕이는 감자 마을에서 오래오래 행복하게 살았답니다.</div>
+<div id="endingTitle" style="display:none;">Happy Ending!</div><br>
+<div id="endingSubTitle" style="display:none;">감자와 녕이는 오래오래 행복하게 살았답니다.</div>
 </body>
 </html>

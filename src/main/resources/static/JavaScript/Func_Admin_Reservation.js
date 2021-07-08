@@ -8,15 +8,22 @@ function processAjax(param0, param1) {
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
         success: function(data) {
+        	var today = new Date();
+			today.setHours(9, 0, 0, 0);
     		var result = "";
     		for (var i = 0; i < data.total; i++) {
     			result += "<tr onclick='openPopup()'>";
-    			result += "<td style='font-size:0.7em;'>" + data[i].regDate.replaceAll(" ", "<br>") + "</td>";
+    			
+    			var regDay = new Date(data[i].regDate.split(" ")[0]);
+    			if (today.getTime()==regDay.getTime()) { result += "<td name='" + data[i].regDate.substring(0,16) + "'>" + data[i].regDate.split(" ")[1].substring(0,5) + "</td>"; }
+    			else { result += "<td name='" + data[i].regDate.substring(0,16) + "'>" + data[i].regDate.split(" ")[0] + "</td>"; }
+    			
     			result += "<td>" + data[i].memberName + "</td>";
     			result += "<td>" + roomName[data[i].roomType] + "</td>";
-    			result += "<td style='font-size:0.7em;'>" + data[i].start.split(" ")[0] + "<br>" + data[i].start.split(" ")[1].substring(0,5) + " ~ " + data[i].end.split(" ")[1].substring(0,5) + "</td>";
+    			result += "<td>" + data[i].start.split(" ")[0] + "</td>";
+    			result += "<td>" + data[i].start.split(" ")[1].substring(0,5) + " ~ " + data[i].end.split(" ")[1].substring(0,5) + "</td>";
     			result += "<td>" + data[i].memo + "</td>";
-    			result += "<td style='display:none;'>" + data[i].memberIdx + "</td>";
+    			result += "<td style='display:none;'>" + data[i].rsvIdx + "</td>";
     			result += "</tr>";
     		}
     		$("tbody").html(result);
@@ -29,7 +36,7 @@ function processAjax(param0, param1) {
         		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
         		resultPopup += "<br><br><hr><br>";
         		resultPopup += "<table id='reservationInfo'>";
-        		resultPopup += "<tr>" + "<td>신청 일자</td>" + "<td>" + $(this).children().eq(0).html().replaceAll("<br>", " ") + "</td></tr>";
+        		resultPopup += "<tr>" + "<td>신청 일자</td>" + "<td>" + $(this).children().eq(0).attr("name") + "</td></tr>";
         		resultPopup += "<tr>" + "<td>신청 회원</td>" + "<td>" + $(this).children().eq(1).html() + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>" + "</td></tr>";
@@ -41,11 +48,11 @@ function processAjax(param0, param1) {
     			resultPopup += "<input type='button' class='approvalBtn' value='승인'>";
         		$(".popupBox").html(resultPopup);
         		
-    			$(".approvalBtn").attr("onclick", "approvalMember(" + $(this).children().eq(5).html() + ")");
-    			$(".rejectBtn").attr("onclick", "rejectMember(" + $(this).children().eq(5).html() + ")");
+    			$(".approvalBtn").attr("onclick", "approvalMember(" + $(this).children().eq(6).html() + ")");
+    			$(".rejectBtn").attr("onclick", "rejectMember(" + $(this).children().eq(6).html() + ")");
         		
-        		$("#selectDate").val($(this).children().eq(3).html().split("<br>")[0]);
-        		$("#reservationMemo").val($(this).children().eq(4).html().replaceAll("<br>", "\n"));
+        		$("#selectDate").val($(this).children().eq(3).html());
+        		$("#reservationMemo").val($(this).children().eq(5).html().replaceAll("<br>", "\n"));
         		
         		var resultStartTime = "";
         		var resultEndTime = "";
@@ -70,8 +77,8 @@ function processAjax(param0, param1) {
         		}
         		$("#selectStartTime").append(resultStartTime);
         		$("#selectEndTime").append(resultEndTime);
-        		$("#selectStartTime").val($(this).children().eq(3).html().split("<br>")[1].split(" ~ ")[0]).prop("selected", true);
-        		$("#selectEndTime").val($(this).children().eq(3).html().split("<br>")[1].split(" ~ ")[1]).prop("selected", true);
+        		$("#selectStartTime").val($(this).children().eq(4).html().split(" ~ ")[0]).prop("selected", true);
+        		$("#selectEndTime").val($(this).children().eq(4).html().split(" ~ ")[1]).prop("selected", true);
         		
         		var resultType = "";
         		resultType += "<option value=0>" + "레슨" + "</option>";
@@ -119,9 +126,10 @@ function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
 		result += "<tr>";
-		result += "<td style='width:15%;'>" + "신청 시간" + "</td>";
-		result += "<td style='width:15%;'>" + "닉네임" + "</td>";
-		result += "<td style='width:15%;'>" + "예약 장소" + "</td>";
+		result += "<td style='width:10%;'>" + "신청 일자" + "</td>";
+		result += "<td style='width:10%;'>" + "신청 회원" + "</td>";
+		result += "<td style='width:10%;'>" + "예약 장소" + "</td>";
+		result += "<td style='width:15%;'>" + "예약 날짜" + "</td>";
 		result += "<td style='width:15%;'>" + "예약 시간" + "</td>";
 		result += "<td style='width:40%;'>" + "예약 메모" + "</td>";
 		result += "</tr>";
@@ -151,31 +159,39 @@ function closePopup() {
 }
 
 function approvalMember(idx) {
-	var grade = $("#memberGrade").val();
-	var memo = $("#memoAdmin").val().replaceAll("\n", "<br>");
+	var rsv = $("#selectType").val();	
+	var room = $("#selectRoom").val();
+	var startTime = $("#selectDate").val() + " " + $("#selectStartTime").val() + ":00";
+	var endTime = $("#selectDate").val() + " " + $("#selectEndTime").val() + ":00";
+	var rsvMemo = $("#reservationMemo").val().replaceAll("\n", "<br>");
 	
-	$("#errorMessageGrade").remove();
+	$("#errorMessageRoom").remove();
+	$("#errorMessageTime").remove();
 	
-	if (grade=="none") {
-		$("#memberInfo tr").eq(5).children().eq(1).append("<a id='errorMessageGrade' style='color:red;'>&emsp;<strong>회원 등급 선택 필수</strong></a>");
-		$("#errorMessageGrade").fadeOut(0);
-		$("#errorMessageGrade").fadeIn(500);
+	var startGetTime = new Date(startTime);
+	var endGetTime = new Date(endTime);
+	if (room=="none") {
+		$("#reservationInfo tr").eq(3).children().eq(1).append("<a id='errorMessageRoom' style='color:red;'>&emsp;<strong>예약 장소 선택 필수</strong></a>");
+		$("#errorMessageRoom").fadeOut(0);
+		$("#errorMessageRoom").fadeIn(500);
+	}
+	else if (startGetTime.getTime()>=endGetTime.getTime()) {
+		$("#reservationInfo tr").eq(5).children().eq(1).append("<a id='errorMessageTime' style='color:red;'>&emsp;<strong>시간 재설정 필요</strong></a>");
+		$("#errorMessageTime").fadeOut(0);
+		$("#errorMessageTime").fadeIn(500);
 	}
 	else {
 		$.ajax({
-	        url: "http://" + IPstring + "/approval-member",
-	        data: { memberIdx: idx, memberGrade: grade, memoAdmin: memo },
+	        url: "http://" + IPstring + "/update-rsv",
+	        data: { rsvIdx: idx, isApproval: 1, rsvType: rsv, roomType: room, start: startTime, end: endTime, memo: rsvMemo },
 	        method: "POST",
 	        dataType: "JSON",
 	        error: function() { alert("데이터 로드 실패"); },
 	        success: function(data) {
-	        	if (data.rt=="ApprovalMember_FAIL001") {
-	        		alert("존재하지 않는 회원 번호입니다.");
-	        	}
-	        	else if (data.rt=="ApprovalMember_FAIL002") {
+	        	if (data.rt=="UpdateRsv_FAIL001") {
 	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
 	        	}
-	        	else if (data.rt=="ApprovalMember_OK") {
+	        	else if (data.rt=="UpdateRsv_OK") {
 	            	alert("승인이 정상적으로 완료되었습니다.");
 	            	window.location.reload();
 	        	}
@@ -185,25 +201,22 @@ function approvalMember(idx) {
 }
 
 function rejectMember(idx) {
-    $.ajax({
-        url: "http://" + IPstring + "/delete-member",
-        data: { memberIdx: idx },
+	$.ajax({
+        url: "http://" + IPstring + "/update-rsv",
+        data: { rsvIdx: idx, isApproval: 2 },
         method: "POST",
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
         success: function(data) {
-        	if (data.rt=="DeleteMember_FAIL001") {
-        		alert("존재하지 않는 회원 번호입니다.");
-        	}
-        	else if (data.rt=="DeleteMember_FAIL002") {
+        	if (data.rt=="UpdateRsv_FAIL001") {
         		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
         	}
-        	else if (data.rt=="DeleteMember_OK") {
+        	else if (data.rt=="UpdateRsv_OK") {
             	alert("반려가 정상적으로 완료되었습니다.");
             	window.location.reload();
         	}
         }
-    })
+	})
 }
 
 function filterReservation() {

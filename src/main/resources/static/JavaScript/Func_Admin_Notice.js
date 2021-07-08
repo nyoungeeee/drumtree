@@ -6,6 +6,8 @@ function processAjax(param0, param1) {
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
         success: function(data) {
+        	var today = new Date();
+			today.setHours(9, 0, 0, 0);
     		var result = "";
     		for (var i = 0; i < data.total; i++) {
     			result += "<tr onclick='openPopup()'>";
@@ -16,8 +18,15 @@ function processAjax(param0, param1) {
     			
     			result += "<td>" + data[i].memberName + "</td>";
     			result += "<td>" + data[i].hit + "</td>";
-    			result += "<td style='font-size:0.7em;'>" + data[i].regDate.replaceAll(" ", "<br>") + "</td>";
-    			result += "<td style='font-size:0.7em;'>" + data[i].updateDate.replaceAll(" ", "<br>") + "</td>";
+    			
+    			var regDay = new Date(data[i].regDate.split(" ")[0]);
+    			if (today.getTime()==regDay.getTime()) { result += "<td name='" + data[i].regDate.split(" ")[0] + "'>" + data[i].regDate.split(" ")[1].substring(0,5) + "</td>"; }
+    			else { result += "<td name='" + data[i].regDate.split(" ")[0] + "'>" + data[i].regDate.split(" ")[0] + "</td>"; }
+    			
+    			var updateDay = new Date(data[i].updateDate.split(" ")[0]);
+    			if (today.getTime()==updateDay.getTime()) { result += "<td name='" + data[i].updateDate.split(" ")[0] + "'>" + data[i].updateDate.split(" ")[1].substring(0,5) + "</td>"; }
+    			else { result += "<td name='" + data[i].updateDate.split(" ")[0] + "'>" + data[i].updateDate.split(" ")[0] + "</td>"; }
+    			
     			result += "<td style='display:none;'>" + data[i].content + "</td>";
     			result += "</tr>";
     		}
@@ -69,8 +78,8 @@ function createTableHead() {
 		result += "<td style='width:40%;'>" + "제목" + "</td>";
 		result += "<td style='width:10%;'>" + "글쓴이" + "</td>";
 		result += "<td style='width:10%;'>" + "조회수" + "</td>";
-		result += "<td style='width:15%;'>" + "등록 시간" + "</td>";
-		result += "<td style='width:15%;'>" + "갱신 시간" + "</td>";
+		result += "<td style='width:15%;'>" + "등록 일자" + "</td>";
+		result += "<td style='width:15%;'>" + "갱신 일자" + "</td>";
 		result += "<td style='display:none;'>" + "내용" + "</td>";
 		result += "</tr>";
 		

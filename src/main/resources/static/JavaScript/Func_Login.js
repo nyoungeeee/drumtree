@@ -17,6 +17,21 @@ function createPopup() {
 		
 		$(".resetBtn").attr("onclick", "resetMember()");
 		$(".requestBtn").attr("onclick", "requestMember()");
+		
+		$(".mainLogo").click(function(){
+			var secretCode = "GAMZALAND";
+			var insertCode = $("#userID").val().toUpperCase();
+			
+			if (insertCode == secretCode) {
+				$(".mainLogo").css("transform", "rotate(360deg)");
+				setTimeout(function(){
+					$('.videoGameFrame').css('display', 'inline-block');
+					$('.popupBackground').css('display', 'inline-block');
+					$('html, body').css('overflow', 'hidden');
+				}, 1250)
+				
+			}
+		})
 	})
 }
 
