@@ -109,6 +109,27 @@
 		padding: 1% 2% 1% 2%;
 	}
 	
+	#checkFlag {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		text-align: center;
+		width: 4em;
+		height: 2.5em;
+		border: 0;
+		border-radius: 1em;
+		background-color: #6E6E6E;
+		color: #FFFFFF;
+		outline: 0;
+		padding: 0 2% 0 2%;
+		cursor: pointer;
+		user-select: none;
+		transition: all 0.25s ease;
+	}
+	
+	#checkFlag:hover {
+		background-color: #2E2E2E;
+	}
+	
 	select {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
@@ -167,6 +188,21 @@
 		padding-right: 1%;
 	}
 	
+	.error {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		text-align: center;
+		width: 2.5em;
+		height: 2.5em;
+		border: 0;
+		border-radius: 100%;
+		background-color: #B40404;
+		color: #FFFFFF;
+		outline: 0;
+		padding: 0 2% 0 2%;
+		user-select: none;
+	}
+	
 	#leftArrow, #rightArrow {
 		float: right;
 		font-family: IBMPlexSansKR-Regular;
@@ -202,7 +238,7 @@
 		font-family: IBMPlexSansKR-Regular;
         position: absolute;
         text-align: center;
-		width: 30%;
+		width: 35em;
 		height: auto;
 		top: 50%;
 		left: 50%;
