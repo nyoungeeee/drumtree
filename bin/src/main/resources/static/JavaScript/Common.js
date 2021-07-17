@@ -1,5 +1,6 @@
 function loadIPstring() {
 	IPstring = "3.34.217.94:8888";
+	IPstring = "localhost:8888";
 	return IPstring;
 }
 
@@ -16,4 +17,12 @@ function selectCurrentMenu(menuNo, subMenuNo) {
 			$(".menuName").eq(menuNo).children().css("color", "#FFFFFF");
 		}
 	});
+}
+
+function noCacheImg() {
+	$(document).ready(function(){
+		$("img").attr("src",function(){
+			return $(this).attr("src") + "?a=" + Math.random();
+		});
+	})
 }

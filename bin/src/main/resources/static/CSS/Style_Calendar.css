@@ -16,7 +16,7 @@
 	table thead tr td {
 		font-family: IBMPlexSansKR-Regular;
 		text-align: center;
-		font-size: 1em;
+		font-size: 0.8em;
 		font-weight: 500;
 		color: #FFFFFF;
 		background-color: #2E2E2E;
@@ -42,7 +42,7 @@
 	input[type=month] {
 		float: right;
 		font-family: IBMPlexSansKR-Regular;
-		font-size: 1em;
+		font-size: 0.8em;
 		font-weight: 500;
 		width: 10em;
 		height: 2.5em;
@@ -59,7 +59,7 @@
 	#leftArrow, #rightArrow {
 		float: right;
 		font-family: IBMPlexSansKR-Regular;
-		font-size: 1em;
+		font-size: 0.8em;
 		font-weight: 500;
 		text-align: center;
 		width: 2.5em;
@@ -97,25 +97,22 @@
 	
 	#reservation {
 		font-family: IBMPlexSansKR-Regular;
-		font-size: 0.1em;
+		font-size: 0.85em;
 		font-weight: 500;
 		text-align: left;
-		width: 98%;
-		height: 25%;
 		background-color: #6E6E6E;
 		color: #FFFFFF;
+		margin: 0.35em 0 0.35em 0;
+		padding: 0.5em 0.8em 0.5em 0.8em;
 		outline: 0;
-		margin: 1%;
 		border: 0;
-		border-radius: 100px;
+		border-radius: 1em;
 		cursor: pointer;
+		transition: all 0.25s ease;
 	}
 	
 	#reservation:hover {
 		background-color: #2E2E2E;
-		box-shadow: 1em 1em 1em 1em rgba(0, 0, 0, 0.2);
-	}
-	
-	#reservation:active {
-		box-shadow: none;
+		padding: 0.7em 0.8em 0.7em 0.8em;
+		font-size: 0.9em;
 	}

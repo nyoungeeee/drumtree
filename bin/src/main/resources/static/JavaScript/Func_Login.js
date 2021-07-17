@@ -5,10 +5,10 @@ function createPopup() {
 		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
 		resultPopup += "<br><br><hr><br>";
 		resultPopup += "<table id='memberInfo'>";
-		resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + "<input type='text' id='memberID' spellcheck='false'>" + "</td></tr>";
-		resultPopup += "<tr>" + "<td>비밀번호</td>" + "<td>" + "<input type='text' id='memberPW' spellcheck='false'>" + "</td></tr>";
-		resultPopup += "<tr>" + "<td>비밀번호 확인</td>" + "<td>" + "<input type='text' id='memberPWcheck' spellcheck='false'>" + "</td></tr>";
-		resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + "<input type='text' id='memberName' spellcheck='false'>" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + "<input type='text' id='memberID' spellcheck='false' autocomplete='off'>" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>비밀번호</td>" + "<td>" + "<input type='text' id='memberPW' spellcheck='false' autocomplete='off'>" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>비밀번호 확인</td>" + "<td>" + "<input type='text' id='memberPWcheck' spellcheck='false' autocomplete='off'>" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + "<input type='text' id='memberName' spellcheck='false' autocomplete='off'>" + "</td></tr>";
 		resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + "<textarea id='memoMember' spellcheck='false'></textarea>" + "</td></tr>";
 		resultPopup += "</table><br><hr><br>";
 		resultPopup += "<input type='button' class='resetBtn' value='초기화'>";
@@ -17,6 +17,21 @@ function createPopup() {
 		
 		$(".resetBtn").attr("onclick", "resetMember()");
 		$(".requestBtn").attr("onclick", "requestMember()");
+		
+		$(".mainLogo").click(function(){
+			var secretCode = "GAMZALAND";
+			var insertCode = $("#userID").val().toUpperCase();
+			
+			if (insertCode == secretCode) {
+				$(".mainLogo").css("transform", "rotate(360deg)");
+				setTimeout(function(){
+					$('.videoGameFrame').css('display', 'inline-block');
+					$('.popupBackground').css('display', 'inline-block');
+					$('html, body').css('overflow', 'hidden');
+				}, 1250)
+				
+			}
+		})
 	})
 }
 
@@ -39,6 +54,7 @@ function requestMember() {
 	var name = $("#memberName").val();
 	var memo = $("#memoMember").val().replaceAll("\n", "<br>");
 	
+	$("#errorMessageID").remove();
 	$("#errorMessagePW").remove();
 	$("#memberID").attr("placeholder", "");
 	$("#memberPW").attr("placeholder", "");
@@ -88,7 +104,8 @@ function resetMember() {
 	$("#memberName").val("");
 	$("#memoMember").val("");
 	
-	$("#errorMessage").remove();
+	$("#errorMessageID").remove();
+	$("#errorMessagePW").remove();
 	$("#memberID").attr("placeholder", "");
 	$("#memberPW").attr("placeholder", "");
 	$("#memberPWcheck").attr("placeholder", "");
