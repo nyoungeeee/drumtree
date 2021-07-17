@@ -7,10 +7,10 @@
 	<!-- 공지사항 등록 -->
 	<insert id="writeNotice" parameterType="java.util.Map">
 		INSERT INTO notice
-		(subject, content, regDate, updateDate, memberIdx)
+		(subject, content, regDate, updateDate, memberIdx, isImport)
 		VALUES
 		(#{subject},
-		#{content}, now(), now(), #{memberIdx})
+		#{content}, now(), now(), #{memberIdx}, #{isImport})
 	</insert>
 	<!-- 조회수 증가 -->
 	<update id="updateHit" parameterType="java.util.Map">
@@ -29,14 +29,13 @@
 		WHERE noticeIdx=#{noticeIdx}
 	</delete>
 	<!-- 공지사항 수정 -->
-	<update id="updateMember" parameterType="java.util.Map">
+	<update id="updateNotice" parameterType="java.util.Map">
 		UPDATE notice
 		SET
 		subject=#{subject}
 		, content=#{content}
-		, memberIdx=#{memberIdx}
-		,
-		updateDate = now()
+		, isImport=#{isImport}
+		, updateDate = now()
 		WHERE noticeIdx=${noticeIdx}
 	</update>
 	<!-- 공지사항 출력 -->
@@ -53,5 +52,9 @@
 		<if test="memberIdx != 0">
 			AND memberIdx = ${memberIdx}
 		</if>
+		<if test="noticeIdx != 0">
+			AND noticeIdx = ${noticeIdx}
+		</if>
+		ORDER BY isImport desc, noticeIdx desc
 	</select>
 </mapper>

@@ -112,3 +112,49 @@ function resetMember() {
 	$("#memberName").attr("placeholder", "");
 	$("#memoMember").attr("placeholder", "");
 }
+
+function loginProcess() {
+	var ID = $("#userID").val();
+	var PW = $("#userPW").val();
+	
+	if (ID==""||PW=="") {
+		alert("아이디 혹은 비밀번호를 입력해 주세요.");
+	}
+	else {
+		$.ajax({
+	        url: "http://" + IPstring + "/members?reqCode=0",
+	        data: { memberID: ID },
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	if (data.rt=="MemberList_FAIL001") {
+	        		alert("존재하지 않는 아이디 입니다.");
+	        	}
+	        	else if (data.rt=="MemberList_OK") {
+	        		if (data[0].memberPW!=PW) {
+						alert("비밀번호가 일치하지 않습니다.");
+					}
+					else {
+						alert("로그인 성공!");
+						if (data[0].memberGrade==0) {
+							location.href = "../Notice?member=" + data[0].memberIdx;
+						}
+						else if (data[0].memberGrade==1) {
+							location.href = "../Calendar?member=" + data[0].memberIdx;
+						}
+						else if (data[0].memberGrade==2) {
+							location.href = "../Reservation?member=" + data[0].memberIdx;
+						}
+						else if (data[0].memberGrade==3) {
+							location.href = "../Notice?member=" + data[0].memberIdx;
+						}
+						else if (data[0].memberGrade==99) {
+							location.href = "../Admin_Notice?member=" + data[0].memberIdx;
+						}
+					}
+				}
+	        }
+		})
+	}
+}

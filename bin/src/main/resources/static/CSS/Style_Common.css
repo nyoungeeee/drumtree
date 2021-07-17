@@ -25,10 +25,15 @@
 		margin: 0;
 		padding: 0;
   	}
+  	
+  	body::-webkit-scrollbar {
+    	width: 0;
+	}
 	
 	.menuBar { /*좌측 고정 메뉴바*/
 		width: 10%;
 		height: 100%;
+		left: 0;
 		background-color: #2E2E2E;
 		text-align: center;
 		text-decoration: none;
@@ -39,12 +44,14 @@
 		user-select: none;
 		position: fixed;
 		z-index: 3;
+		transition: all 0.5s ease;
 	}
 	
 	.menuName { /*메뉴바 이름 영역*/
 		cursor: pointer;
 		padding-top: 2%;
 		padding-bottom: 2%;
+		transition: all 0.25s ease;
 	}
 	
 	.menuName a { /*메뉴바 이름 디자인*/
@@ -62,10 +69,12 @@
 	
 	.subMenuName { /*서브 메뉴 이름 영역*/
 		visibility: hidden;
+		height: 1.5em;
 		background-color: #D8D8D8;
 		cursor: pointer;
 		padding-top: 2%;
 		padding-bottom: 2%;
+		transition: all 0.5s ease;
 	}
 	
 	.subMenuName a { /*서브 메뉴 이름 디자인*/
@@ -73,6 +82,7 @@
 		font-size: 0.8em;
 		font-weight: 500;
 		color: #000000;
+		transition: all 0.25s ease;
 	}
 	
 	.subMenuName:hover a { /*서브 메뉴 이름 마우스오버*/
@@ -92,6 +102,7 @@
 		user-select: none;
 		position: fixed;
 		z-index: 2;
+		transition: all 0.5s ease;
 	}
 	
 	.hideButton { /*메뉴바 숨기기 버튼*/
@@ -104,7 +115,7 @@
 		width: 2.5em;
 		height: 2.5em;
 		left: 10%;
-		top: 50%;
+		top: 60%;
 		transform: translate(-50%, -50%);
 		border: 0;
 		border-radius: 100%;
@@ -113,6 +124,13 @@
 		user-select: none;
 		position: fixed;
 		z-index: 4;
+		transition: all 0.5s ease;
+	}
+	
+	.hideButton:hover {
+		width: 3em;
+		height: 3em;
+		background-color: #BDBDBD;
 	}
 	
 	.mainScreen { /*페이지 메인 화면*/
@@ -123,15 +141,25 @@
 		left: 12%;
 		margin-left: 1%;
 		margin-right: 1%;
+		padding-bottom: 2%;
 		position: relative;
 		z-index: 1;
+		transition: all 0.5s ease;
 	}
 	
 	.logo {
-		position: fixed; 
+		position: fixed;
+		width: 10%;
 		left: 5%;
 		top: 3%;
 		transform: translate(-50%, 0);
+		cursor: pointer;
+		transition: all 0.5s ease;
+	}
+	
+	.logo:hover {
+		width: 10.5%;
+		top: 2.5%;
 	}
 	
 	.footer {
@@ -140,4 +168,5 @@
 		left: 5%;
 		bottom: 3%;
 		transform: translate(-50%, 0);
+		transition: all 0.5s ease;
 	}
