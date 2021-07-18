@@ -40,7 +40,6 @@
 		color: #FFFFFF;
 		font-weight: 500;
 		font-size: 1em;
-		padding: 7.5% 0 7.5% 0;
 		user-select: none;
 		position: fixed;
 		z-index: 3;
@@ -89,6 +88,47 @@
 		font-weight: bold;
 	}
 	
+	.menuLogo {
+		margin: 10% 0 10% 0;
+		cursor: pointer;
+	}
+	
+	.loginInfo {
+		border-top: 1px solid #BDBDBD;
+		border-bottom: 1px solid #BDBDBD;
+		height: 6.5em;
+		padding: 5% 2% 5% 2%;
+		margin: 2% 5% 2% 5%;
+	}
+	
+	.loginInfo a {
+		text-decoration: none;
+		font-size: 0.8em;
+		color: #FFFFFF;
+	}
+	
+	#logout {
+		display: inline-block;
+		text-align: center;
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.8em;
+		font-weight: bold;
+		color: #000000;
+		background-color: #D8D8D8;
+		cursor: pointer;
+		width: 5em;
+		height: 1.5em;
+		padding: 1% 2% 1% 2%;
+		margin-top: 5%;
+		border-radius: 1em;
+		user-select: none;
+		transition: all 0.25s ease;
+	}
+	
+	#logout:hover {
+		padding: 1% 7% 1% 7%;
+	}
+	
 	.headerBar { /*상단 고정 헤더*/
 		background-color: #FFFFFF;
 		font-size: 1.2em;
@@ -110,12 +150,12 @@
 		font-size: 1em;
 		font-weight: 500;
 		color: #000000;
-		background-color: #D8D8D8;
+		background-color: #BDBDBD;
 		cursor: pointer;
 		width: 2.5em;
 		height: 2.5em;
 		left: 10%;
-		top: 60%;
+		top: 50%;
 		transform: translate(-50%, -50%);
 		border: 0;
 		border-radius: 100%;
@@ -130,7 +170,6 @@
 	.hideButton:hover {
 		width: 3em;
 		height: 3em;
-		background-color: #BDBDBD;
 	}
 	
 	.mainScreen { /*페이지 메인 화면*/
@@ -145,21 +184,6 @@
 		position: relative;
 		z-index: 1;
 		transition: all 0.5s ease;
-	}
-	
-	.logo {
-		position: fixed;
-		width: 10%;
-		left: 5%;
-		top: 3%;
-		transform: translate(-50%, 0);
-		cursor: pointer;
-		transition: all 0.5s ease;
-	}
-	
-	.logo:hover {
-		width: 10.5%;
-		top: 2.5%;
 	}
 	
 	.footer {
