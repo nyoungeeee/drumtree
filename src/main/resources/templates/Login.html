@@ -10,6 +10,7 @@
 <script type="text/javascript" src="resources\JavaScript\Common.js"></script>
 <script type="text/javascript" src="resources\JavaScript\Func_Login.js"></script>
 <script type="text/javascript" src="resources/JQuery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 <script type="text/javascript">
 	loadIPstring();
 	createPopup();
@@ -22,14 +23,14 @@
 	<img class="mainLogo" src="resources/Images/logo5.png">
 	<table class="mainInfo">
 		<tr>
-			<td><input type="text" id="userID" spellcheck="false" autocomplete="off" placeholder="ID를 입력해 주세요."></td>
+			<td><input type="text" id="userID" name="key" spellcheck="false" autocomplete="off" placeholder="ID를 입력해 주세요."></td>
 		</tr>
 		<tr>
 			<td><input type="password" id="userPW" autocomplete="off" placeholder="PW를 입력해 주세요."></td>
 	</table>
 	<input type="button" class="loginBtn" value="로그인" onclick="loginProcess()">
 	<input type="button" class="requestMemberBtn" value="회원 등록" onclick="openPopup()">
-	<input type="button" class="unLoginBtn" value="비회원" onclick="location.href='../Notice'">
+	<input type="button" class="unLoginBtn" value="비회원" onclick="nonMemberLogin()">
 </div>
 <div class="popupBackground"></div>
 <div class="popupBox"></div>
