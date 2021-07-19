@@ -52,7 +52,7 @@
 		padding: 1% 2% 1% 2%;
 	}
 	
-	#checkFlag {
+	.checkFlag {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
 		text-align: center;
@@ -69,7 +69,7 @@
 		transition: all 0.25s ease;
 	}
 	
-	#checkFlag:hover {
+	.checkFlag:hover {
 		background-color: #2E2E2E;
 	}
 	
@@ -291,4 +291,12 @@
 		outline: 0;
 		padding: 0 2% 0 2%;
 		user-select: none;
+	}
+	
+	.on {
+		background-color: #088A08;
+	}
+	
+	.off {
+		background-color: #B40404;
 	}

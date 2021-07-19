@@ -55,8 +55,15 @@ function checkAccessAuthority(menuNo, subMenuNo) {
 }
 
 function maskingText(text) {
+	var key = document.location.href.split("?")[1];
+	var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
+	var currentName = decrypt.split("&")[1];
+	
 	var resultText = "";
 	if (text=="삭제된 회원") {
+		resultText += text;
+	}
+	else if (text==currentName) {
 		resultText += text;
 	}
 	else if (text.length > 2) {

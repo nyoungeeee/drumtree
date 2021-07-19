@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +24,14 @@
 <input type="button" class="hideButton" value="≡" onclick="hideMenubar()">
 <div class="headerBar"><a>달력</a><hr></div>
 <div class="mainScreen">
+	<select id="filterType">
+		<option value="name">닉네임</option>
+		<option value="room">장소</option>
+		<option value="memo">메모</option>
+	</select>
+	<input type="text" id="filter" spellcheck="false" placeholder="검색어를 입력해 주세요.">
+	<input type="button" class="searchBtn" value="검색" onclick="filterCalendar()">
+	<input type="button" class="myScheduleBtn" value="모든 일정" onclick="mySchedule()">
 	<input type="button" id="rightArrow" value="▶" onclick="clickArrow(1)">
 	<input type="month" id="month">
 	<input type="button" id="leftArrow" value="◀" onclick="clickArrow(-1)">

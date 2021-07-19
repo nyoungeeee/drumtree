@@ -41,7 +41,7 @@ function processAjax(param0, param1) {
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>" + "&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
-        		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' id='checkFlag' value='체크' onclick='checkTime(-1)'>" + "</td></tr>";
+        		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' class='checkFlag' value='체크' onclick='checkTime(-1)'>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
         		resultPopup += "</table><br><hr><br>";
         		resultPopup += "<input type='button' class='rejectBtn' value='반려'>";
@@ -86,13 +86,15 @@ function processAjax(param0, param1) {
         			else { var thisEndTime = (Number(thisStartTime)+1) + ":" + $("#selectStartTime").val().split(":")[1]; }
         			$("#selectEndTime").val(thisEndTime).prop("selected", true);
         			
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         		
         		$("#selectEndTime").change(function(){
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         		
         		var resultType = "";
@@ -132,13 +134,15 @@ function processAjax(param0, param1) {
         			}
         			$("#selectRoom").append(resultRoom);
         			
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         		
         		$("#selectRoom").change(function(){
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
     		})
         }
@@ -188,10 +192,10 @@ function approvalReservation(idx) {
 	var endTime = $("#selectDate").val() + " " + $("#selectEndTime").val() + ":00";
 	var rsvMemo = $("#reservationMemo").val().replaceAll("\n", "<br>");
 	
-	if ($("#checkFlag").val()=="체크") {
+	if ($(".checkFlag").val()=="체크") {
 		alert("예약 가능 시간을 체크해주세요.");
 	}
-	else if ($("#checkFlag").val()=="불가") {
+	else if ($(".checkFlag").val()=="불가") {
 		alert("변경할 수 없는 시간대입니다.");
 	}
 	else {
@@ -289,16 +293,16 @@ function checkTime(reservationIndex) {
         		$("#errorMessageRoom").fadeOut(0);
         		$("#errorMessageRoom").fadeIn(500);
         		
-        		$("#checkFlag").val("불가");
-        		$("#checkFlag").css("background-color", "#B40404");
+        		$(".checkFlag").val("불가");
+        		$(".checkFlag").addClass("off");
         	}
         	else if ($("#selectStartTime").val()==null||$("#selectEndTime").val()==null) {
-        		$("#checkFlag").val("불가");
-        		$("#checkFlag").css("background-color", "#B40404");
+        		$(".checkFlag").val("불가");
+        		$(".checkFlag").addClass("off");
         	}
         	else if (startGetTime.getTime()>=endGetTime.getTime()) {
-        		$("#checkFlag").val("불가");
-        		$("#checkFlag").css("background-color", "#B40404");
+        		$(".checkFlag").val("불가");
+        		$(".checkFlag").addClass("off");
         	}
         	else {
         		var checkFlag = true;
@@ -321,12 +325,12 @@ function checkTime(reservationIndex) {
         	}
 
         	if (checkFlag==true) {
-        		$("#checkFlag").val("가능");
-        		$("#checkFlag").css("background-color", "#088A08");
+        		$(".checkFlag").val("가능");
+        		$(".checkFlag").addClass("on");
         	}
         	else {
-        		$("#checkFlag").val("불가");
-        		$("#checkFlag").css("background-color", "#B40404");
+        		$(".checkFlag").val("불가");
+        		$(".checkFlag").addClass("off");
         	}
         }
 	})

@@ -1,4 +1,4 @@
-function processAjax(param0) {
+function processAjax(param0, param1, param2, param3) {
 	var thisYear = param0.getFullYear();
 	var thisMonth = param0.getMonth();
 	var thisDay = param0.getDate();
@@ -29,6 +29,7 @@ function processAjax(param0) {
         	var memberNameArray = [];
         	var memoArray = [];
         	var rsvIdxArray = [];
+        	var memberIdxArray = [];
         	
         	for (var jsonIdx = 0; jsonIdx < data.total; jsonIdx++) {
             	startArray.push(data[jsonIdx].start);
@@ -38,6 +39,7 @@ function processAjax(param0) {
             	memberNameArray.push(data[jsonIdx].memberName);
             	memoArray.push(data[jsonIdx].memo);
             	rsvIdxArray.push(data[jsonIdx].rsvIdx);
+            	memberIdxArray.push(data[jsonIdx].memberIdx);
         	}
         	
         	var roomName = [ "레슨", "연습실 3번", "연습실 4번<br>(미니드럼)", "연습실 5번" ];
@@ -55,17 +57,36 @@ function processAjax(param0) {
         		var endDate = new Date(endArray[arrayIdx]);
         		var room = roomTypeArray[arrayIdx];
         		var member = memberNameArray[arrayIdx];
+        		var memo = memoArray[arrayIdx];
         		var rsvIdx = rsvIdxArray[arrayIdx];
+        		var memberIdx = memberIdxArray[arrayIdx];
         		var timeDifference = endDate.getTime() - startDate.getTime();
         		var timeCount = ((timeDifference/1000)/60)/30;
         		
         		var thisDate = new Date(thisYear, thisMonth, thisDay, 8, 0, 0);
+        		var key = document.location.href.split("?")[1];
+        		var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
+        		var loginMember = decrypt.split("&")[3];
+        		
         		if (startDate.getTime() >= thisDate.getTime()) {
         			var startPoint = ((((startDate.getTime() - thisDate.getTime())/1000)/60)/30)+1;
         			$("tbody tr").eq(room).find("td").eq(startPoint).attr("colspan", timeCount);
         			$("tbody tr").eq(room).find("td").eq(startPoint).attr("id", "reserved");
         			$("tbody tr").eq(room).find("td").eq(startPoint).removeAttr("onclick");
-        			$("tbody tr").eq(room).find("td").eq(startPoint).html("<div id='reservation' name='" + arrayIdx + "' onclick='openPopup()'>" + maskingText(member) + "</div>");
+        			
+        			var isFiltered = true;
+            		if (param3==1 && memberIdx!=loginMember) { var isFiltered = false; }
+            		if (param3==2 && memberIdx==loginMember) { var isFiltered = false; }
+            		if (param1!="" && member.indexOf(param1)<0) { var isFiltered = false; }
+            		if (param2!="" && memo.indexOf(param2)<0) { var isFiltered = false; }
+            		
+            		if (isFiltered==true) {
+            			$("tbody tr").eq(room).find("td").eq(startPoint).html("<div id='reservation' name='" + arrayIdx + "' onclick='openPopup()'>" + maskingText(member) + "</div>");
+            		}
+            		else {
+            			$("tbody tr").eq(room).find("td").eq(startPoint).html("<div class='filteredRsv'>" + maskingText(member) + "</div>");
+            		}
+        			
         			for (var k = 1; k < timeCount; k++) {
         				$("tbody tr").eq(room).find("td").eq(startPoint+k).css("display", "none");
         				$("tbody tr").eq(room).find("td").eq(startPoint+k).removeAttr("onclick");
@@ -84,7 +105,7 @@ function processAjax(param0) {
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
-        		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' id='checkFlag' value='체크' onclick='checkTime(" + rsvIdxArray[$(this).attr("name")] + ")'>" + "</td></tr>";
+        		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' class='checkFlag' value='체크' onclick='checkTime(" + rsvIdxArray[$(this).attr("name")] + ")'>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
         		resultPopup += "</table><br><hr><br>";
         		resultPopup += "<input type='button' class='deleteBtn' value='예약취소'>";
@@ -130,13 +151,15 @@ function processAjax(param0) {
         			else { var thisEndTime = (Number(thisStartTime)+1) + ":" + $("#selectStartTime").val().split(":")[1]; }
         			$("#selectEndTime").val(thisEndTime).prop("selected", true);
         			
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         		
         		$("#selectEndTime").change(function(){
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         		
         		var resultType = "";
@@ -177,13 +200,13 @@ function processAjax(param0) {
         			}
         			$("#selectRoom").append(resultRoom);
         			
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
         		})
         		
         		$("#selectRoom").change(function(){
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
         		})
         	})
         	
@@ -196,7 +219,7 @@ function processAjax(param0) {
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
-        		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' id='checkFlag' value='체크' onclick='checkTime(-1)'>" + "</td></tr>";
+        		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' class='checkFlag' value='체크' onclick='checkTime(-1)'>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
         		resultPopup += "</table><br><hr><br>";
         		resultPopup += "<input type='button' class='resetBtn' value='초기화'>";
@@ -248,13 +271,15 @@ function processAjax(param0) {
         			else { var thisEndTime = (Number(thisStartTime)+1) + ":" + $("#selectStartTime").val().split(":")[1]; }
         			$("#selectEndTime").val(thisEndTime).prop("selected", true);
         			
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         		
         		$("#selectEndTime").change(function(){
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         		
         		var resultType = "";
@@ -295,13 +320,13 @@ function processAjax(param0) {
         			}
         			$("#selectRoom").append(resultRoom);
         			
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
         		})
         		
         		$("#selectRoom").change(function(){
-        			$("#checkFlag").val("체크");
-            		$("#checkFlag").css("background-color", "");
+        			$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("on");
         		})
         	})
         }
@@ -311,7 +336,9 @@ function processAjax(param0) {
 function selectDate() {
 	$(document).ready(function(){
 		var currentDate = new Date();
-		$("#date").val(currentDate.toISOString().slice(0,10));
+		var timezoneOffset = new Date().getTimezoneOffset() * 60000;
+		var timezoneDate = new Date(Date.now() - timezoneOffset);
+		$("#date").val(timezoneDate.toISOString().slice(0,10));
 		createTimeTable(currentDate);
 		
 		$('#date').change(function(){
@@ -326,6 +353,10 @@ function clickArrow(addValue) {
 	currentDate.setDate(currentDate.getDate()+addValue);
 	$("#date").val(currentDate.toISOString().slice(0,10));
 	createTimeTable(currentDate);
+	$("#filter").val("");
+	$(".myScheduleBtn").val("모든 일정");
+	$(".myScheduleBtn").removeClass("on");
+	$(".myScheduleBtn").removeClass("off");
 }
 
 function createTimeTable(currentDate) {
@@ -343,7 +374,7 @@ function createTimeTable(currentDate) {
 	}
 	resultHead += "</tr>";
 	$("thead").html(resultHead);
-	processAjax(currentDate);
+	processAjax(currentDate, "", "", 0);
 }
 
 function openPopup() {
@@ -369,10 +400,10 @@ function saveReservation() {
 	var rsvMemo = $("#reservationMemo").val().replaceAll("\n", "<br>");
 	var rsvMember = decrypt.split("&")[3];
 	
-	if ($("#checkFlag").val()=="체크") {
+	if ($(".checkFlag").val()=="체크") {
 		alert("예약 가능 시간을 체크해주세요.");
 	}
-	else if ($("#checkFlag").val()=="불가") {
+	else if ($(".checkFlag").val()=="불가") {
 		alert("변경할 수 없는 시간대입니다.");
 	}
 	else {
@@ -405,8 +436,9 @@ function resetReservation() {
 	$("#errorMessageType").remove();
 	$("#errorMessageRoom").remove();
 	
-	$("#checkFlag").val("체크");
-	$("#checkFlag").css("background-color", "");
+	$(".checkFlag").val("체크");
+	$(".checkFlag").removeClass("on");
+	$(".checkFlag").removeClass("off");
 }
 
 function updateReservation(idx) {
@@ -416,10 +448,10 @@ function updateReservation(idx) {
 	var endTime = $("#selectDate").val() + " " + $("#selectEndTime").val() + ":00";
 	var rsvMemo = $("#reservationMemo").val().replaceAll("\n", "<br>");
 	
-	if ($("#checkFlag").val()=="체크") {
+	if ($(".checkFlag").val()=="체크") {
 		alert("예약 가능 시간을 체크해주세요.");
 	}
-	else if ($("#checkFlag").val()=="불가") {
+	else if ($(".checkFlag").val()=="불가") {
 		alert("변경할 수 없는 시간대입니다.");
 	}
 	else {
@@ -511,16 +543,16 @@ function checkTime(reservationIndex) {
         		$("#errorMessageRoom").fadeOut(0);
         		$("#errorMessageRoom").fadeIn(500);
         		
-        		$("#checkFlag").val("불가");
-        		$("#checkFlag").css("background-color", "#B40404");
+        		$(".checkFlag").val("불가");
+        		$(".checkFlag").addClass("off");
         	}
         	else if ($("#selectStartTime").val()==null||$("#selectEndTime").val()==null) {
-        		$("#checkFlag").val("불가");
-        		$("#checkFlag").css("background-color", "#B40404");
+        		$(".checkFlag").val("불가");
+        		$(".checkFlag").addClass("off");
         	}
         	else if (startGetTime.getTime()>=endGetTime.getTime()) {
-        		$("#checkFlag").val("불가");
-        		$("#checkFlag").css("background-color", "#B40404");
+        		$(".checkFlag").val("불가");
+        		$(".checkFlag").addClass("off");
         	}
         	else {
         		var checkFlag = true;
@@ -543,13 +575,53 @@ function checkTime(reservationIndex) {
         	}
 
         	if (checkFlag==true) {
-        		$("#checkFlag").val("가능");
-        		$("#checkFlag").css("background-color", "#088A08");
+        		$(".checkFlag").val("가능");
+        		$(".checkFlag").addClass("on");
         	}
         	else {
-        		$("#checkFlag").val("불가");
-        		$("#checkFlag").css("background-color", "#B40404");
+        		$(".checkFlag").val("불가");
+        		$(".checkFlag").addClass("off");
         	}
         }
 	})
+}
+
+function filterReservation() {
+	var currentDate = new Date($("#date").val());
+	
+	var filterType = $("#filterType").val();
+	var filterName = "";
+	var filterMemo = "";
+	if (filterType=="name") {
+		var filterName = $("#filter").val();
+	}
+	else if (filterType=="memo") {
+		var filterMemo = $("#filter").val();
+	}
+	
+	var isOnOff = 0;
+	if ($(".myScheduleBtn").hasClass("on")==true) { var isOnOff = 1; }
+	else if ($(".myScheduleBtn").hasClass("off")==true) { var isOnOff = 2; }
+	
+	processAjax(currentDate, filterName, filterMemo, isOnOff);
+}
+
+function mySchedule() {
+	var on = $(".myScheduleBtn").hasClass("on");
+	var off = $(".myScheduleBtn").hasClass("off");
+	
+	if (on==false&&off==false) {
+		$(".myScheduleBtn").addClass("on");
+		$(".myScheduleBtn").val("내 일정 보기");
+	}
+	else if (on==true) {
+		$(".myScheduleBtn").removeClass("on");
+		$(".myScheduleBtn").addClass("off");
+		$(".myScheduleBtn").val("내 일정 제외");
+	}
+	else if (off==true) {
+		$(".myScheduleBtn").removeClass("off");
+		$(".myScheduleBtn").val("모든 일정");
+	}
+	filterReservation();
 }
