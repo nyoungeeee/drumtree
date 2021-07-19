@@ -55,6 +55,7 @@ function processAjax(param0) {
         		var endDate = new Date(endArray[arrayIdx]);
         		var room = roomTypeArray[arrayIdx];
         		var member = memberNameArray[arrayIdx];
+        		var rsvIdx = rsvIdxArray[arrayIdx];
         		var timeDifference = endDate.getTime() - startDate.getTime();
         		var timeCount = ((timeDifference/1000)/60)/30;
         		
@@ -83,7 +84,7 @@ function processAjax(param0) {
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
-        		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' id='checkFlag' value='체크' onclick='checkTime()'>" + "</td></tr>";
+        		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' id='checkFlag' value='체크' onclick='checkTime(" + rsvIdxArray[$(this).attr("name")] + ")'>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
         		resultPopup += "</table><br><hr><br>";
         		resultPopup += "<input type='button' class='deleteBtn' value='예약취소'>";
@@ -195,7 +196,7 @@ function processAjax(param0) {
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
-        		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' id='checkFlag' value='체크' onclick='checkTime()'>" + "</td></tr>";
+        		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' id='checkFlag' value='체크' onclick='checkTime(-1)'>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
         		resultPopup += "</table><br><hr><br>";
         		resultPopup += "<input type='button' class='resetBtn' value='초기화'>";
@@ -386,7 +387,7 @@ function saveReservation() {
 	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
 	        	}
 	        	else if (data.rt=="WriteRsv_OK") {
-	            	alert("예약 신청이 정상적으로 완료되었습니다.");
+	            	alert("예약 신청이 접수되었습니다.\n관리자에게 승인을 요청해 주세요.");
 	            	window.location.reload();
 	        	}
 	        }
@@ -424,7 +425,7 @@ function updateReservation(idx) {
 	else {
 		$.ajax({
 	        url: "http://" + IPstring + "/update-rsv",
-	        data: { rsvIdx: idx, rsvType: rsv, roomType: room, start: startTime, end: endTime, memo: rsvMemo },
+	        data: { isApproval: 0, rsvIdx: idx, rsvType: rsv, roomType: room, start: startTime, end: endTime, memo: rsvMemo },
 	        method: "POST",
 	        dataType: "JSON",
 	        error: function() { alert("데이터 로드 실패"); },
@@ -433,7 +434,7 @@ function updateReservation(idx) {
 	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
 	        	}
 	        	else if (data.rt=="UpdateRsv_OK") {
-	            	alert("예약 변경이 정상적으로 완료되었습니다.");
+	            	alert("변경 신청이 접수되었습니다.\n관리자에게 승인을 요청해 주세요.");
 	            	window.location.reload();
 	        	}
 	        }
@@ -462,7 +463,7 @@ function deleteReservation(idx) {
 	}
 }
 
-function checkTime() {
+function checkTime(reservationIndex) {
 	$.ajax({
 		url: "http://" + IPstring + "/list-rsv?isApproval=1",
         data: { start: $("#selectDate").val() },
@@ -473,11 +474,21 @@ function checkTime() {
         	var startCheckArray = [];
         	var endCheckArray = [];
         	var roomTypeCheckArray = [];
+        	var rsvIdxCheckArray = [];
         	
         	for (var jsonIdx = 0; jsonIdx < data.total; jsonIdx++) {
         		startCheckArray.push(data[jsonIdx].start);
         		endCheckArray.push(data[jsonIdx].end);
         		roomTypeCheckArray.push(data[jsonIdx].roomType);
+        		rsvIdxCheckArray.push(data[jsonIdx].rsvIdx);
+        	}
+        	
+        	if (reservationIndex != -1) {
+        		var thisIdx = rsvIdxCheckArray.indexOf(reservationIndex);
+        		startCheckArray.splice(thisIdx, 1);
+        		endCheckArray.splice(thisIdx, 1);
+        		roomTypeCheckArray.splice(thisIdx, 1);
+        		rsvIdxCheckArray.splice(thisIdx, 1);
         	}
         	
         	$("#errorMessageType").remove();
