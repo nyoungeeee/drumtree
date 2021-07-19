@@ -100,7 +100,7 @@ function processAjax(param0, param1) {
         		var member = memberNameArray[arrayIdx];
         		var rsvDate = startArray[arrayIdx].split(" ")[0];
         		
-            	var reservation = "<div id='reservation'>" + "[ " + room + " ]" + "&nbsp;" + startTime + " ~ " + endTime + "<a style='float:right'>" + member + "</a>" + "</div>";
+            	var reservation = "<div id='reservation'>" + "[ " + room + " ]" + "&nbsp;" + startTime + " ~ " + endTime + "<a style='float:right'>" + maskingText(member) + "</a>" + "</div>";
             	$("tbody td:contains('" + rsvDate + "')").find("#reservationList").append(reservation);
         	}
         	

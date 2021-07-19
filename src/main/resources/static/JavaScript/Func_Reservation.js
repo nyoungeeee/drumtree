@@ -64,7 +64,7 @@ function processAjax(param0) {
         			$("tbody tr").eq(room).find("td").eq(startPoint).attr("colspan", timeCount);
         			$("tbody tr").eq(room).find("td").eq(startPoint).attr("id", "reserved");
         			$("tbody tr").eq(room).find("td").eq(startPoint).removeAttr("onclick");
-        			$("tbody tr").eq(room).find("td").eq(startPoint).html("<div id='reservation' name='" + arrayIdx + "' onclick='openPopup()'>" + member + "</div>");
+        			$("tbody tr").eq(room).find("td").eq(startPoint).html("<div id='reservation' name='" + arrayIdx + "' onclick='openPopup()'>" + maskingText(member) + "</div>");
         			for (var k = 1; k < timeCount; k++) {
         				$("tbody tr").eq(room).find("td").eq(startPoint+k).css("display", "none");
         				$("tbody tr").eq(room).find("td").eq(startPoint+k).removeAttr("onclick");
@@ -358,12 +358,15 @@ function closePopup() {
 }
 
 function saveReservation() {
+	var key = document.location.href.split("?")[1];
+	var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
+	
 	var rsv = $("#selectType").val();	
 	var room = $("#selectRoom").val();
 	var startTime = $("#selectDate").val() + " " + $("#selectStartTime").val() + ":00";
 	var endTime = $("#selectDate").val() + " " + $("#selectEndTime").val() + ":00";
 	var rsvMemo = $("#reservationMemo").val().replaceAll("\n", "<br>");
-	var rsvMember = 19;
+	var rsvMember = decrypt.split("&")[3];
 	
 	if ($("#checkFlag").val()=="체크") {
 		alert("예약 가능 시간을 체크해주세요.");

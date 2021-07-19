@@ -139,7 +139,7 @@ function loginProcess() {
 	        			alert("회원 요청이 승인되지 않았습니다.");
 	        		}
 	        		else {
-	        			var original = ID + "&" + data[0].memberName + "&" + data[0].memberGrade;
+	        			var original = ID + "&" + data[0].memberName + "&" + data[0].memberGrade + "&" + data[0].memberIdx;
 					    var encrypt = CryptoJS.AES.encrypt(original, Decode);
 					    
 					    location.href = "../Notice?" + encrypt;
