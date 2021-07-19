@@ -156,3 +156,14 @@ function nonMemberLogin() {
 	
     location.href = "../Notice?" + encrypt;
 }
+
+function pressEnterKey() {
+	$(document).ready(function(){
+		$("#userPW").keypress(function(event) {
+			if (event.keyCode==13) {
+				event.preventDefault();
+				$(".loginBtn").click();
+			}
+		})
+	})
+}

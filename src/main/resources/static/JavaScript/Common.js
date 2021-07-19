@@ -44,12 +44,22 @@ function checkAccessAuthority(menuNo, subMenuNo) {
 				$(".subMenuName").eq(subMenuNo).children().css("font-weight", "bold");
 			}
 		}
+		
+		$("#filter").keypress(function(event) {
+			if (event.keyCode==13) {
+				event.preventDefault();
+				$(".searchBtn").click();
+			}
+		})
 	});
 }
 
 function maskingText(text) {
 	var resultText = "";
-	if (text.length > 2) {
+	if (text=="삭제된 회원") {
+		resultText += text;
+	}
+	else if (text.length > 2) {
 		resultText += text.substring(0,1);
 		for (var i = 0; i < text.length-2; i++) { resultText += "*"; }
 		resultText += text.substring(text.length-1,text.length);
