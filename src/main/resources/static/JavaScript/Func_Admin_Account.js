@@ -152,25 +152,27 @@ function updateMember(idx) {
 }
 
 function deleteMember(idx) {
-    $.ajax({
-        url: "http://" + IPstring + "/delete-member",
-        data: { memberIdx: idx },
-        method: "POST",
-        dataType: "JSON",
-        error: function() { alert("데이터 로드 실패"); },
-        success: function(data) {
-        	if (data.rt=="DeleteMember_FAIL001") {
-        		alert("존재하지 않는 회원 번호입니다.");
-        	}
-        	else if (data.rt=="DeleteMember_FAIL002") {
-        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
-        	}
-        	else if (data.rt=="DeleteMember_OK") {
-            	alert("회원 제거가 정상적으로 완료되었습니다.");
-            	window.location.reload();
-        	}
-        }
-    })
+	if (confirm("회원 정보를 제거 하시겠습니까?")==true) {
+		$.ajax({
+	        url: "http://" + IPstring + "/delete-member",
+	        data: { memberIdx: idx },
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	if (data.rt=="DeleteMember_FAIL001") {
+	        		alert("존재하지 않는 회원 번호입니다.");
+	        	}
+	        	else if (data.rt=="DeleteMember_FAIL002") {
+	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+	        	}
+	        	else if (data.rt=="DeleteMember_OK") {
+	            	alert("회원 제거가 정상적으로 완료되었습니다.");
+	            	window.location.reload();
+	        	}
+	        }
+	    })
+	}
 }
 
 function filterMember() {

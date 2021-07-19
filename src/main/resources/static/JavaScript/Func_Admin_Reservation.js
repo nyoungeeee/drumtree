@@ -48,8 +48,8 @@ function processAjax(param0, param1) {
     			resultPopup += "<input type='button' class='approvalBtn' value='승인'>";
         		$(".popupBox").html(resultPopup);
         		
-    			$(".approvalBtn").attr("onclick", "approvalMember(" + $(this).children().eq(6).html() + ")");
-    			$(".rejectBtn").attr("onclick", "rejectMember(" + $(this).children().eq(6).html() + ")");
+    			$(".approvalBtn").attr("onclick", "approvalReservation(" + $(this).children().eq(6).html() + ")");
+    			$(".rejectBtn").attr("onclick", "rejectReservation(" + $(this).children().eq(6).html() + ")");
         		
         		$("#selectDate").val($(this).children().eq(3).html());
         		$("#reservationMemo").val($(this).children().eq(5).html().replaceAll("<br>", "\n"));
@@ -158,7 +158,7 @@ function closePopup() {
 	$('html, body').css('overflow', '');
 }
 
-function approvalMember(idx) {
+function approvalReservation(idx) {
 	var rsv = $("#selectType").val();	
 	var room = $("#selectRoom").val();
 	var startTime = $("#selectDate").val() + " " + $("#selectStartTime").val() + ":00";
@@ -200,23 +200,25 @@ function approvalMember(idx) {
 	}
 }
 
-function rejectMember(idx) {
-	$.ajax({
-        url: "http://" + IPstring + "/update-rsv",
-        data: { rsvIdx: idx, isApproval: 2 },
-        method: "POST",
-        dataType: "JSON",
-        error: function() { alert("데이터 로드 실패"); },
-        success: function(data) {
-        	if (data.rt=="UpdateRsv_FAIL001") {
-        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
-        	}
-        	else if (data.rt=="UpdateRsv_OK") {
-            	alert("반려가 정상적으로 완료되었습니다.");
-            	window.location.reload();
-        	}
-        }
-	})
+function rejectReservation(idx) {
+	if (confirm("예약 요청을 반려 하시겠습니까?")==true) {
+		$.ajax({
+	        url: "http://" + IPstring + "/update-rsv",
+	        data: { rsvIdx: idx, isApproval: 2 },
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	if (data.rt=="UpdateRsv_FAIL001") {
+	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+	        	}
+	        	else if (data.rt=="UpdateRsv_OK") {
+	            	alert("반려가 정상적으로 완료되었습니다.");
+	            	window.location.reload();
+	        	}
+	        }
+		})
+	}
 }
 
 function filterReservation() {

@@ -86,7 +86,7 @@ function processAjax(param0) {
         		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' id='checkFlag' value='체크' onclick='checkTime()'>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
         		resultPopup += "</table><br><hr><br>";
-        		resultPopup += "<input type='button' class='deleteBtn' value='취소'>";
+        		resultPopup += "<input type='button' class='deleteBtn' value='예약취소'>";
         		resultPopup += "<input type='button' class='updateBtn' value='변경'>";
         		$(".popupBox").html(resultPopup);
         		$("#selectDate").val($("#date").val());
@@ -442,22 +442,24 @@ function updateReservation(idx) {
 }
 
 function deleteReservation(idx) {
-	$.ajax({
-        url: "http://" + IPstring + "/update-rsv",
-        data: { rsvIdx: idx, isApproval: 3 },
-        method: "POST",
-        dataType: "JSON",
-        error: function() { alert("데이터 로드 실패"); },
-        success: function(data) {
-        	if (data.rt=="UpdateRsv_FAIL001") {
-        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
-        	}
-        	else if (data.rt=="UpdateRsv_OK") {
-            	alert("예약 취소가 정상적으로 완료되었습니다.");
-            	window.location.reload();
-        	}
-        }
-	})
+	if (confirm("예약을 취소 하시겠습니까?")==true) {
+		$.ajax({
+	        url: "http://" + IPstring + "/update-rsv",
+	        data: { rsvIdx: idx, isApproval: 3 },
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	if (data.rt=="UpdateRsv_FAIL001") {
+	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+	        	}
+	        	else if (data.rt=="UpdateRsv_OK") {
+	            	alert("예약 취소가 정상적으로 완료되었습니다.");
+	            	window.location.reload();
+	        	}
+	        }
+		})
+	}
 }
 
 function checkTime() {

@@ -6,8 +6,8 @@ function createPopup() {
 		resultPopup += "<br><br><hr><br>";
 		resultPopup += "<table id='memberInfo'>";
 		resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + "<input type='text' id='memberID' spellcheck='false' autocomplete='off'>" + "&emsp;" + "</td></tr>";
-		resultPopup += "<tr>" + "<td>비밀번호</td>" + "<td>" + "<input type='text' id='memberPW' spellcheck='false' autocomplete='off'>" + "</td></tr>";
-		resultPopup += "<tr>" + "<td>비밀번호 확인</td>" + "<td>" + "<input type='text' id='memberPWcheck' spellcheck='false' autocomplete='off'>" + "&emsp;" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>비밀번호</td>" + "<td>" + "<input type='password' id='memberPW' spellcheck='false' autocomplete='off'>" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>비밀번호 확인</td>" + "<td>" + "<input type='password' id='memberPWcheck' spellcheck='false' autocomplete='off'>" + "&emsp;" + "</td></tr>";
 		resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + "<input type='text' id='memberName' spellcheck='false' autocomplete='off'>" + "</td></tr>";
 		resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + "<textarea id='memoMember' spellcheck='false'></textarea>" + "</td></tr>";
 		resultPopup += "</table><br><hr><br>";

@@ -240,6 +240,18 @@
 		padding: 1% 2% 1% 2%;
 	}
 	
+	.popupBox input[type=password] {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		width: 50%;
+		height: 2em;
+		border: 0;
+		outline: 0;
+		background-color: #D8D8D8;
+		color: #000000;
+		padding: 1% 2% 1% 2%;
+	}
+	
 	textarea {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
