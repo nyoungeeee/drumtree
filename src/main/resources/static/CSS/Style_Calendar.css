@@ -176,7 +176,7 @@
 		padding: 1% 2% 1% 2%;
 	}
 	
-	#checkFlag {
+	.checkFlag {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
 		text-align: center;
@@ -191,10 +191,6 @@
 		cursor: pointer;
 		user-select: none;
 		transition: all 0.25s ease;
-	}
-	
-	#checkFlag:hover {
-		background-color: #2E2E2E;
 	}
 	
 	select {
@@ -312,4 +308,69 @@
 		margin: 0 10% 0 0;
 		cursor: pointer;
 		user-select: none;
+	}
+	
+	#filterType {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.8em;
+		width: 7.5em;
+		height: 2.5em;
+		border: 0;
+		outline: 0;
+		background-color: #D8D8D8;
+		color: #000000;
+		padding: 0 0.5% 0 0.5%;
+	}
+	
+	#filter {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.8em;
+		width: 25em;
+		height: 2.5em;
+		border: 0;
+		outline: 0;
+		background-color: #D8D8D8;
+		color: #000000;
+		padding: 0 0.5% 0 0.5%;
+	}
+	
+	.searchBtn {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.8em;
+		font-weight: 500;
+		width: 5em;
+		height: 2.5em;
+		border: 0;
+		background-color: #2E2E2E;
+		color: #FFFFFF;
+		padding: 0;
+		margin-bottom: 1%;
+		cursor: pointer;
+		user-select: none;
+	}
+	
+	.myScheduleBtn {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.8em;
+		font-weight: 500;
+		width: 7em;
+		height: 2.5em;
+		border: 0;
+		border-radius: 1em;
+		background-color: #6E6E6E;
+		color: #FFFFFF;
+		padding: 0;
+		margin-left: 0.25%;
+		margin-bottom: 1%;
+		cursor: pointer;
+		user-select: none;
+		transition: all 0.25s ease;
+	}
+	
+	.on {
+		background-color: #088A08;
+	}
+	
+	.off {
+		background-color: #B40404;
 	}
