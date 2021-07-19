@@ -8,22 +8,22 @@ function createMenubar() {
 	result += "<div class='loginInfo'>"
 	result += "<a style='float:left'>· 아이디</a>" + "<a id='loginID' style='float:right'>" + decrypt.split("&")[0] + "</a><br>";
 	result += "<a style='float:left'>· 닉네임</a>" + "<a id='loginName'style='float:right'>" + decrypt.split("&")[1] + "</a><br>";
-	if (decrypt.split("&")[2]==99) { var grade = "관리자" }
-	else if (decrypt.split("&")[2]==0) { var grade = "비회원" }
-	else if (decrypt.split("&")[2]==1) { var grade = "손님" }
-	else if (decrypt.split("&")[2]==2) { var grade = "연습생" }
-	else if (decrypt.split("&")[2]==3) { var grade = "레슨생" }
+	if (decrypt.split("&")[2]==99) { var grade = "관리자"; }
+	else if (decrypt.split("&")[2]==0) { var grade = "비회원"; }
+	else if (decrypt.split("&")[2]==1) { var grade = "손님"; }
+	else if (decrypt.split("&")[2]==2) { var grade = "연습생"; }
+	else if (decrypt.split("&")[2]==3) { var grade = "레슨생"; }
 	else { var grade = "???" }
 	result += "<a style='float:left'>· 등급</a>" + "<a id='loginGrade' style='float:right'>" + grade + "</a><br>";
 	if (decrypt.split("&")[2]==0) { result += "<div id='logout' onclick=location.href='" + "../" + "'>" + "LOGIN" + "</div>"; }
 	else { result += "<div id='logout' onclick=location.href='" + "../" + "'>" + "LOGOUT" + "</div>"; }
 	result += "</div><br>";
 	
-	result += "<div class='menuName' onclick=movePage('Notice')>" + "<a>공지사항</a>" + "</div><br>";
-	result += "<div class='menuName' onclick=movePage('Calendar')>" + "<a>달력</a>" + "</div><br>";
-	result += "<div class='menuName' onclick=movePage('Reservation')>" + "<a>예약하기</a>" + "</div><br>";
+	result += "<div class='menuName' name='notice' onclick=movePage('Notice')>" + "<a>공지사항</a>" + "</div><br>";
+	result += "<div class='menuName' name='calendar' onclick=movePage('Calendar')>" + "<a>달력</a>" + "</div><br>";
+	result += "<div class='menuName' name='reservation' onclick=movePage('Reservation')>" + "<a>예약하기</a>" + "</div><br>";
 	
-	result += "<div class='menuName' id='adminMenu'>" + "<a>관리자 기능</a>" + "</div>";
+	result += "<div class='menuName' name='admin' id='adminMenu'>" + "<a>관리자 기능</a>" + "</div>";
 	result += "<div class='subMenuName' onclick=movePage('Admin_Notice')>" + "<a>공지사항 관리</a>" + "</div>";
 	result += "<div class='subMenuName' onclick=movePage('Admin_Approval')>" + "<a>회원등록 승인</a>" + "</div>";
 	result += "<div class='subMenuName' onclick=movePage('Admin_Account')>" + "<a>회원 관리</a>" + "</div>";
@@ -33,6 +33,7 @@ function createMenubar() {
 	result += "<div class='footer'>" + "경기 안양시 동안구 관양로 129" + "<br>" + "지하 1층 드럼트리" + "<br>" + "TEL.010-5362-7312" + "</div>";
 	
 	document.write(result);
+	checkMenubarAuthority(decrypt.split("&")[2]);
 	
 	$(function(){
 		$("#adminMenu").mouseover(function(){
@@ -81,4 +82,17 @@ function displayMenubar() {
 	$(".mainScreen").css("left", "12%");
 	$(".hideButton").css("left", "10%");
 	$(".hideButton").attr("onclick", "hideMenubar()");
+}
+
+function checkMenubarAuthority(gradeNo) {
+	if (gradeNo==0) {
+		$(".menuName[name='calendar']").css("display", "none");
+		$(".menuName[name='reservation']").css("display", "none");
+		$(".menuName[name='admin']").css("display", "none");
+		$(".subMenuName").css("display", "none");
+	}
+	else if (gradeNo>0 && gradeNo!=99) {
+		$(".menuName[name='admin']").css("display", "none");
+		$(".subMenuName").css("display", "none");
+	}
 }
