@@ -209,20 +209,22 @@ function updateNotice(idx) {
 }
 
 function deleteNotice(idx) {
-	$.ajax({
-        url: "http://" + IPstring + "/delete-notice",
-        data: { noticeIdx: idx },
-        method: "POST",
-        dataType: "JSON",
-        error: function() { alert("데이터 로드 실패"); },
-        success: function(data) {
-        	if (data.rt=="DeleteNotice_FAIL001") {
-        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
-        	}
-        	else if (data.rt=="DeleteNotice_OK") {
-            	alert("공지 제거가 정상적으로 완료되었습니다.");
-            	window.location.reload();
-        	}
-        }
-	})
+	if (confirm("공지를 제거 하시겠습니까?")==true) {
+		$.ajax({
+	        url: "http://" + IPstring + "/delete-notice",
+	        data: { noticeIdx: idx },
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	if (data.rt=="DeleteNotice_FAIL001") {
+	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+	        	}
+	        	else if (data.rt=="DeleteNotice_OK") {
+	            	alert("공지 제거가 정상적으로 완료되었습니다.");
+	            	window.location.reload();
+	        	}
+	        }
+		})
+	}
 }
