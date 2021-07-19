@@ -202,11 +202,13 @@ function processAjax(param0, param1, param2, param3) {
         			
         			$(".checkFlag").val("체크");
             		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         		
         		$("#selectRoom").change(function(){
         			$(".checkFlag").val("체크");
             		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         	})
         	
@@ -322,11 +324,13 @@ function processAjax(param0, param1, param2, param3) {
         			
         			$(".checkFlag").val("체크");
             		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         		
         		$("#selectRoom").change(function(){
         			$(".checkFlag").val("체크");
             		$(".checkFlag").removeClass("on");
+            		$(".checkFlag").removeClass("off");
         		})
         	})
         }
