@@ -126,10 +126,6 @@
 		transition: all 0.25s ease;
 	}
 	
-	.checkFlag:hover {
-		background-color: #2E2E2E;
-	}
-	
 	select {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
