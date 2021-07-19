@@ -20,3 +20,7 @@ function createTableBody() {
 
 	});
 }
+
+function filterPayment() {
+	
+}
