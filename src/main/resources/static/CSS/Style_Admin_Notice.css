@@ -286,3 +286,18 @@
 		cursor: pointer;
 		user-select: none;
 	}
+	
+	.error {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		text-align: center;
+		width: 2.5em;
+		height: 2.5em;
+		border: 0;
+		border-radius: 100%;
+		background-color: #B40404;
+		color: #FFFFFF;
+		outline: 0;
+		padding: 0 2% 0 2%;
+		user-select: none;
+	}

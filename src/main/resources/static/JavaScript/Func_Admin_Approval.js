@@ -37,7 +37,7 @@ function processAjax(param0, param1, param2) {
     			resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + $(this).children().eq(3).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + $(this).children().eq(4).html() + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>회원 등급</td>" + "<td>" + "<select id='memberGrade'></select>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>회원 등급</td>" + "<td>" + "<select id='memberGrade'></select>" + "&emsp;" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>관리자 메모</td>" + "<td>" + "<textarea id='memoAdmin' spellcheck='false'></textarea>" + "</td></tr>";
     			resultPopup += "</table><br><hr><br>";
     			resultPopup += "<input type='button' class='rejectBtn' value='반려'>";
@@ -101,7 +101,7 @@ function approvalMember(idx) {
 	$("#errorMessageGrade").remove();
 	
 	if (grade=="none") {
-		$("#memberInfo tr").eq(5).children().eq(1).append("<a id='errorMessageGrade' style='color:red;'>&emsp;<strong>회원 등급 선택 필수</strong></a>");
+		$("#memberInfo tr").eq(5).children().eq(1).append("<a id='errorMessageGrade' class='error'>!</a>");
 		$("#errorMessageGrade").fadeOut(0);
 		$("#errorMessageGrade").fadeIn(500);
 	}

@@ -126,7 +126,7 @@ function addNotice() {
 	resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
 	resultPopup += "<br><br><hr><br>";
 	resultPopup += "<table id='memberInfo'>";
-	resultPopup += "<tr>" + "<td>공지 구분</td>" + "<td>" + "<select id='noticeType'></select>" + "</td></tr>";
+	resultPopup += "<tr>" + "<td>공지 구분</td>" + "<td>" + "<select id='noticeType'></select>" + "&emsp;" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>제목</td>" + "<td>" + "<input type='text' id='noticeSubject' spellcheck='false'>" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>내용</td>" + "<td>" + "<textarea id='noticeContent' spellcheck='false'></textarea>" + "</td></tr>";
 	resultPopup += "</table><br><hr><br>";
@@ -155,7 +155,7 @@ function saveNotice() {
 	$("#errorMessageType").remove();
 	
 	if (noticeType=="none") {
-		$("#memberInfo tr").eq(0).children().eq(1).append("<a id='errorMessageType' style='color:red;'>&emsp;<strong>공지 구분 선택 필수</strong></a>");
+		$("#memberInfo tr").eq(0).children().eq(1).append("<a id='errorMessageType' class='error'>!</a>");
 		$("#errorMessageType").fadeOut(0);
 		$("#errorMessageType").fadeIn(500);
 	}
