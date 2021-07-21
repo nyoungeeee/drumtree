@@ -97,7 +97,7 @@ function processAjax(param0, param1, param2, param3, param4, param5) {
         	$("tbody td").not("td:contains('" + $("#month").val() + "')").css("color", "#D8D8D8");
         	
         	var roomName = [ "레슨", "연습실3", "연습실4", "연습실5" ];
-        	var key = document.location.href.split("?")[1];
+        	var key = $.cookie("loginInfo");
     		var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
     		var loginGrade = decrypt.split("&")[2];
     		var loginMember = decrypt.split("&")[3];

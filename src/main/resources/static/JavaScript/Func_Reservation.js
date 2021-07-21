@@ -52,7 +52,7 @@ function processAjax(param0, param1, param2, param3) {
         	}
         	$("tbody").html(resultBody);
         	
-        	var key = document.location.href.split("?")[1];
+        	var key = $.cookie("loginInfo");
         	var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
     		var loginGrade = decrypt.split("&")[2];
     		var loginMember = decrypt.split("&")[3];
@@ -400,7 +400,7 @@ function closePopup() {
 }
 
 function saveReservation() {
-	var key = document.location.href.split("?")[1];
+	var key = $.cookie("loginInfo");
 	var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
 	
 	var rsv = $("#selectType").val();	
