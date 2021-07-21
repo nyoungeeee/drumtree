@@ -69,6 +69,14 @@
 		transition: all 0.25s ease;
 	}
 	
+	.checkTrue {
+		background-color: #088A08;
+	}
+	
+	.checkFalse {
+		background-color: #B40404;
+	}
+	
 	select {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
@@ -250,7 +258,7 @@
 	#filter {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 0.8em;
-		width: 25em;
+		width: 20em;
 		height: 2.5em;
 		border: 0;
 		outline: 0;
@@ -287,12 +295,4 @@
 		outline: 0;
 		padding: 0 2% 0 2%;
 		user-select: none;
-	}
-	
-	.on {
-		background-color: #088A08;
-	}
-	
-	.off {
-		background-color: #B40404;
 	}

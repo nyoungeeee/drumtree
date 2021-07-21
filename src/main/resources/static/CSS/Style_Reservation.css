@@ -126,6 +126,14 @@
 		transition: all 0.25s ease;
 	}
 	
+	.checkTrue {
+		background-color: #088A08;
+	}
+	
+	.checkFalse {
+		background-color: #B40404;
+	}
+	
 	select {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
@@ -278,7 +286,7 @@
 		transition: all 0.25s ease;
 	}
 	
-	#reservation:hover {
+	#reservation:not([name=noPopup]):hover {
 		background-color: #2E2E2E;
 		padding: 0.75em 0 0.75em 0;
 	}
@@ -372,7 +380,7 @@
 	#filter {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 0.8em;
-		width: 25em;
+		width: 20em;
 		height: 2.5em;
 		border: 0;
 		outline: 0;
@@ -396,28 +404,40 @@
 		user-select: none;
 	}
 	
-	.myScheduleBtn {
-		font-family: IBMPlexSansKR-Regular;
-		font-size: 0.8em;
-		font-weight: 500;
-		width: 7em;
-		height: 2.5em;
+	.myScheduleArea {
+		display: inline-block;
+		width: 4.5em;
+		height: 2em;
 		border: 0;
-		border-radius: 1em;
-		background-color: #6E6E6E;
+		border-radius: 10em;
+		background-color: #D8D8D8;
 		color: #FFFFFF;
-		padding: 0;
+		padding: 0 2em 0 0;
 		margin-left: 0.25%;
 		margin-bottom: 1%;
-		cursor: pointer;
 		user-select: none;
 		transition: all 0.25s ease;
 	}
 	
-	.on {
-		background-color: #088A08;
+	.myScheduleBtn {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.8em;
+		font-weight: 500;
+		width: 100%;
+		height: 100%;
+		border: 0;
+		outline: 0;
+		border-radius: 10em;
+		background-color: #6E6E6E;
+		color: #FFFFFF;
+		cursor: pointer;
+		user-select: none;
 	}
 	
-	.off {
-		background-color: #B40404;
+	.myScheduleOn {
+		padding: 0 0 0 2em;
+	}
+	
+	.myScheduleOn .myScheduleBtn {
+		background-color: #045FB4;
 	}

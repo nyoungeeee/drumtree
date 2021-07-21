@@ -87,14 +87,14 @@ function processAjax(param0, param1) {
         			$("#selectEndTime").val(thisEndTime).prop("selected", true);
         			
         			$(".checkFlag").val("체크");
-            		$(".checkFlag").removeClass("on");
-            		$(".checkFlag").removeClass("off");
+            		$(".checkFlag").removeClass("checkTrue");
+            		$(".checkFlag").removeClass("checkFalse");
         		})
         		
         		$("#selectEndTime").change(function(){
         			$(".checkFlag").val("체크");
-            		$(".checkFlag").removeClass("on");
-            		$(".checkFlag").removeClass("off");
+            		$(".checkFlag").removeClass("checkTrue");
+            		$(".checkFlag").removeClass("checkFalse");
         		})
         		
         		var resultType = "";
@@ -135,14 +135,14 @@ function processAjax(param0, param1) {
         			$("#selectRoom").append(resultRoom);
         			
         			$(".checkFlag").val("체크");
-            		$(".checkFlag").removeClass("on");
-            		$(".checkFlag").removeClass("off");
+            		$(".checkFlag").removeClass("checkTrue");
+            		$(".checkFlag").removeClass("checkFalse");
         		})
         		
         		$("#selectRoom").change(function(){
         			$(".checkFlag").val("체크");
-            		$(".checkFlag").removeClass("on");
-            		$(".checkFlag").removeClass("off");
+            		$(".checkFlag").removeClass("checkTrue");
+            		$(".checkFlag").removeClass("checkFalse");
         		})
     		})
         }
@@ -294,15 +294,15 @@ function checkTime(reservationIndex) {
         		$("#errorMessageRoom").fadeIn(500);
         		
         		$(".checkFlag").val("불가");
-        		$(".checkFlag").addClass("off");
+        		$(".checkFlag").addClass("checkFalse");
         	}
         	else if ($("#selectStartTime").val()==null||$("#selectEndTime").val()==null) {
         		$(".checkFlag").val("불가");
-        		$(".checkFlag").addClass("off");
+        		$(".checkFlag").addClass("checkFalse");
         	}
         	else if (startGetTime.getTime()>=endGetTime.getTime()) {
         		$(".checkFlag").val("불가");
-        		$(".checkFlag").addClass("off");
+        		$(".checkFlag").addClass("checkFalse");
         	}
         	else {
         		var checkFlag = true;
@@ -326,11 +326,11 @@ function checkTime(reservationIndex) {
 
         	if (checkFlag==true) {
         		$(".checkFlag").val("가능");
-        		$(".checkFlag").addClass("on");
+        		$(".checkFlag").addClass("checkTrue");
         	}
         	else {
         		$(".checkFlag").val("불가");
-        		$(".checkFlag").addClass("off");
+        		$(".checkFlag").addClass("checkFalse");
         	}
         }
 	})
