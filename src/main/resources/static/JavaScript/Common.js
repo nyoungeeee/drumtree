@@ -14,7 +14,7 @@ function noCacheImg() {
 
 function checkAccessAuthority(menuNo, subMenuNo) {
 	$(document).ready(function(){
-		var key = document.location.href.split("?")[1];
+		var key = $.cookie("loginInfo");
 		var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
 		var gradeNo = decrypt.split("&")[2];
 		
@@ -25,7 +25,7 @@ function checkAccessAuthority(menuNo, subMenuNo) {
 		else if (menuNo==1||menuNo==2) {
 			if (gradeNo==0) {
 				alert("페이지 접근 권한이 없습니다.");
-				location.href = "../Notice?" + key;
+				location.href = "../Notice";
 			}
 			else {
 				$(".menuName").eq(menuNo).css("background-color", "#424242");
@@ -35,7 +35,7 @@ function checkAccessAuthority(menuNo, subMenuNo) {
 		else if (menuNo==3) {
 			if (gradeNo!=99) {
 				alert("페이지 접근 권한이 없습니다.");
-				location.href = "../Notice?" + key;
+				location.href = "../Notice";
 			}
 			else {
 				$(".menuName").eq(menuNo).css("background-color", "#424242");
@@ -55,7 +55,7 @@ function checkAccessAuthority(menuNo, subMenuNo) {
 }
 
 function maskingText(text) {
-	var key = document.location.href.split("?")[1];
+	var key = $.cookie("loginInfo");
 	var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
 	var currentName = decrypt.split("&")[1];
 	

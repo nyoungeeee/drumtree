@@ -142,7 +142,8 @@ function loginProcess() {
 	        			var original = ID + "&" + data[0].memberName + "&" + data[0].memberGrade + "&" + data[0].memberIdx;
 					    var encrypt = CryptoJS.AES.encrypt(original, Decode);
 					    
-					    location.href = "../Notice?" + encrypt;
+					    $.cookie("loginInfo", encrypt);
+					    location.href = "../Notice";
 	        		}
 				}
 	        }
@@ -154,7 +155,8 @@ function nonMemberLogin() {
 	var original = "-" + "&" + "-" + "&" + 0;
     var encrypt = CryptoJS.AES.encrypt(original, Decode);
 	
-    location.href = "../Notice?" + encrypt;
+    $.cookie("loginInfo", encrypt);
+    location.href = "../Notice";
 }
 
 function pressEnterKey() {
