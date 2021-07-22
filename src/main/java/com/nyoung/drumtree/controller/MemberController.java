@@ -140,6 +140,8 @@ public class MemberController {
 		param.setMemberName("");
 		param.setMemberPW("");
 		param.setMemo("");
+		param.setMemberGrade(-1);
+		param.setIsApproval(-1);
 		list = memberService.SelectMember(param);
 
 		// 쿼리 실행 -- 회원 등록 진행
@@ -158,6 +160,7 @@ public class MemberController {
 				rt = "SignIn_FAIL002";	// sql 오류로 실패
 			}
 		}
+		
 
 		//Map 세팅
 		Map<Object, Object> data = new HashMap<>();;
