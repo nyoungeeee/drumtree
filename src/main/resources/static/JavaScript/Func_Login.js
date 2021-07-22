@@ -45,6 +45,7 @@ function closePopup() {
 	$('.popupBox').css('display', 'none');
 	$('.popupBackground').css('display', 'none');
 	$('html, body').css('overflow', '');
+	resetMember();
 }
 
 function requestMember() {
@@ -54,7 +55,6 @@ function requestMember() {
 	var name = $("#memberName").val();
 	var memo = $("#memoMember").val().replaceAll("\n", "<br>");
 	
-	$("#errorMessageID").remove();
 	$("#errorMessagePW").remove();
 	$("#memberID").attr("placeholder", "");
 	$("#memberPW").attr("placeholder", "");
@@ -81,9 +81,7 @@ function requestMember() {
 	        error: function() { alert("데이터 로드 실패"); },
 	        success: function(data) {
 	        	if (data.rt=="SignIn_FAIL001") {
-	        		$("#memberInfo tr").eq(0).children().eq(1).append("<a id='errorMessageID' class='error'>!</a>");
-	        		$("#errorMessageID").fadeOut(0);
-	        		$("#errorMessageID").fadeIn(500);
+	        		alert("이미 존재하는 아이디입니다.");
 	        	}
 	        	else if (data.rt=="SignIn_FAIL002") {
 	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
@@ -104,7 +102,6 @@ function resetMember() {
 	$("#memberName").val("");
 	$("#memoMember").val("");
 	
-	$("#errorMessageID").remove();
 	$("#errorMessagePW").remove();
 	$("#memberID").attr("placeholder", "");
 	$("#memberPW").attr("placeholder", "");
