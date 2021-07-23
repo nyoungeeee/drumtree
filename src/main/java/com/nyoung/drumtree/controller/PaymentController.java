@@ -38,7 +38,7 @@ public class PaymentController {
 		String lessonRmnCntStr = request.getParameter("lessonRmnCnt")==null ? "" : request.getParameter("lessonRmnCnt");
 		String practiceRmnCntStr = request.getParameter("practiceRmnCnt")==null ? "" : request.getParameter("practiceRmnCnt");
 		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
-		String usedRsvIdxStr = request.getParameter("usedRsvIdx")==null ? "" : request.getParameter("usedRsvIdx");
+		String usedRsvIdx = request.getParameter("usedRsvIdx")==null ? "" : request.getParameter("usedRsvIdx");
 		String feesStr = request.getParameter("fees")==null ? "" : request.getParameter("fees");
 		String memberName = request.getParameter("memberName")==null ? "" : request.getParameter("memberName");
 		int payIdx = -1;
@@ -69,10 +69,7 @@ public class PaymentController {
 		if(!practiceRmnCntStr.equals("")) {
 			practiceRmnCnt = Integer.parseInt(request.getParameter("practiceRmnCnt"));
 		}
-		int usedRsvIdx = -1;
-		if(!usedRsvIdxStr.equals("")) {
-			usedRsvIdx = Integer.parseInt(request.getParameter("usedRsvIdx"));
-		}
+
 		int fees = -1;
 		if(!feesStr.equals("")) {
 			fees = Integer.parseInt(request.getParameter("fees"));
@@ -116,7 +113,7 @@ public class PaymentController {
 		param.setLessonRmnCnt(lessonRmnCnt);
 		param.setPracticeRmnCnt(practiceRmnCnt);
 		param.setMemo(memo);
-		param.setUsedRsvIdx(usedRsvIdxStr);
+		param.setUsedRsvIdx(usedRsvIdx);
 		param.setFees(fees);
 		list = paymentService.SelectPayment(param);
 		total = list.size();
