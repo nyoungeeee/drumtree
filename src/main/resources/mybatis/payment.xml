@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nyoung.drumtree.PaymentMapper">
+	<!-- 납부 리스트(검색/전체) -->
+	<select id="selectPayment" parameterType="java.util.Map"
+		resultType="com.nyoung.drumtree.dto.PaymentDTO">
+		SELECT * from payment
+		WHERE isDelete = 0
+		<if test="payIdx != -1">
+			AND payIdx = #{payIdx}
+		</if>
+		<if test="memberIdx != -1">
+			AND memberIdx = #{memberIdx}
+		</if>
+		<if test="payCode != -1">
+			AND payCode = #{payCode}
+		</if>
+		<if test="lessonCnt != -1">
+			AND lessonCnt = #{lessonCnt}
+		</if>
+		<if test="practiceCnt != -1">
+			AND practiceCnt = #{practiceCnt}
+		</if>
+		<if test="payDate != ''">
+			AND payDate like '%${payDate}%'
+		</if>
+		<if test="lessonRmnCnt != -1">
+			AND lessonRmnCnt = #{lessonRmnCnt}
+		</if>
+		<if test="practiceRmnCnt != -1">
+			AND practiceRmnCnt = #{practiceRmnCnt}
+		</if>
+		<if test="memo != ''">
+			AND memo like '%${memo}%'
+		</if>
+		<if test="usedRsvIdx != ''">
+			AAND usedRsvIdx like '%${usedRsvIdx}%'
+		</if>
+		<if test="fees != -1">
+			AND fees = #{fees}
+		</if>
+	</select>
+	<!-- 납부 정보 등록 -->
+
+	<!-- 납부 정보 수정 -->
+
+	<!-- 납부 정보 삭제 -->
+
+
+</mapper>
