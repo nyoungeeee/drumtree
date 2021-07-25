@@ -141,7 +141,7 @@
 		font-family: IBMPlexSansKR-Regular;
         position: absolute;
         text-align: center;
-		width: 30%;
+		width: 35em;
 		height: auto;
 		top: 50%;
 		left: 50%;
@@ -231,11 +231,12 @@
 	.popupBox input[type=text] {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
-		width: 50%;
+		width: 15em;
 		height: 2em;
-		border: 0;
+		border: 1px solid #C4C4C4;
+		border-radius: 2px;
 		outline: 0;
-		background-color: #D8D8D8;
+		background-color: #FFFFFF;
 		color: #000000;
 		padding: 1% 2% 1% 2%;
 	}
@@ -243,11 +244,12 @@
 	.popupBox input[type=password] {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
-		width: 50%;
+		width: 15em;
 		height: 2em;
-		border: 0;
+		border: 1px solid #C4C4C4;
+		border-radius: 2px;
 		outline: 0;
-		background-color: #D8D8D8;
+		background-color: #FFFFFF;
 		color: #000000;
 		padding: 1% 2% 1% 2%;
 	}
@@ -257,9 +259,10 @@
 		font-size: 1em;
 		width: 80%;
 		height: 10em;
-		border: 0;
+		border: 1px solid #C4C4C4;
+		border-radius: 2px;
 		outline: 0;
-		background-color: #D8D8D8;
+		background-color: #FFFFFF;
 		color: #000000;
 		padding: 2%;
 		resize: none;

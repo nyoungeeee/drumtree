@@ -169,9 +169,10 @@
 		font-size: 1em;
 		width: 80%;
 		height: 2em;
-		border: 0;
+		border: 1px solid #C4C4C4;
+		border-radius: 2px;
 		outline: 0;
-		background-color: #D8D8D8;
+		background-color: #FFFFFF;
 		color: #000000;
 		padding: 1% 2% 1% 2%;
 	}
@@ -206,9 +207,10 @@
 		font-size: 1em;
 		width: 30%;
 		height: 2.5em;
-		border: 0;
+		border: 1px solid #C4C4C4;
+		border-radius: 2px;
 		outline: 0;
-		background-color: #D8D8D8;
+		background-color: #FFFFFF;
 		color: #000000;
 		padding: 1% 2% 1% 2%;
 	}
@@ -222,9 +224,10 @@
 		font-size: 1em;
 		width: 35%;
 		height: 2em;
-		border: 0;
+		border: 1px solid #C4C4C4;
+		border-radius: 2px;
 		outline: 0;
-		background-color: #D8D8D8;
+		background-color: #FFFFFF;
 		color: #000000;
 		padding: 1% 2% 1% 2%;
 	}
@@ -234,9 +237,10 @@
 		font-size: 1em;
 		width: 80%;
 		height: 10em;
-		border: 0;
+		border: 1px solid #C4C4C4;
+		border-radius: 2px;
 		outline: 0;
-		background-color: #D8D8D8;
+		background-color: #FFFFFF;
 		color: #000000;
 		padding: 2%;
 		resize: none;

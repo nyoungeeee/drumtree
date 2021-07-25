@@ -13,7 +13,7 @@ function processAjax(param0, param1) {
     			result += "<tr onclick='openPopup()'>";
     			result += "<td>" + data[i].noticeIdx + "</td>";
     			
-    			if (data[i].isImport==1) { result += "<td style='text-align:left;'>" + "<div>중요</div>&emsp;" + "<a>" + data[i].subject + "</a>" + "</td>"; }
+    			if (data[i].isImport==1) { result += "<td style='text-align:left;'>" + "<div id='important'>중요</div>&emsp;" + "<a>" + data[i].subject + "</a>" + "</td>"; }
     			else if (data[i].isImport==0) { result += "<td style='text-align:left;'>" + "<a>" + data[i].subject + "</a>" + "</td>"; }
     			
     			result += "<td>" + data[i].memberName + "</td>";
@@ -44,24 +44,25 @@ function processAjax(param0, param1) {
     			resultPopup += "<tr>" + "<td>글쓴이</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>공지 구분</td>" + "<td>" + "<select id='noticeType'></select>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>제목</td>" + "<td>" + "<input type='text' id='noticeSubject' spellcheck='false'>" + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>내용</td>" + "<td>" + "<textarea id='noticeContent' spellcheck='false'></textarea>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>내용</td>" + "<td>" + "<textarea id='noticeContent'></textarea>" + "</td></tr>";
     			resultPopup += "</table><br><hr><br>";
     			resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
     			resultPopup += "<input type='button' class='updateBtn' value='저장'>";
     			$(".popupBox").html(resultPopup);
+    			loadEditor("#noticeContent");
     			
     			var resultOption = "";
-    			if ($(this).children().eq(1).find("div").length==0) {
+    			if ($(this).children().eq(1).find("#important").length==0) {
         			resultOption += "<option value=0 selected>" + "일반 공지" + "</option>";
         			resultOption += "<option value=1>" + "중요 공지" + "</option>";
-    			} else if ($(this).children().eq(1).find("div").length==1) {
+    			} else if ($(this).children().eq(1).find("#important").length==1) {
         			resultOption += "<option value=0>" + "일반 공지" + "</option>";
         			resultOption += "<option value=1 selected>" + "중요 공지" + "</option>";
     			}
     			$("#noticeType").append(resultOption);
     			
     			$("#noticeSubject").val($(this).children().eq(1).find("a").html());
-    			$("#noticeContent").val($(this).children().eq(6).html().replaceAll("<br>", "\n"));
+    			$("#noticeContent").val($(this).children().eq(6).html());
     			
     			$(".updateBtn").attr("onclick", "updateNotice(" + $(this).children().eq(0).html() + ")");
     			$(".deleteBtn").attr("onclick", "deleteNotice(" + $(this).children().eq(0).html() + ")");
@@ -128,11 +129,12 @@ function addNotice() {
 	resultPopup += "<table id='memberInfo'>";
 	resultPopup += "<tr>" + "<td>공지 구분</td>" + "<td>" + "<select id='noticeType'></select>" + "&emsp;" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>제목</td>" + "<td>" + "<input type='text' id='noticeSubject' spellcheck='false'>" + "</td></tr>";
-	resultPopup += "<tr>" + "<td>내용</td>" + "<td>" + "<textarea id='noticeContent' spellcheck='false'></textarea>" + "</td></tr>";
+	resultPopup += "<tr>" + "<td>내용</td>" + "<td>" + "<textarea id='noticeContent'></textarea>" + "</td></tr>";
 	resultPopup += "</table><br><hr><br>";
 	resultPopup += "<input type='button' class='resetBtn' value='초기화'>";
 	resultPopup += "<input type='button' class='saveBtn' value='등록'>";
 	$(".popupBox").html(resultPopup);
+	loadEditor("#noticeContent");
 	
 	var resultOption = "";
 	resultOption += "<option value='none' selected>" + "" + "</option>";
@@ -147,10 +149,13 @@ function addNotice() {
 }
 
 function saveNotice() {
+	var key = $.cookie("loginInfo");
+	var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
+	
 	var noticeType = $("#noticeType").val();	
 	var noticeSubject = $("#noticeSubject").val();
-	var noticeContent = $("#noticeContent").val().replaceAll("\n", "<br>");
-	var noticeMember = 19;
+	var noticeContent = editor.getData();
+	var noticeMember = decrypt.split("&")[3];
 	
 	$("#errorMessageType").remove();
 	
@@ -189,7 +194,7 @@ function resetNotice() {
 function updateNotice(idx) {
 	var noticeType = $("#noticeType").val();
 	var noticeSubject = $("#noticeSubject").val();
-	var noticeContent = $("#noticeContent").val().replaceAll("\n", "<br>");
+	var noticeContent = editor.getData();
 	$.ajax({
         url: "http://" + IPstring + "/update-notice",
         data: { noticeIdx: idx, subject: noticeSubject, content: noticeContent, isImport: noticeType },
