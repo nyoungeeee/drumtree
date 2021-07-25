@@ -21,4 +21,6 @@ public class PaymentDTO {
 	private String memo;			//납부 메모
 	private String usedRsvIdx;		//사용된 예약 건 배열
 	private int fees;				//납부 금액
+	private int isDelete;			//삭제여부
+	private String updateDate;		//수정일시
 }

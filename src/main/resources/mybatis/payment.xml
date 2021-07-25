@@ -43,11 +43,71 @@
 			AND fees = #{fees}
 		</if>
 	</select>
+
 	<!-- 납부 정보 등록 -->
+	<insert id="insertPayment" parameterType="java.util.Map">
+		INSERT INTO payment
+		(memberIdx, payCode, lessonCnt, practiceCnt, payDate, lessonRmnCnt,
+		practiceRmnCnt, memo, fees)
+		VALUES(
+		${memberIdx},
+		${payCode},
+		${lessonCnt},
+		${practiceCnt},
+		#{payDate},
+		${lessonRmnCnt},
+		${practiceRmnCnt},
+		#{memo},
+		${fees}
+		)
+	</insert>
 
 	<!-- 납부 정보 수정 -->
+	<update id="updatePayment" parameterType="java.util.Map">
+		UPDATE payment
+		SET
+		<if test="memberIdx != -1">
+			memberIdx=#{memberIdx},
+		</if>
+		<if test="payCode != -1">
+			payCode=#{payCode},
+		</if>
+		<if test="lessonCnt != -1">
+			lessonCnt=#{lessonCnt},
+		</if>
+		<if test="practiceCnt != -1">
+			practiceCnt=#{practiceCnt},
+		</if>
+		<if test="payDate != ''">
+			payDate=#{payDate},
+		</if>
+		<if test="memo != ''">
+			memo=#{memo},
+		</if>
+		<if test="usedRsvIdx != -1">
+			usedRsvIdx=#{usedRsvIdx},
+		</if>
+		<if test="fees != -1">
+			fees=#{fees},
+		</if>
+		<if test="isDelete != -1">
+			isDelete=#{isDelete},
+		</if>
+		updateDate = now()
+		WHERE payIdx=#{payIdx}
+	</update>
 
-	<!-- 납부 정보 삭제 -->
-
-
+	<!-- 횟수 변경 -->
+	<update id="changeCntPayment" parameterType="java.util.Map">
+		UPDATE payment
+		SET
+		<if test="code == 1">
+			lessonRmnCnt=lessonRmnCnt+#{cnt},
+		</if>
+		<if test="code == 2">
+			practiceRmnCnt=practiceRmnCnt+#{cnt},
+		</if>
+		updateDate = now()
+		WHERE payIdx=#{payIdx}
+	</update>
 </mapper>

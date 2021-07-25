@@ -34,16 +34,42 @@ public class PaymentDAO {
 	
 	/* 납부 정보 등록 */
 	public int InsertPayment(PaymentDTO param) {
-		return 0;
+		System.out.println("진입");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberIdx", param.getMemberIdx());
+		map.put("payCode", param.getPayCode());
+		map.put("lessonCnt", param.getLessonCnt());
+		map.put("practiceCnt", param.getPracticeCnt());
+		map.put("payDate", param.getPayDate());
+		map.put("lessonRmnCnt", param.getLessonRmnCnt());
+		map.put("practiceRmnCnt", param.getPracticeRmnCnt());
+		map.put("memo", param.getMemo());
+		map.put("fees", param.getFees());
+		return sqlSession.insert("com.nyoung.drumtree.PaymentMapper.insertPayment", map);
 	};
 
 	/* 납부 정보 수정 */
 	public int UpdatePayment(PaymentDTO param) {
-		return 0;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("payIdx", param.getPayIdx());
+		map.put("memberIdx", param.getMemberIdx());
+		map.put("payCode", param.getPayCode());
+		map.put("lessonCnt", param.getLessonCnt());
+		map.put("practiceCnt", param.getPracticeCnt());
+		map.put("payDate", param.getPayDate());
+		map.put("memo", param.getMemo());
+		map.put("usedRsvIdx", param.getUsedRsvIdx());
+		map.put("fees", param.getFees());
+		map.put("isDelete", param.getIsDelete());
+		return sqlSession.update("com.nyoung.drumtree.PaymentMapper.updatePayment", map);
 	};
 
-	/* 납부 정보 삭제 */
-	public int DeletePayment(PaymentDTO param) {
-		return 0;
+	/* 횟수 변경 */
+	public int RmnCntPayment(int payIdx, String code, int cnt) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("payIdx", payIdx);
+		map.put("code", code);
+		map.put("cnt", cnt);
+		return sqlSession.update("com.nyoung.drumtree.PaymentMapper.changeCntPayment", map);
 	};
 }
