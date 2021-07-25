@@ -20,7 +20,12 @@ public class FileUploadController {
 
 	@RequestMapping(value = "/upload")
 	public String upload(@RequestParam MultipartFile upload) {
-		String url = fileUploadService.restore(upload);
-		return "{\"uploaded\":1, \"url\":\""+"http://3.34.217.94:8080/test/"+url+"\"}";
+		String[] url = fileUploadService.restore(upload);
+		System.out.println(url[0]);
+		System.out.println(url[1]);
+		return "{"
+				+ "\"uploaded\":1, "
+				+ "\"url\":\""+"http://3.34.217.94:8080/test/"+url[0]+", "
+				+ "\"name\":\""+url[1]+"\"}";
 	}
 }
