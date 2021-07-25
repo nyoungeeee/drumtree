@@ -12,6 +12,53 @@ function noCacheImg() {
 	})
 }
 
+function loadEditor(id) {
+	ClassicEditor
+    .create(document.querySelector(id), {
+    	toolbar: {
+    		items: [
+    			'fontFamily', 'fontSize', 'fontColor', 'fontBackgroundColor',
+				'|',
+				'alignment', 'bold', 'italic', 'strikeThrough', 'underline',
+				'|',
+				'link', 'insertImage', 'insertTable', 'mediaEmbed', 'specialCharacters'
+    		]
+    	},
+    	
+    	image: {
+    		toolbar: [
+    			'imageStyle:inline',
+                'imageStyle:block'
+    		]
+    	},
+    	
+    	table: {
+            contentToolbar: [
+                'tableColumn',
+                'tableRow',
+                'mergeTableCells',
+                'tableProperties',
+                'tableCellProperties'
+            ]
+        },
+    	
+    	simpleUpload: {
+            uploadUrl: 'http://3.34.217.94:8888/upload',
+            withCredentials: false,
+            headers: {
+                'X-CSRF-TOKEN': 'CSRF-Token',
+                Authorization: 'Bearer <JSON Web Token>',
+            }
+        }
+    })
+    .then(newEditor => {
+        editor = newEditor;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+}
+
 function checkAccessAuthority(menuNo, subMenuNo) {
 	$(document).ready(function(){
 		var key = $.cookie("loginInfo");

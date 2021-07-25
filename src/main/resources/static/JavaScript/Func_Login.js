@@ -9,7 +9,7 @@ function createPopup() {
 		resultPopup += "<tr>" + "<td>비밀번호</td>" + "<td>" + "<input type='password' id='memberPW' spellcheck='false' autocomplete='off'>" + "</td></tr>";
 		resultPopup += "<tr>" + "<td>비밀번호 확인</td>" + "<td>" + "<input type='password' id='memberPWcheck' spellcheck='false' autocomplete='off'>" + "&emsp;" + "</td></tr>";
 		resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + "<input type='text' id='memberName' spellcheck='false' autocomplete='off'>" + "</td></tr>";
-		resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + "<textarea id='memoMember' spellcheck='false'></textarea>" + "</td></tr>";
+		resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + "<textarea id='memoMember'></textarea>" + "</td></tr>";
 		resultPopup += "</table><br><hr><br>";
 		resultPopup += "<input type='button' class='resetBtn' value='초기화'>";
 		resultPopup += "<input type='button' class='requestBtn' value='등록'>";
@@ -53,7 +53,7 @@ function requestMember() {
 	var pw = $("#memberPW").val();
 	var pwCheck = $("#memberPWcheck").val();
 	var name = $("#memberName").val();
-	var memo = $("#memoMember").val().replaceAll("\n", "<br>");
+	var memo = $("#memoMember").val();
 	
 	$("#errorMessagePW").remove();
 	$("#memberID").attr("placeholder", "");
@@ -67,7 +67,7 @@ function requestMember() {
 	if (pw=="") { $("#memberPW").attr("placeholder", "비밀번호를 입력해 주세요."); checkFlag = false; }
 	if (pwCheck=="") { $("#memberPWcheck").attr("placeholder", "비밀번호를 다시 입력해 주세요."); checkFlag = false; }
 	if (name=="") { $("#memberName").attr("placeholder", "닉네임을 입력해 주세요."); checkFlag = false; }
-	if (memo=="") { $("#memoMember").attr("placeholder", "메모를 입력해 주세요."); checkFlag = false; }
+	if (memo=="") { $("#memoMember").attr("placeholder", "회원 메모를 입력해 주세요."); checkFlag = false; }
 	if (pw!=pwCheck) { $("#memberInfo tr").eq(2).children().eq(1).append("<a id='errorMessagePW' class='error'>!</a>"); checkFlag = false; }
 	$("#errorMessagePW").fadeOut(0);
 	$("#errorMessagePW").fadeIn(500);

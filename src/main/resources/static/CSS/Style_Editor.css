@@ -1,0 +1,27 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'IBMPlexSansKR-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+	
+	.ck-editor__editable {
+		height: 30em;
+	}
+	
+	.text-tiny {
+    	font-size: 0.7em;
+	}
+	
+	.text-small {
+	    font-size: 0.85em;
+	}
+	
+	.text-big {
+	    font-size: 1.4em;
+	}
+	
+	.text-huge {
+	    font-size: 1.8em;
+	}
