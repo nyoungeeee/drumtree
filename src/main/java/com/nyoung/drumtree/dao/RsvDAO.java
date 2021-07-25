@@ -69,5 +69,10 @@ public class RsvDAO {
 		map.put("isApproval", param.getIsApproval());
 		return sqlSession.insert("com.nyoung.drumtree.ReservationMapper.approvalRsv", map);
 	}
+	
+	/*사용 완료된 예약 내역*/
+	public List<RsvDTO> UsedRsvList(String usedRsvIdx) {
+		return sqlSession.selectList("com.nyoung.drumtree.ReservationMapper.usedRsv", usedRsvIdx);
+	}
 
 }

@@ -16,9 +16,10 @@ public class FileUploadService {
 //	private static final String SAVE_PATH = "D:/test";
 	private static final String PREFIX_URL = SAVE_PATH+"/";
 
-	public String restore(MultipartFile multipartFile) {
+	public String[] restore(MultipartFile multipartFile) {
 		String url = null;
 		String url2 = null;
+		String oriName = null;
 
 		try {
 			// 파일 정보
@@ -38,6 +39,7 @@ public class FileUploadService {
 			writeFile(multipartFile, saveFileName);
 			url = PREFIX_URL + saveFileName;
 			url2 = saveFileName;
+			oriName = originFilename;
 		}
 		catch (IOException e) {
 			// 원래라면 RuntimeException 을 상속받은 예외가 처리되어야 하지만
@@ -45,7 +47,8 @@ public class FileUploadService {
 			// throw new FileUploadException();	
 			throw new RuntimeException(e);
 		}
-		return url2;
+		String[] result = {url2, oriName};
+		return result;
 	}
 
 

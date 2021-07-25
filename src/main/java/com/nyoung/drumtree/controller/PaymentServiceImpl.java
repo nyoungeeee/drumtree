@@ -23,21 +23,21 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public int InsertPayment(PaymentDTO param) {
 		// TODO Auto-generated method stub
-		return 0;
+		return paymentDAO.InsertPayment(param);
 	}
 
 	/* 납부 정보 수정 */
 	@Override
 	public int UpdatePayment(PaymentDTO param) {
 		// TODO Auto-generated method stub
-		return 0;
+		return paymentDAO.UpdatePayment(param);
 	}
-
-	/* 납부 정보 삭제 */
+	
+	/* 횟수 변경 */
 	@Override
-	public int DeletePayment(PaymentDTO param) {
+	public int RmnCntPayment(int payIdx, String code, int cnt) {
 		// TODO Auto-generated method stub
-		return 0;
+		return paymentDAO.RmnCntPayment(payIdx, code, cnt);
 	}
 	
 }

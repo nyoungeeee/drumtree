@@ -15,4 +15,6 @@ public interface RsvService {
 	public int DeleteRsv(RsvDTO param);
 	/*예약 승인, 승인 취소*/
 	public int ApprovalRsv(RsvDTO param);
+	/*사용 완료된 예약 내역*/
+	public List<RsvDTO> UsedRsvList(String usedRsvIdx);
 }

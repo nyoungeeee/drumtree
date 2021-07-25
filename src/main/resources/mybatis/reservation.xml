@@ -93,5 +93,12 @@
 		WHERE rsvIdx=${rsvIdx}
 	</update>
 
+	<!-- 사용 완료된 예약 내역 -->
+	<select id="usedRsv" parameterType="String"
+		resultType="com.nyoung.drumtree.dto.RsvDTO">
+		SELECT * FROM reservation
+		WHERE rsvIdx IN (${usedRsvIdx})
+	</select>
+
 
 </mapper>

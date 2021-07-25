@@ -39,4 +39,9 @@ public class RsvServiceImpl implements RsvService {
 		return rsvDAO.ApprovalRsv(param);
 	}
 
+	@Override
+	public List<RsvDTO> UsedRsvList(String usedRsvIdx) {
+		return rsvDAO.UsedRsvList(usedRsvIdx);
+	}
+
 }

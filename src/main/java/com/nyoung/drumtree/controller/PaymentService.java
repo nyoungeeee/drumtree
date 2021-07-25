@@ -12,7 +12,7 @@ public interface PaymentService {
 	public int InsertPayment(PaymentDTO param);
 	/* 납부 정보 수정 */
 	public int UpdatePayment(PaymentDTO param);
-	/* 납부 정보 삭제 */
-	public int DeletePayment(PaymentDTO param);
+	/* 횟수 변경 */
+	public int RmnCntPayment(int payIdx, String code, int cnt);
 	
 }

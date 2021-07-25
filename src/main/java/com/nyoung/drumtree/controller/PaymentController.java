@@ -81,7 +81,7 @@ public class PaymentController {
 		String rt = "";
 		int totalAll = 0;
 		int total = 0;
-		
+
 		// 쿼리 실행 -- 회원이름 >> 회원번호로 변환
 		if(!memberName.equals("")) {
 			List<MemberDTO> searchMemberList = null;
@@ -99,9 +99,9 @@ public class PaymentController {
 			} else {
 				rt = "PaymentList_FAIL002";	//검색된 회원 이름이 없음
 			}
-			
+
 		}
-		
+
 		// 쿼리 실행
 		PaymentDTO param = new PaymentDTO();
 		param.setPayIdx(payIdx);
@@ -163,7 +163,7 @@ public class PaymentController {
 				payment.put("memberName", "삭제된 회원");
 				payment.put("memberGrade", "-1");
 			}
-			
+
 			data.put(i, payment);
 		}
 		return data;
@@ -171,8 +171,197 @@ public class PaymentController {
 
 
 	/* 납부 정보 등록 */
+	@RequestMapping(value = "/insert-payment")
+	public Map<Object, Object> InsertPayments(HttpServletRequest request) throws Exception {
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
 
+		// 들어온 값
+		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
+		String payCodeStr = request.getParameter("payCode")==null ? "" : request.getParameter("payCode");
+		String lessonCntStr = request.getParameter("lessonCnt")==null ? "" : request.getParameter("lessonCnt");
+		String practiceCntStr = request.getParameter("practiceCnt")==null ? "" : request.getParameter("practiceCnt");
+		String payDate = request.getParameter("payDate")==null ? "" : request.getParameter("payDate");
+		String lessonRmnCntStr = request.getParameter("lessonRmnCnt")==null ? "" : request.getParameter("lessonRmnCnt");
+		String practiceRmnCntStr = request.getParameter("practiceRmnCnt")==null ? "" : request.getParameter("practiceRmnCnt");
+		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
+		String feesStr = request.getParameter("fees")==null ? "" : request.getParameter("fees");
+
+		int memberIdx = -1;
+		if(!memberIdxStr.equals("")) {
+			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
+		}
+		int payCode = -1;
+		if(!payCodeStr.equals("")) {
+			payCode = Integer.parseInt(request.getParameter("payCode"));
+		}
+		int lessonCnt = -1;
+		if(!lessonCntStr.equals("")) {
+			lessonCnt = Integer.parseInt(request.getParameter("lessonCnt"));
+		}
+		int practiceCnt = -1;
+		if(!practiceCntStr.equals("")) {
+			practiceCnt = Integer.parseInt(request.getParameter("practiceCnt"));
+		}
+		int lessonRmnCnt = -1;
+		if(!lessonRmnCntStr.equals("")) {
+			lessonRmnCnt = Integer.parseInt(request.getParameter("lessonRmnCnt"));
+		}
+		int practiceRmnCnt = -1;
+		if(!practiceRmnCntStr.equals("")) {
+			practiceRmnCnt = Integer.parseInt(request.getParameter("practiceRmnCnt"));
+		}
+
+		int fees = -1;
+		if(!feesStr.equals("")) {
+			fees = Integer.parseInt(request.getParameter("fees"));
+		}
+
+		// 결과값 세팅
+		String rt = null;
+		int total = 0;
+
+		// 쿼리 실행
+		PaymentDTO param = new PaymentDTO();
+		param.setMemberIdx(memberIdx);
+		param.setPayCode(payCode);
+		param.setLessonCnt(lessonCnt);
+		param.setPracticeCnt(practiceCnt);
+		param.setPayDate(payDate);
+		param.setLessonRmnCnt(lessonRmnCnt);
+		param.setPracticeRmnCnt(practiceRmnCnt);
+		param.setMemo(memo);
+		param.setFees(fees);
+
+		total = paymentService.InsertPayment(param);
+		if(total > 0) {
+			rt = "InsertPayment_OK";
+		} else {
+			rt = "InsertPayment_FAIL001";
+		}
+
+		// Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
+
+		return data;
+	}
 	/* 납부 정보 수정 */
+	@RequestMapping(value = "/update-payment")
+	public Map<Object, Object> UpdatePayment(HttpServletRequest request) throws Exception {
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
 
-	/* 납부 정보 삭제 */
+		// 들어온 값
+		String payIdxStr = request.getParameter("payIdx")==null ? "" : request.getParameter("payIdx");
+		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
+		String payCodeStr = request.getParameter("payCode")==null ? "" : request.getParameter("payCode");
+		String lessonCntStr = request.getParameter("lessonCnt")==null ? "" : request.getParameter("lessonCnt");
+		String practiceCntStr = request.getParameter("practiceCnt")==null ? "" : request.getParameter("practiceCnt");
+		String payDate = request.getParameter("payDate")==null ? "" : request.getParameter("payDate");
+		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
+		String usedRsvIdx = request.getParameter("usedRsvIdx")==null ? "" : request.getParameter("usedRsvIdx");
+		String feesStr = request.getParameter("fees")==null ? "" : request.getParameter("fees");
+		String code = request.getParameter("code")==null ? "" : request.getParameter("code");
+		
+		int payIdx = -1;
+		if(!payIdxStr.equals("")) {
+			payIdx = Integer.parseInt(request.getParameter("payIdx"));
+		}
+		int memberIdx = -1;
+		if(!memberIdxStr.equals("")) {
+			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
+		}
+		int payCode = -1;
+		if(!payCodeStr.equals("")) {
+			payCode = Integer.parseInt(request.getParameter("payCode"));
+		}
+		int lessonCnt = -1;
+		if(!lessonCntStr.equals("")) {
+			lessonCnt = Integer.parseInt(request.getParameter("lessonCnt"));
+		}
+		int practiceCnt = -1;
+		if(!practiceCntStr.equals("")) {
+			practiceCnt = Integer.parseInt(request.getParameter("practiceCnt"));
+		}
+
+		int fees = -1;
+		if(!feesStr.equals("")) {
+			fees = Integer.parseInt(request.getParameter("fees"));
+		}
+
+		int isDelete = -1;
+
+		// 결과값 세팅
+		String rt = null;
+		int total = 0;
+
+		// 쿼리 실행
+		PaymentDTO param = new PaymentDTO();
+		param.setPayIdx(payIdx);
+		param.setMemberIdx(memberIdx);
+		param.setPayCode(payCode);
+		param.setLessonCnt(lessonCnt);
+		param.setPracticeCnt(practiceCnt);
+		param.setPayDate(payDate);
+		param.setMemo(memo);
+		param.setUsedRsvIdx(usedRsvIdx);
+		param.setFees(fees);
+		param.setIsDelete(isDelete);
+		if(code.equals("1")) {
+			// code가 1으로 오면 삭제 처리
+			param.setIsDelete(1);
+		}
+		total = paymentService.UpdatePayment(param);
+		if(total > 0) {
+			rt = "UpdatePayment_OK";
+		} else {
+			rt = "UpdatePayment_FAIL001";
+		}
+
+		// Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
+
+		return data;
+	}
+
+	/* 횟수 변경 */
+	@RequestMapping(value = "/change-cnt")
+	public Map<Object, Object> RmnCntPayment(HttpServletRequest request) throws Exception {
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
+
+		// 들어온 값
+		String payIdxStr = request.getParameter("payIdx")==null ? "" : request.getParameter("payIdx");
+		String code = request.getParameter("code")==null ? "" : request.getParameter("code");
+		String cntStr = request.getParameter("cnt")==null ? "" : request.getParameter("cnt");
+
+		int payIdx = -1;
+		if(!payIdxStr.equals("")) {
+			payIdx = Integer.parseInt(request.getParameter("payIdx"));
+		}
+		
+		int cnt = -1;
+		if(!cntStr.equals("")) {
+			cnt = Integer.parseInt(request.getParameter("cnt"));
+		}
+
+		// 결과값 세팅
+		String rt = null;
+		int total = 0;
+
+		total = paymentService.RmnCntPayment(payIdx, code, cnt);
+		if(total > 0) {
+			rt = "ChangeCntPayment_OK";
+		} else {
+			rt = "ChangeCntPayment_FAIL001";
+		}
+
+		// Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
+
+		return data;
+	}
 }
