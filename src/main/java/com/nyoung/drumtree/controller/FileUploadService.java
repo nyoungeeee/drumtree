@@ -18,6 +18,7 @@ public class FileUploadService {
 
 	public String restore(MultipartFile multipartFile) {
 		String url = null;
+		String url2 = null;
 
 		try {
 			// 파일 정보
@@ -36,6 +37,7 @@ public class FileUploadService {
 
 			writeFile(multipartFile, saveFileName);
 			url = PREFIX_URL + saveFileName;
+			url2 = saveFileName;
 		}
 		catch (IOException e) {
 			// 원래라면 RuntimeException 을 상속받은 예외가 처리되어야 하지만
@@ -43,7 +45,7 @@ public class FileUploadService {
 			// throw new FileUploadException();	
 			throw new RuntimeException(e);
 		}
-		return url;
+		return url2;
 	}
 
 
