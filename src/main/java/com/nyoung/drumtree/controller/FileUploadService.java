@@ -12,8 +12,8 @@ public class FileUploadService {
 	// 리눅스 기준으로 파일 경로를 작성 ( 루트 경로인 /으로 시작한다. )
 	// 윈도우라면 workspace의 드라이브를 파악하여 JVM이 알아서 처리해준다.
 	// 따라서 workspace가 C드라이브에 있다면 C드라이브에 upload 폴더를 생성해 놓아야 한다.
-//	private static final String SAVE_PATH = "/var/lib/tomcat9/webapps/ROOT/test";
-	private static final String SAVE_PATH = "D:/test";
+	private static final String SAVE_PATH = "/var/lib/tomcat9/webapps/ROOT/test";
+//	private static final String SAVE_PATH = "D:/test";
 	private static final String PREFIX_URL = SAVE_PATH+"/";
 
 	public String[] restore(MultipartFile multipartFile) {
