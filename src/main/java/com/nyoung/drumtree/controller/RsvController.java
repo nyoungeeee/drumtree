@@ -267,5 +267,73 @@ public class RsvController {
 		return data;
 	}
 
+	/*사용 완료된 예약 내역*/
+	@RequestMapping(value = "/usedrsvList")
+	public Map<Object, Object> UsedRsvList(HttpServletRequest request) throws Exception {
+
+		// 한글 인코딩 설정
+		request.setCharacterEncoding("UTF-8");
+
+		// 들어온 값
+		String usedRsvIdx = request.getParameter("usedRsvIdx")==null ? "" : request.getParameter("usedRsvIdx");
+
+		// 결과값 세팅
+		List<RsvDTO> list = null;
+		List<MemberDTO> memberList = null;
+		String rt = null;
+		int totalAll = 0;
+		int total = 0;
+		
+		list = rsvService.UsedRsvList(usedRsvIdx);
+		total = list.size();
+		if(total > 0) {
+			rt = "RsvList_OK";
+		} else {
+			rt = "RsvList_FAIL001";
+		}
+
+		// Map 세팅
+		Map<Object, Object> data = new HashMap<>();;
+		data.put("rt", rt);
+		data.put("total", total);
+		data.put("totalAll", totalAll);
+		for(int i=0; i<list.size(); i++){
+			Map<String, Object> rsv = new HashMap<String, Object>();
+			// 예약 정보 넣기
+			RsvDTO dto = list.get(i);
+			rsv.put("rsvIdx", dto.getRsvIdx());
+			rsv.put("rsvType", dto.getRsvType());
+			rsv.put("roomType", dto.getRoomType());
+			rsv.put("start", dto.getStart());
+			rsv.put("end", dto.getEnd());
+			rsv.put("regDate", dto.getRegDate());
+			rsv.put("updateDate", dto.getUpdateDate());
+			rsv.put("memo", dto.getMemo());
+			rsv.put("isApproval", dto.getIsApproval());
+			rsv.put("memberIdx", dto.getMemberIdx());
+			// 회원 정보 넣기
+			memberList = null;
+			MemberDTO memberParam = new MemberDTO();
+			memberParam.setMemberIdx(dto.getMemberIdx());
+			memberParam.setMemberID("");
+			memberParam.setMemberName("");
+			memberParam.setMemo("");
+			memberParam.setMemberPW("");
+			memberParam.setIsApproval(-1);
+			memberParam.setMemberGrade(-1);
+			memberList = memberService.SelectMember(memberParam);
+			if(memberList.size()>0) {
+				rsv.put("memberName", memberList.get(0).getMemberName());
+				rsv.put("memberGrade", memberList.get(0).getMemberGrade());
+			} else {
+				rsv.put("memberName", "삭제된 회원");
+				rsv.put("memberGrade", "-1");
+			}
+
+			data.put(i, rsv);
+		}
+		return data;
+	}
+
 
 }
