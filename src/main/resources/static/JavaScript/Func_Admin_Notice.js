@@ -38,18 +38,32 @@ function processAjax(param0, param1) {
     			var resultPopup = "";
     			resultPopup += "<strong>공지사항 정보</strong>";
     			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
-    			resultPopup += "<br><br><hr><br>";
-    			resultPopup += "<table id='memberInfo'>";
+    			resultPopup += "<br><hr><table id='memberInfo'>";
     			resultPopup += "<tr>" + "<td>공지 번호</td>" + "<td>" + $(this).children().eq(0).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>글쓴이</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>공지 구분</td>" + "<td>" + "<select id='noticeType'></select>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>제목</td>" + "<td>" + "<input type='text' id='noticeSubject' spellcheck='false'>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>내용</td>" + "<td>" + "<textarea id='noticeContent'></textarea>" + "</td></tr>";
-    			resultPopup += "</table><br><hr><br>";
+    			resultPopup += "<tr>" + "<td>파일 첨부</td>" + "<td>" + "<div id='fileList'><strong>첨부 파일 목록</strong><br><hr></div>" + "</td></tr>";
+    			resultPopup += "</table><hr>";
     			resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
     			resultPopup += "<input type='button' class='updateBtn' value='저장'>";
     			$(".popupBox").html(resultPopup);
     			loadEditor("#noticeContent");
+    			
+    			$("#memberInfo tr").eq(5).find("td").eq(1).prepend("<br>");
+    			$("#memberInfo tr").eq(5).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
+    			$("#memberInfo tr").eq(5).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
+    			$("#memberInfo tr").eq(5).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
+    			$("#memberInfo tr").eq(5).find("td").eq(1).prepend("<input type='file' id='noticeFile' style='display:none;'>");
+    			$("#memberInfo tr").eq(5).find("td").eq(1).prepend("<label class='fileBtn' for='noticeFile'>파일 선택</label>");
+    			$("#memberInfo #fileList").html($(this).children().eq(6).find("#fileList").html());
+    			
+    			$("#noticeFile").on('change',function(){
+    				$(".fileName a").html($("#noticeFile")[0].files[0].name);
+    				$(".fileName a").fadeOut(0);
+    				$(".fileName a").fadeIn(500);
+    			})
     			
     			var resultOption = "";
     			if ($(this).children().eq(1).find("#important").length==0) {
@@ -62,7 +76,10 @@ function processAjax(param0, param1) {
     			$("#noticeType").append(resultOption);
     			
     			$("#noticeSubject").val($(this).children().eq(1).find("a").html());
-    			$("#noticeContent").val($(this).children().eq(6).html());
+    			var startToDelete = $(this).children().eq(6).html().indexOf("<div");
+    			var endToDelete = $(this).children().eq(6).html().indexOf("div>") + 4;
+    			var toDeleteString = $(this).children().eq(6).html().substring(startToDelete, endToDelete);
+    			$("#noticeContent").val($(this).children().eq(6).html().replaceAll(toDeleteString, ""));
     			
     			$(".updateBtn").attr("onclick", "updateNotice(" + $(this).children().eq(0).html() + ")");
     			$(".deleteBtn").attr("onclick", "deleteNotice(" + $(this).children().eq(0).html() + ")");
@@ -194,7 +211,8 @@ function resetNotice() {
 function updateNotice(idx) {
 	var noticeType = $("#noticeType").val();
 	var noticeSubject = $("#noticeSubject").val();
-	var noticeContent = editor.getData();
+	var noticeContent = "<div id='fileList'>" + $("#memberInfo #fileList").html() + "</div>" + editor.getData();
+	
 	$.ajax({
         url: "http://" + IPstring + "/update-notice",
         data: { noticeIdx: idx, subject: noticeSubject, content: noticeContent, isImport: noticeType },
@@ -232,4 +250,35 @@ function deleteNotice(idx) {
 	        }
 		})
 	}
+}
+
+function uploadFile() {
+	var formData = new FormData();
+	var fileData = $("#noticeFile")[0].files[0];
+	formData.append("upload", fileData);
+
+	$.ajax({
+        url: "http://" + IPstring + "/upload2",
+        data: formData,
+        contentType: false,
+        processData: false,
+        method: "POST",
+        error: function() { alert("데이터 로드 실패"); },
+        success: function(data) {
+        	var startPoint = data.indexOf('"url":"') + 7;
+        	var endPoint = data.indexOf(', "name"');
+        	var fileURL = data.substring(startPoint, endPoint);
+        	
+        	var startName = data.indexOf('"name":"') + 8;
+        	var endName = data.indexOf('"}');
+        	var fileName = data.substring(startName, endName);
+        	
+        	var fileList = "<b>" + "[ " + "<a href='" + fileURL + "' target='_blank'>" + fileName + "</a>" + " ]" + "&emsp;" + "</b>";
+        	$("#memberInfo #fileList").append(fileList);
+        }
+	})
+}
+
+function clearFile() {
+	alert("미구현 기능");
 }

@@ -46,6 +46,10 @@ function processAjax(param0, param1) {
     		$("tbody .noticeList").fadeOut(0);
     		$("tbody .noticeList").fadeIn(500);
     		
+    		if ($("#fileList a").length==0) {
+    			$("#fileList").css("display", "none");
+    		}
+    		
     		$("tbody .noticeList").click(function(){
     			$(".threadList").css("display", "none");
     			$(".noticeList").css("background-color", "");
