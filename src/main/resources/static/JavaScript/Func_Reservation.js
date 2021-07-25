@@ -346,12 +346,19 @@ function processAjax(param0, param1, param2, param3) {
 
 function selectDate() {
 	$(document).ready(function(){
-		var currentDate = new Date();
-		var timezoneOffset = new Date().getTimezoneOffset() * 60000;
-		var timezoneDate = new Date(Date.now() - timezoneOffset);
-		$("#date").val(timezoneDate.toISOString().slice(0,10));
+		if (window.location.href.indexOf("?date=")>0) {
+			var dateParam = window.location.href.split("?date=");
+			var currentDate = new Date(dateParam[1]);
+			$("#date").val(currentDate.toISOString().slice(0,10));
+		}
+		else {
+			var currentDate = new Date();
+			var timezoneOffset = new Date().getTimezoneOffset() * 60000;
+			var timezoneDate = new Date(Date.now() - timezoneOffset);
+			$("#date").val(timezoneDate.toISOString().slice(0,10));
+		}
 		createTimeTable(currentDate);
-		
+
 		$('#date').change(function(){
 			var currentDate = new Date($("#date").val());
 			createTimeTable(currentDate);

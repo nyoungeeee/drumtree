@@ -398,3 +398,15 @@
 	.myScheduleOn .myScheduleBtn {
 		background-color: #045FB4;
 	}
+	
+	#monthDay {
+		border-radius: 2px;
+		padding: 1% 2% 1% 2%;
+		cursor: pointer;
+		transition: all 0.25s ease;
+	}
+	
+	#monthDay:hover {
+		background-color: #6E6E6E;
+		color: #FFFFFF;
+	}

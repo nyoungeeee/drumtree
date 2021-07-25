@@ -70,10 +70,18 @@ function processAjax(param0, param1, param2, param3, param4, param5) {
         		}
         		
         		var row = parseInt((j+firstWeek)/7);
-        		$("tbody tr").eq(row).children().eq(currentWeek).append(month + "-" + day + "<a style='float:right'></a>" + "<hr>");
+        		$("tbody tr").eq(row).children().eq(currentWeek).append("<label id='monthDay'>" + month + "-" + day + "</label>" + "<a style='float:right'></a>" + "<hr>");
         		$("tbody tr").eq(row).children().eq(currentWeek).append("<div id='realTime'>" + year + "-" + month + "-" + day + "</div>");
         		$("tbody tr").eq(row).children().eq(currentWeek).append("<div id='reservationList'>" + "</div>");
         	}
+        	
+        	$("label").click(function() {
+        		var clickDate = $(this).parent().find("#realTime").html();
+        		if (confirm(clickDate + "의 예약 화면으로 이동하시겠습니까?")==true) {
+        			location.href = "../Reservation?date=" + clickDate;
+        		}
+        	});
+        	
         	var holyDay = [ "01-01", "02-11", "02-12", "02-13", "03-01", "05-05", "05-19", "06-06", "08-15", "09-20", "09-21", "09-22", "10-03", "10-09", "12-25" ];
         	for (var k = 0; k < holyDay.length; k++) {
         		$("tbody td:contains('" + holyDay[k] + "')").css("color", "#FA5858");
