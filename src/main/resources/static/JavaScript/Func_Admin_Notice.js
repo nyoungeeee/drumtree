@@ -256,29 +256,35 @@ function uploadFile() {
 	var formData = new FormData();
 	var fileData = $("#noticeFile")[0].files[0];
 	formData.append("upload", fileData);
-
-	$.ajax({
-        url: "http://" + IPstring + "/upload2",
-        data: formData,
-        contentType: false,
-        processData: false,
-        method: "POST",
-        error: function() { alert("데이터 로드 실패"); },
-        success: function(data) {
-        	var startPoint = data.indexOf('"url":"') + 7;
-        	var endPoint = data.indexOf(', "name"');
-        	var fileURL = data.substring(startPoint, endPoint);
-        	
-        	var startName = data.indexOf('"name":"') + 8;
-        	var endName = data.indexOf('"}');
-        	var fileName = data.substring(startName, endName);
-        	
-        	var fileList = "<b>" + "[ " + "<a href='" + fileURL + "' target='_blank'>" + fileName + "</a>" + " ]" + "&emsp;" + "</b>";
-        	$("#memberInfo #fileList").append(fileList);
-        }
-	})
+	
+	if (fileData==null) {
+		$(".fileName a").fadeOut(0);
+		$(".fileName a").fadeIn(500);
+	}
+	else {
+		$.ajax({
+	        url: "http://" + IPstring + "/upload2",
+	        data: formData,
+	        contentType: false,
+	        processData: false,
+	        method: "POST",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	var startPoint = data.indexOf('"url":"') + 7;
+	        	var endPoint = data.indexOf(', "name"');
+	        	var fileURL = data.substring(startPoint, endPoint);
+	        	
+	        	var startName = data.indexOf('"name":"') + 8;
+	        	var endName = data.indexOf('"}');
+	        	var fileName = data.substring(startName, endName);
+	        	
+	        	var fileList = "<span>" + "[ " + "<a href='" + fileURL + "' target='_blank'>" + fileName + "</a>" + " ]" + "&emsp;" + "</span>";
+	        	$("#memberInfo #fileList").append(fileList);
+	        }
+		})
+	}
 }
 
 function clearFile() {
-	alert("미구현 기능");
+	$("#memberInfo #fileList span").remove();
 }
