@@ -142,16 +142,30 @@ function addNotice() {
 	var resultPopup = "";
 	resultPopup += "<strong>공지사항 추가</strong>";
 	resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
-	resultPopup += "<br><br><hr><br>";
+	resultPopup += "<br><hr>";
 	resultPopup += "<table id='memberInfo'>";
 	resultPopup += "<tr>" + "<td>공지 구분</td>" + "<td>" + "<select id='noticeType'></select>" + "&emsp;" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>제목</td>" + "<td>" + "<input type='text' id='noticeSubject' spellcheck='false'>" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>내용</td>" + "<td>" + "<textarea id='noticeContent'></textarea>" + "</td></tr>";
-	resultPopup += "</table><br><hr><br>";
+	resultPopup += "<tr>" + "<td>파일 첨부</td>" + "<td>" + "<div id='fileList'><strong>첨부 파일 목록</strong><br><hr></div>" + "</td></tr>";
+	resultPopup += "</table><hr>";
 	resultPopup += "<input type='button' class='resetBtn' value='초기화'>";
 	resultPopup += "<input type='button' class='saveBtn' value='등록'>";
 	$(".popupBox").html(resultPopup);
 	loadEditor("#noticeContent");
+	
+	$("#memberInfo tr").eq(3).find("td").eq(1).prepend("<br>");
+	$("#memberInfo tr").eq(3).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
+	$("#memberInfo tr").eq(3).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
+	$("#memberInfo tr").eq(3).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
+	$("#memberInfo tr").eq(3).find("td").eq(1).prepend("<input type='file' id='noticeFile' style='display:none;'>");
+	$("#memberInfo tr").eq(3).find("td").eq(1).prepend("<label class='fileBtn' for='noticeFile'>파일 선택</label>");
+	
+	$("#noticeFile").on('change',function(){
+		$(".fileName a").html($("#noticeFile")[0].files[0].name);
+		$(".fileName a").fadeOut(0);
+		$(".fileName a").fadeIn(500);
+	})
 	
 	var resultOption = "";
 	resultOption += "<option value='none' selected>" + "" + "</option>";
@@ -171,7 +185,7 @@ function saveNotice() {
 	
 	var noticeType = $("#noticeType").val();	
 	var noticeSubject = $("#noticeSubject").val();
-	var noticeContent = editor.getData();
+	var noticeContent = "<div id='fileList'>" + $("#memberInfo #fileList").html() + "</div>" + editor.getData();
 	var noticeMember = decrypt.split("&")[3];
 	
 	$("#errorMessageType").remove();
@@ -203,7 +217,7 @@ function saveNotice() {
 
 function resetNotice() {
 	$("#noticeSubject").val("");
-	$("#noticeContent").val("");
+	editor.setData("");
 	
 	$("#errorMessageType").remove();
 }
