@@ -38,7 +38,7 @@ function processAjax(param0, param1) {
     			var resultPopup = "";
     			resultPopup += "<strong>공지사항 정보</strong>";
     			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
-    			resultPopup += "<br><hr><table id='memberInfo'>";
+    			resultPopup += "<hr><table id='memberInfo'>";
     			resultPopup += "<tr>" + "<td>공지 번호</td>" + "<td>" + $(this).children().eq(0).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>글쓴이</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>공지 구분</td>" + "<td>" + "<select id='noticeType'></select>" + "</td></tr>";
@@ -142,8 +142,7 @@ function addNotice() {
 	var resultPopup = "";
 	resultPopup += "<strong>공지사항 추가</strong>";
 	resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
-	resultPopup += "<br><hr>";
-	resultPopup += "<table id='memberInfo'>";
+	resultPopup += "<hr><table id='memberInfo'>";
 	resultPopup += "<tr>" + "<td>공지 구분</td>" + "<td>" + "<select id='noticeType'></select>" + "&emsp;" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>제목</td>" + "<td>" + "<input type='text' id='noticeSubject' spellcheck='false'>" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>내용</td>" + "<td>" + "<textarea id='noticeContent'></textarea>" + "</td></tr>";

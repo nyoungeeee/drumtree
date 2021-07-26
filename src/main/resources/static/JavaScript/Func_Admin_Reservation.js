@@ -22,20 +22,20 @@ function processAjax(param0, param1) {
     			result += "<td>" + roomName[data[i].roomType] + "</td>";
     			result += "<td>" + data[i].start.split(" ")[0] + "</td>";
     			result += "<td>" + data[i].start.split(" ")[1].substring(0,5) + " ~ " + data[i].end.split(" ")[1].substring(0,5) + "</td>";
-    			result += "<td>" + data[i].memo + "</td>";
+    			result += "<td>" + data[i].memo.replaceAll("\n", "<br>") + "</td>";
     			result += "<td style='display:none;'>" + data[i].rsvIdx + "</td>";
     			result += "</tr>";
     		}
     		$("tbody").html(result);
     		$("tbody tr").fadeOut(0);
     		$("tbody tr").fadeIn(500);
+    		$("tbody tr td").find("#fileList").css("display", "none");
     		
     		$("tbody tr").click(function(){
     			var resultPopup = "";
         		resultPopup += "<strong>예약 정보</strong>";
         		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
-        		resultPopup += "<br><br><hr><br>";
-        		resultPopup += "<table id='reservationInfo'>";
+        		resultPopup += "<hr><table id='reservationInfo'>";
         		resultPopup += "<tr>" + "<td>신청 일자</td>" + "<td>" + $(this).children().eq(0).attr("name") + "</td></tr>";
         		resultPopup += "<tr>" + "<td>신청 회원</td>" + "<td>" + $(this).children().eq(1).html() + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>" + "</td></tr>";
@@ -43,16 +43,33 @@ function processAjax(param0, param1) {
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' class='checkFlag' value='체크' onclick='checkTime(-1)'>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
-        		resultPopup += "</table><br><hr><br>";
+        		resultPopup += "<tr>" + "<td>파일 첨부</td>" + "<td>" + "<div id='fileList'><strong>첨부 파일 목록</strong><br><hr></div>" + "</td></tr>";
+        		resultPopup += "</table><hr>";
         		resultPopup += "<input type='button' class='rejectBtn' value='반려'>";
     			resultPopup += "<input type='button' class='approvalBtn' value='승인'>";
         		$(".popupBox").html(resultPopup);
-        		
     			$(".approvalBtn").attr("onclick", "approvalReservation(" + $(this).children().eq(6).html() + ")");
     			$(".rejectBtn").attr("onclick", "rejectReservation(" + $(this).children().eq(6).html() + ")");
-        		
         		$("#selectDate").val($(this).children().eq(3).html());
-        		$("#reservationMemo").val($(this).children().eq(5).html().replaceAll("<br>", "\n"));
+        		
+        		$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<br>");
+    			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
+    			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
+    			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
+    			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<input type='file' id='reservationFile' style='display:none;'>");
+    			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<label class='fileBtn' for='reservationFile'>파일 선택</label>");
+    			$("#reservationInfo #fileList").html($(this).children().eq(5).find("#fileList").html());
+    			
+    			$("#reservationFile").on('change',function(){
+    				$(".fileName a").html($("#reservationFile")[0].files[0].name);
+    				$(".fileName a").fadeOut(0);
+    				$(".fileName a").fadeIn(500);
+    			})
+    			
+    			var startToDelete = $(this).children().eq(5).html().indexOf("<div");
+    			var endToDelete = $(this).children().eq(5).html().indexOf("div>") + 4;
+    			var toDeleteString = $(this).children().eq(5).html().substring(startToDelete, endToDelete);
+    			$("#reservationMemo").val($(this).children().eq(5).html().replaceAll(toDeleteString, "").replaceAll("<br>", "\n"));
         		
         		var resultStartTime = "";
         		var resultEndTime = "";
@@ -190,7 +207,7 @@ function approvalReservation(idx) {
 	var room = $("#selectRoom").val();
 	var startTime = $("#selectDate").val() + " " + $("#selectStartTime").val() + ":00";
 	var endTime = $("#selectDate").val() + " " + $("#selectEndTime").val() + ":00";
-	var rsvMemo = $("#reservationMemo").val().replaceAll("\n", "<br>");
+	var rsvMemo = "<div id='fileList'>" + $("#reservationInfo #fileList").html() + "</div>" + $("#reservationMemo").val();
 	
 	if ($(".checkFlag").val()=="체크") {
 		alert("예약 가능 시간을 체크해주세요.");
@@ -334,4 +351,41 @@ function checkTime(reservationIndex) {
         	}
         }
 	})
+}
+
+function uploadFile() {
+	var formData = new FormData();
+	var fileData = $("#reservationFile")[0].files[0];
+	formData.append("upload", fileData);
+	
+	if (fileData==null) {
+		$(".fileName a").fadeOut(0);
+		$(".fileName a").fadeIn(500);
+	}
+	else {
+		$.ajax({
+	        url: "http://" + IPstring + "/upload2",
+	        data: formData,
+	        contentType: false,
+	        processData: false,
+	        method: "POST",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	var startPoint = data.indexOf('"url":"') + 7;
+	        	var endPoint = data.indexOf(', "name"');
+	        	var fileURL = data.substring(startPoint, endPoint);
+	        	
+	        	var startName = data.indexOf('"name":"') + 8;
+	        	var endName = data.indexOf('"}');
+	        	var fileName = data.substring(startName, endName);
+	        	
+	        	var fileList = "<span>" + "[ " + "<a href='" + fileURL + "' target='_blank'>" + fileName + "</a>" + " ]" + "&emsp;" + "</span>";
+	        	$("#reservationInfo #fileList").append(fileList);
+	        }
+		})
+	}
+}
+
+function clearFile() {
+	$("#reservationInfo #fileList span").remove();
 }
