@@ -160,21 +160,43 @@ function processAjax(param0, param1, param2, param3, param4, param5) {
         		var resultPopup = "";
         		resultPopup += "<strong>예약 정보</strong>";
         		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
-        		resultPopup += "<br><br><hr><br>";
-        		resultPopup += "<table id='reservationInfo'>";
+        		resultPopup += "<hr><table id='reservationInfo'>";
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 시간</td>" + "<td>" + "<select id='selectStartTime'></select>" + "&emsp;" + "<select id='selectEndTime'></select>" + "&emsp;" + "<input type='button' class='checkFlag' value='체크' onclick='checkTime(" + rsvIdxArray[$(this).attr("name")] + ")'>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='reservationMemo' spellcheck='false'></textarea>" + "</td></tr>";
-        		resultPopup += "</table><br><hr><br>";
+        		resultPopup += "<tr>" + "<td>파일 첨부</td>" + "<td>" + "<div id='fileList'><strong>첨부 파일 목록</strong><br><hr></div>" + "</td></tr>";
+        		resultPopup += "</table><hr>";
         		resultPopup += "<input type='button' class='deleteBtn' value='예약취소'>";
         		resultPopup += "<input type='button' class='updateBtn' value='변경'>";
         		$(".popupBox").html(resultPopup);
         		$("#selectDate").val($(this).parent().parent().find("#realTime").html());
-        		$("#reservationMemo").val(memoArray[$(this).attr("name")].replaceAll("<br>", "\n"));
         		$(".updateBtn").attr("onclick", "updateReservation(" + rsvIdxArray[$(this).attr("name")] + ")");
         		$(".deleteBtn").attr("onclick", "deleteReservation(" + rsvIdxArray[$(this).attr("name")] + ")");
+        		
+        		$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<br>");
+    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
+    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
+    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
+    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<input type='file' id='reservationFile' style='display:none;'>");
+    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='fileBtn' for='reservationFile'>파일 선택</label>");
+    			var startHTML = "<div id='fileList'>";
+    			var startToFile = memoArray[$(this).attr("name")].indexOf(startHTML) + startHTML.length;
+    			var endToFile = memoArray[$(this).attr("name")].indexOf("</div>");
+    			var toFileString = memoArray[$(this).attr("name")].substring(startToFile, endToFile);
+    			$("#reservationInfo #fileList").html(toFileString);
+    			
+    			$("#reservationFile").on('change',function(){
+    				$(".fileName a").html($("#reservationFile")[0].files[0].name);
+    				$(".fileName a").fadeOut(0);
+    				$(".fileName a").fadeIn(500);
+    			})
+    			
+    			var startToDelete = memoArray[$(this).attr("name")].indexOf("<div");
+    			var endToDelete = memoArray[$(this).attr("name")].indexOf("div>") + 4;
+    			var toDeleteString = memoArray[$(this).attr("name")].substring(startToDelete, endToDelete);
+    			$("#reservationMemo").val(memoArray[$(this).attr("name")].replaceAll(toDeleteString, "").replaceAll("<br>", "\n"));
         		
         		var resultStartTime = "";
         		var resultEndTime = "";
@@ -339,7 +361,7 @@ function updateReservation(idx) {
 	var room = $("#selectRoom").val();
 	var startTime = $("#selectDate").val() + " " + $("#selectStartTime").val() + ":00";
 	var endTime = $("#selectDate").val() + " " + $("#selectEndTime").val() + ":00";
-	var rsvMemo = $("#reservationMemo").val().replaceAll("\n", "<br>");
+	var rsvMemo = "<div id='fileList'>" + $("#reservationInfo #fileList").html() + "</div>" + $("#reservationMemo").val();
 	
 	if ($(".checkFlag").val()=="체크") {
 		alert("예약 가능 시간을 체크해주세요.");
@@ -515,4 +537,41 @@ var on = $(".myScheduleArea").hasClass("myScheduleOn");
 		$(".myScheduleBtn").val("모든 일정");
 	}
 	filterCalendar();
+}
+
+function uploadFile() {
+	var formData = new FormData();
+	var fileData = $("#reservationFile")[0].files[0];
+	formData.append("upload", fileData);
+	
+	if (fileData==null) {
+		$(".fileName a").fadeOut(0);
+		$(".fileName a").fadeIn(500);
+	}
+	else {
+		$.ajax({
+	        url: "http://" + IPstring + "/upload2",
+	        data: formData,
+	        contentType: false,
+	        processData: false,
+	        method: "POST",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	var startPoint = data.indexOf('"url":"') + 7;
+	        	var endPoint = data.indexOf(', "name"');
+	        	var fileURL = data.substring(startPoint, endPoint);
+	        	
+	        	var startName = data.indexOf('"name":"') + 8;
+	        	var endName = data.indexOf('"}');
+	        	var fileName = data.substring(startName, endName);
+	        	
+	        	var fileList = "<span>" + "[ " + "<a href='" + fileURL + "' target='_blank'>" + fileName + "</a>" + " ]" + "&emsp;" + "</span>";
+	        	$("#reservationInfo #fileList").append(fileList);
+	        }
+		})
+	}
+}
+
+function clearFile() {
+	$("#reservationInfo #fileList span").remove();
 }
