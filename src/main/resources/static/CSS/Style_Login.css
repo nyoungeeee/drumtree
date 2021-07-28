@@ -25,7 +25,7 @@
 		font-size: 0.8em;
 		font-weight: bold;
 		color: #000000;
-		width: 30%;
+		width: 20%;
 		height: 3em;
 		padding: 0.5%;
 	}
@@ -35,9 +35,10 @@
 		text-align: left;
 		font-size: 0.8em;
 		color: #000000;
-		width: 70%;
+		width: 80%;
 		height: 3em;
 		padding: 0.5%;
+		padding: 0.5% 10% 0.5% 0.5%;
 	}
 	
 	.loginBox {
@@ -141,7 +142,7 @@
 		font-family: IBMPlexSansKR-Regular;
         position: absolute;
         text-align: center;
-		width: 35em;
+		width: 50%;
 		height: auto;
 		top: 50%;
 		left: 50%;
@@ -231,7 +232,7 @@
 	.popupBox input[type=text] {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
-		width: 15em;
+		width: 35%;
 		height: 2em;
 		border: 1px solid #C4C4C4;
 		border-radius: 2px;
@@ -244,7 +245,7 @@
 	.popupBox input[type=password] {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
-		width: 15em;
+		width: 35%;
 		height: 2em;
 		border: 1px solid #C4C4C4;
 		border-radius: 2px;
@@ -257,8 +258,8 @@
 	textarea {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
-		width: 80%;
-		height: 10em;
+		width: 96%;
+		height: 25em;
 		border: 1px solid #C4C4C4;
 		border-radius: 2px;
 		outline: 0;
@@ -266,19 +267,4 @@
 		color: #000000;
 		padding: 2%;
 		resize: none;
-	}
-	
-	.error {
-		font-family: IBMPlexSansKR-Regular;
-		font-size: 1em;
-		text-align: center;
-		width: 2.5em;
-		height: 2.5em;
-		border: 0;
-		border-radius: 100%;
-		background-color: #B40404;
-		color: #FFFFFF;
-		outline: 0;
-		padding: 0 2% 0 2%;
-		user-select: none;
 	}
