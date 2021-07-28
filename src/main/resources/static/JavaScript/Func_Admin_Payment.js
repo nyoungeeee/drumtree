@@ -15,12 +15,10 @@ function processAjax(param0, param1) {
     			result += "<td>" + "￦ " + data[i].fees.toLocaleString() + "</td>";
     			
     			createGraph(data[i].lessonRmnCnt, data[i].lessonCnt);
-    			var lessonCount = data[i].lessonRmnCnt + "/" + data[i].lessonCnt;
-    			result += "<td name='" + lessonCount + "'>" + resultGraph + "</td>";
+    			result += "<td name='" + data[i].lessonRmnCnt + "'>" + resultGraph + "</td>";
     			
     			createGraph(data[i].practiceRmnCnt, data[i].practiceCnt);
-    			var practiceCount = data[i].practiceRmnCnt + "/" + data[i].practiceCnt;
-    			result += "<td name='" + practiceCount + "'>" + resultGraph + "</td>";
+    			result += "<td name='" + data[i].practiceRmnCnt + "'>" + resultGraph + "</td>";
     			
     			result += "<td>" + data[i].memo.replaceAll("\n", "<br>") + "</td>";
     			result += "<td style='display:none;'>" + data[i].memberIdx + "</td>";
@@ -38,24 +36,30 @@ function processAjax(param0, param1) {
     			resultPopup += "<tr>" + "<td>납부 일자</td>" + "<td>" + "<input type='date' id='paymentDate'>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>납부 회원</td>" + "<td>" + "<input type='text' id='paymentMember' readonly>" + "&emsp;" + "<input type='button' class='findBtn' value='찾기' onclick='findMember()'>" + "&emsp;" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>수강료</td>" + "<td>" + "<input type='text' id='paymentFee' readonly>" + "&emsp;" + "<input type='button' class='feeBtn' value='주 2회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 3회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 5회'>" + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>레슨 횟수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>연습 횟수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>남은 레슨 횟수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>남은 연습 횟수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='paymentMemo' spellcheck=false></textarea>" + "</td></tr>";
     			resultPopup += "</table><hr>";
     			resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
     			resultPopup += "<input type='button' class='updateBtn' value='저장'>";
     			$(".popupBox").html(resultPopup);
     			
-    			$(".updateBtn").attr("onclick", "updatePayment(" + $(this).children().eq(0).html() + ")");
-    			$(".deleteBtn").attr("onclick", "deletePayment(" + $(this).children().eq(0).html() + ")");
+    			var beforeLesson = $(this).children().eq(4).attr("name");
+    			var beforePractice = $(this).children().eq(5).attr("name");
     			
     			$("#paymentDate").val($(this).children().eq(1).html());
     			$("#paymentMember").val($(this).children().eq(2).html());
     			$("#paymentMember").attr("name", $(this).children().eq(7).html());
     			$("#paymentFee").val($(this).children().eq(3).html());
-    			$("#paymentLesson").val($(this).children().eq(4).attr("name").split("/")[1]);
-    			$("#paymentPractice").val($(this).children().eq(5).attr("name").split("/")[1]);
+    			$("#paymentLesson").val(beforeLesson);
+    			$("#paymentPractice").val(beforePractice);
     			$("#paymentMemo").val($(this).children().eq(6).html().replaceAll("<br>", "\n"));
+    			
+    			var payIdx = $(this).children().eq(0).html();
+    			var afterLesson = beforeLesson;
+    			var afterPractice = beforePractice;
+    			$(".updateBtn").attr("onclick", "updatePayment(" + payIdx + "," + (afterLesson-beforeLesson) + "," + (afterPractice-beforePractice) + ")");
+    			$(".deleteBtn").attr("onclick", "deletePayment(" + payIdx + ")");
     			
     			$(".feeBtn").click(function() {
     				if ($(this).val()=="주 2회") {
@@ -72,12 +76,15 @@ function processAjax(param0, param1) {
     			
     			$(".changeBtn").click(function() {
     				var currentCount = Number($(this).parent().find("input[type=text]").val());
-    				if ($(this).val()=="+"&&currentCount<100) {
+    				if ($(this).val()=="+") {
     					$(this).parent().find("input[type=text]").val(currentCount + 1);
     				}
-    				else if ($(this).val()=="-"&&currentCount>0) {
+    				else if ($(this).val()=="-") {
     					$(this).parent().find("input[type=text]").val(currentCount - 1);
     				}
+    				var afterLesson = Number($("#paymentLesson").val());
+    				var afterPractice = Number($("#paymentPractice").val());
+    				$(".updateBtn").attr("onclick", "updatePayment(" + payIdx + "," + (afterLesson-beforeLesson) + "," + (afterPractice-beforePractice) + ")");
     			});
     		});
         }
@@ -183,10 +190,10 @@ function addNotice() {
 	
 	$(".changeBtn").click(function() {
 		var currentCount = Number($(this).parent().find("input[type=text]").val());
-		if ($(this).val()=="+"&&currentCount<100) {
+		if ($(this).val()=="+") {
 			$(this).parent().find("input[type=text]").val(currentCount + 1);
 		}
-		else if ($(this).val()=="-"&&currentCount>0) {
+		else if ($(this).val()=="-") {
 			$(this).parent().find("input[type=text]").val(currentCount - 1);
 		}
 	});
@@ -214,8 +221,8 @@ function findMember() {
 	$(".popupFindMember").html(resultFindMember);
 	
 	var findMemberOption = "";
-	findMemberOption += "<option value='Id'>" + "아이디" + "</option>";
 	findMemberOption += "<option value='name'>" + "닉네임" + "</option>";
+	findMemberOption += "<option value='Id'>" + "아이디" + "</option>";
 	findMemberOption += "<option value='memo'>" + "회원 메모" + "</option>";
 	$("#selectInfoType").append(findMemberOption);
 	
@@ -361,19 +368,29 @@ function resetPayment() {
 	$("#errorMessageMember").remove();
 }
 
-function updatePayment(idx) {
+function changeRemainCount(param0, param1, param2) {
+	$.ajax({
+        url: "http://" + IPstring + "/change-cnt",
+        data: {
+        	memberIdx: param0,
+        	code: param1,
+        	cnt: param2
+        },
+        method: "POST",
+        dataType: "JSON",
+        error: function() { console.log("데이터 로드 실패"); },
+        success: function(data) { console.log(data.rt); }
+	})
+}
+
+function updatePayment(idx, lesson, practice) {
 	var paymentDate = $("#paymentDate").val();
 	var paymentMember = Number($("#paymentMember").attr("name"));
 	var paymentMemberName = $("#paymentMember").val();
 	var paymentFee = Number($("#paymentFee").val().replaceAll("￦ ", "").replaceAll(",", ""));
-	var paymentLesson = Number($("#paymentLesson").val());
-	var paymentPractice = Number($("#paymentPractice").val());
+	var paymentRmnLesson = Number($("#paymentLesson").val());
+	var paymentRmnPractice = Number($("#paymentPractice").val());
 	var paymentMemo = $("#paymentMemo").val();
-	if (paymentLesson==0&&paymentPractice>0) { var paymentCode = 4; }
-	else if (paymentFee==180000) { var paymentCode = 1; }
-	else if (paymentFee==200000) { var paymentCode = 2; }
-	else if (paymentFee==220000) { var paymentCode = 3; }
-	else { var paymentCode = 0; }
 	
 	$.ajax({
         url: "http://" + IPstring + "/update-payment",
@@ -383,10 +400,7 @@ function updatePayment(idx) {
         	memberIdx: paymentMember,
         	memberName: paymentMemberName,
         	fees: paymentFee,
-        	lessonCnt: paymentLesson,
-        	practiceCnt: paymentPractice,
-        	memo: paymentMemo,
-        	payCode: paymentCode
+        	memo: paymentMemo
         },
         method: "POST",
         dataType: "JSON",
@@ -396,6 +410,8 @@ function updatePayment(idx) {
         		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
         	}
         	else if (data.rt=="UpdatePayment_OK") {
+        		if (lesson!=0) { changeRemainCount(paymentMember, 1, lesson); }
+        		if (practice!=0) { changeRemainCount(paymentMember, 2, practice); }
             	alert("납부 정보 변경이 정상적으로 완료되었습니다.");
             	window.location.reload();
         	}
