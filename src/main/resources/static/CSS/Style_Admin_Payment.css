@@ -139,7 +139,7 @@
 		outline: 0;
 		background-color: #D8D8D8;
 		color: #000000;
-		margin-right: 0.5%;
+		margin-right: 0.25%;
 		padding: 0 1% 0 1%;
 	}
 	
@@ -153,7 +153,7 @@
 		outline: 0;
 		background-color: #D8D8D8;
 		color: #000000;
-		margin-right: 0.5%;
+		margin-right: 0.25%;
 		padding: 0 1% 0 1%;
 	}
 	
@@ -276,34 +276,6 @@
 		user-select: none;
 	}
 	
-	.graphTotal {
-		display: inline-block;
-		font-family: IBMPlexSansKR-Regular;
-		font-size: 1em;
-		font-weight: 500;
-		display: inline-block;
-		width: 75%;
-		height: 1.5em;
-		border: 0;
-		border-radius: 2px;
-		background-color: #BDBDBD;
-		color: #000000;
-		user-select: none;
-	}
-	
-	.graphBar {
-		font-family: IBMPlexSansKR-Regular;
-		font-size: 1em;
-		font-weight: 500;
-		display: inline-block;
-		height: 100%;
-		border: 0;
-		border-radius: 2px;
-		background-color: #424242;
-		color: #FFFFFF;
-		user-select: none;
-	}
-	
 	.popupBackground {
         display: none;
         position: absolute;
@@ -338,12 +310,12 @@
 		font-family: IBMPlexSansKR-Regular;
         position: absolute;
         text-align: center;
-		width: 40%;
+		width: 65%;
 		height: auto;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		padding: 1%;
+		padding: 1% 1% 2% 1%;
         background-color: #EEEEEE;
 		box-shadow: 0 0 8px #000000;
         z-index: 8;
