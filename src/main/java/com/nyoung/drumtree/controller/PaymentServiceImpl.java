@@ -35,9 +35,9 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	/* 횟수 변경 */
 	@Override
-	public int RmnCntPayment(int payIdx, String code, int cnt) {
+	public int RmnCntPayment(int memberIdx, String code, int cnt) {
 		// TODO Auto-generated method stub
-		return paymentDAO.RmnCntPayment(payIdx, code, cnt);
+		return paymentDAO.RmnCntPayment(memberIdx, code, cnt);
 	}
 	
 }
