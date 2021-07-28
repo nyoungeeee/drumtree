@@ -13,6 +13,6 @@ public interface PaymentService {
 	/* 납부 정보 수정 */
 	public int UpdatePayment(PaymentDTO param);
 	/* 횟수 변경 */
-	public int RmnCntPayment(int payIdx, String code, int cnt);
+	public int RmnCntPayment(int memberIdx, String code, int cnt);
 	
 }

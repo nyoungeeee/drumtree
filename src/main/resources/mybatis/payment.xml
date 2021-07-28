@@ -108,6 +108,8 @@
 			practiceRmnCnt=practiceRmnCnt+#{cnt},
 		</if>
 		updateDate = now()
-		WHERE payIdx=#{payIdx}
+		WHERE memberIdx=#{memberIdx}
+		ORDER by payDate DESC 
+		limit 1;
 	</update>
 </mapper>

@@ -333,13 +333,13 @@ public class PaymentController {
 		request.setCharacterEncoding("UTF-8");
 
 		// 들어온 값
-		String payIdxStr = request.getParameter("payIdx")==null ? "" : request.getParameter("payIdx");
+		String memberIdxStr = request.getParameter("memberIdx")==null ? "" : request.getParameter("memberIdx");
 		String code = request.getParameter("code")==null ? "" : request.getParameter("code");
 		String cntStr = request.getParameter("cnt")==null ? "" : request.getParameter("cnt");
 
-		int payIdx = -1;
-		if(!payIdxStr.equals("")) {
-			payIdx = Integer.parseInt(request.getParameter("payIdx"));
+		int memberIdx = -1;
+		if(!memberIdxStr.equals("")) {
+			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
 		}
 		
 		int cnt = -1;
@@ -351,7 +351,7 @@ public class PaymentController {
 		String rt = null;
 		int total = 0;
 
-		total = paymentService.RmnCntPayment(payIdx, code, cnt);
+		total = paymentService.RmnCntPayment(memberIdx, code, cnt);
 		if(total > 0) {
 			rt = "ChangeCntPayment_OK";
 		} else {

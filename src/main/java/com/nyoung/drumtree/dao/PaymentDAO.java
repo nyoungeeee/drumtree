@@ -65,9 +65,9 @@ public class PaymentDAO {
 	};
 
 	/* 횟수 변경 */
-	public int RmnCntPayment(int payIdx, String code, int cnt) {
+	public int RmnCntPayment(int memberIdx, String code, int cnt) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("payIdx", payIdx);
+		map.put("memberIdx", memberIdx);
 		map.put("code", code);
 		map.put("cnt", cnt);
 		return sqlSession.update("com.nyoung.drumtree.PaymentMapper.changeCntPayment", map);
