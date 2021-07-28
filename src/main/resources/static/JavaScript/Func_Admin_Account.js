@@ -28,6 +28,9 @@ function processAjax(param0, param1, param2) {
     			result += "<td>" + data[i].memberName + "</td>";
     			result += "<td>" + data[i].memo + "</td>";
     			result += "<td>" + data[i].memoAdmin + "</td>";
+    			result += "<td onclick='event.cancelBubble=true'>";
+    			result += "<input type='button' class='datailBtn' value='상세 보기' name='" + data[i].memberName + "' onclick='detailPayment(" + data[i].memberIdx + "," + i + ")'>";
+    			result += "</td>";
     			result += "</tr>";
     		}
     		$("tbody").html(result);
@@ -96,8 +99,9 @@ function createTableHead() {
 		result += "<td style='width:10%;'>" + "회원 등급" + "</td>";
 		result += "<td style='width:10%;'>" + "아이디" + "</td>";
 		result += "<td style='width:10%;'>" + "닉네임" + "</td>";
-		result += "<td style='width:30%;'>" + "회원 메모" + "</td>";
-		result += "<td style='width:30%;'>" + "관리자 메모" + "</td>";
+		result += "<td style='width:25%;'>" + "회원 메모" + "</td>";
+		result += "<td style='width:25%;'>" + "관리자 메모" + "</td>";
+		result += "<td style='width:10%;'>" + "납부 정보" + "</td>";
 		result += "</tr>";
 		
 		$("thead").html(result);
@@ -123,6 +127,102 @@ function closePopup() {
 	$('.popupBox').css('display', 'none');
 	$('.popupBackground').css('display', 'none');
 	$('html, body').css('overflow', '');
+}
+
+function openDetailPayment() {
+	$('.popupDetailPayment').css('display', 'inline-block');
+	$('.popupBackground').css('display', 'inline-block');
+	$('html, body').css('overflow', 'hidden');
+}
+
+function closeDetailPayment() {
+	$('.popupDetailPayment').css('display', 'none');
+	$('.popupBackground').css('display', 'none');
+	$('html, body').css('overflow', '');
+}
+
+function detailPayment(idx, no) {
+	var resultDetailPayment = "";
+	resultDetailPayment += "<strong>납부 정보 상세</strong>";
+	resultDetailPayment += "<input type='button' value='X' class='closeBtn' onclick='closeDetailPayment()'>";
+	resultDetailPayment += "<hr><select id='selectInfoType'></select>";
+	resultDetailPayment += "<input type='text' id='inputPaymentInfo' spellcheck=false placeholder='검색어를 입력해 주세요.' autocomplete='off'>";
+	resultDetailPayment += "<input type='button' id='searchPaymentInfo' value='검색'><br><br>";
+	resultDetailPayment += "<table><thead>";
+	resultDetailPayment += "<tr>";
+	resultDetailPayment += "<td style='width:10%;'>납부 번호</td>";
+	resultDetailPayment += "<td style='width:10%;'>납부 일자</td>";
+	resultDetailPayment += "<td style='width:10%;'>닉네임</td>";
+	resultDetailPayment += "<td style='width:10%;'>수강료</td>";
+	resultDetailPayment += "<td style='width:15%;'>레슨</td>";
+	resultDetailPayment += "<td style='width:15%;'>연습</td>";
+	resultDetailPayment += "<td style='width:30%;'>메모</td>";
+	resultDetailPayment += 	"</tr>";
+	resultDetailPayment += "</thead><tbody></tbody></table>";
+	$(".popupDetailPayment").html(resultDetailPayment);
+	
+	var detailPaymentOption = "";
+	detailPaymentOption += "<option value='memo'>" + "메모" + "</option>";
+	$("#selectInfoType").append(detailPaymentOption);
+	
+	$("#inputPaymentInfo").keypress(function(event) {
+		if (event.keyCode==13) {
+			event.preventDefault();
+			$("#searchPaymentInfo").click();
+		}
+	})
+	var name = $(".datailBtn").eq(no).attr("name");
+	loadPaymentData(idx, name, "");
+	openDetailPayment();
+	
+	$("#searchPaymentInfo").click(function() {
+		var selectInfoType = $("#selectInfoType").val();
+		var searchMemo = "";
+		if (selectInfoType=="memo") {
+			var searchMemo = $("#inputPaymentInfo").val();
+		}
+		loadPaymentData(idx, name, searchMemo)
+	})	
+}
+
+function loadPaymentData(idx, name, memo) {
+	$.ajax({
+	    url: "http://" + IPstring + "/payments",
+	    data: { memberIdx: idx, memo: memo },
+	    method: "POST",
+	    dataType: "JSON",
+	    error: function() { alert("데이터 로드 실패"); },
+	    success: function(data){
+	    	var result = "";
+	    	if (data.total==0) {
+	    		result += "<tr><td colspan=7>" + name + "님의 납부 정보가 없습니다." + "</td></tr>";
+	    	}
+	    	else {
+	    		for (var i = 0; i < data.total; i++) {
+					result += "<tr>";
+					result += "<td>" + data[i].payIdx + "</td>";
+					result += "<td>" + data[i].payDate + "</td>";
+					result += "<td>" + data[i].memberName + "</td>";
+					result += "<td>" + "￦ " + data[i].fees.toLocaleString() + "</td>";
+					
+					createGraph(data[i].lessonRmnCnt, data[i].lessonCnt);
+					var lessonCount = data[i].lessonRmnCnt + "/" + data[i].lessonCnt;
+					result += "<td name='" + lessonCount + "'>" + resultGraph + "</td>";
+					
+					createGraph(data[i].practiceRmnCnt, data[i].practiceCnt);
+					var practiceCount = data[i].practiceRmnCnt + "/" + data[i].practiceCnt;
+					result += "<td name='" + practiceCount + "'>" + resultGraph + "</td>";
+					
+					result += "<td>" + data[i].memo.replaceAll("\n", "<br>") + "</td>";
+					result += "</tr>";
+				}
+	    	}
+			$(".popupDetailPayment tbody").html(result);
+			$(".popupDetailPayment tbody tr").fadeOut(0);
+			$(".popupDetailPayment tbody tr").fadeIn(500);
+			$(".popupDetailPayment tbody tr").css("cursor", "default");
+	    }
+	})
 }
 
 function updateMember(idx) {

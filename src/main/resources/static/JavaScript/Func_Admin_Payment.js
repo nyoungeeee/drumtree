@@ -6,8 +6,6 @@ function processAjax(param0, param1) {
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
         success: function(data){
-        	var today = new Date();
-			today.setHours(9, 0, 0, 0);
         	var result = "";
     		for (var i = 0; i < data.total; i++) {
     			result += "<tr onclick='openPopup()'>";
@@ -86,56 +84,17 @@ function processAjax(param0, param1) {
     })
 }
 
-function createGraph(remain, total) {
-	var progressCount = total - remain;
-	
-	resultGraph = "";
-	if (remain==0&&total==0) {
-		resultGraph += "<a>" + "-" + "</a>";
-	}
-	else if (progressCount==0) {
-		resultGraph += "<div class='graphTotal'>";
-		resultGraph += "<a>" + progressCount + " / " + total + "</a>";
-		resultGraph += "</div>";
-	}
-	else if (remain==0&&total!=0) {
-		resultGraph += "<div class='graphTotal' style='background-color:#424242;color:#FFFFFF;'>";
-		resultGraph += "<a>" + progressCount + " / " + total + "</a>";
-		resultGraph += "</div>";
-	}
-	else {
-		if ((progressCount/total)>=0.5) {
-			resultGraph += "<div class='graphTotal'>";
-			resultGraph += "<div class='graphBar' style='float:left;width:" + (progressCount/total)*100 + "%'>";
-			resultGraph += "<a>" + progressCount + " / " + total + "</a>";
-			resultGraph += "</div>";
-			resultGraph += "<a>" + "&nbsp;" + "</a>";
-			resultGraph += "</div>";
-		}
-		else {
-			resultGraph += "<div class='graphTotal'>";
-			resultGraph += "<div class='graphBar' style='float:left;width:" + (progressCount/total)*100 + "%'>";
-			resultGraph += "<a>" + "&nbsp;" + "</a>";
-			resultGraph += "</div>";
-			resultGraph += "<a>" + progressCount + " / " + total + "</a>";
-			resultGraph += "</div>";
-		}
-	}
-	
-	return resultGraph;
-}
-
 function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
 		result += "<tr>";
-		result += "<td style='width:5%;'>" + "납부 번호" + "</td>";
+		result += "<td style='width:10%;'>" + "납부 번호" + "</td>";
 		result += "<td style='width:10%;'>" + "납부 일자" + "</td>";
 		result += "<td style='width:10%;'>" + "닉네임" + "</td>";
 		result += "<td style='width:10%;'>" + "수강료" + "</td>";
 		result += "<td style='width:15%;'>" + "레슨" + "</td>";
 		result += "<td style='width:15%;'>" + "연습" + "</td>";
-		result += "<td style='width:35%;'>" + "메모" + "</td>";
+		result += "<td style='width:30%;'>" + "메모" + "</td>";
 		result += "<td style='display:none;'>" + "회원 번호" + "</td>";
 		result += "</tr>";
 		
@@ -192,7 +151,7 @@ function addNotice() {
 	resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
 	resultPopup += "<hr><table id='paymentInfo'>";
 	resultPopup += "<tr>" + "<td>납부 일자</td>" + "<td>" + "<input type='date' id='paymentDate'>" + "</td></tr>";
-	resultPopup += "<tr>" + "<td>납부 회원</td>" + "<td>" + "<input type='text' id='paymentMember' value='회원 정보' readonly>" + "&emsp;" + "<input type='button' class='findBtn' value='찾기' onclick='findMember()'>" + "&emsp;" + "</td></tr>";
+	resultPopup += "<tr>" + "<td>납부 회원</td>" + "<td>" + "<input type='text' id='paymentMember' value='-' readonly>" + "&emsp;" + "<input type='button' class='findBtn' value='찾기' onclick='findMember()'>" + "&emsp;" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>수강료</td>" + "<td>" + "<input type='text' id='paymentFee' value='￦ 0' readonly>" + "&emsp;" + "<input type='button' class='feeBtn' value='주 2회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 3회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 5회'>" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>레슨 횟수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>연습 횟수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
@@ -243,15 +202,22 @@ function findMember() {
 	resultFindMember += "<input type='text' id='inputMemberInfo' spellcheck=false placeholder='검색어를 입력해 주세요.' autocomplete='off'>";
 	resultFindMember += "<input type='button' id='searchMemberInfo' value='검색'><br><br>";
 	resultFindMember += "<table><thead>";
-	resultFindMember += "<tr>" + "<td style='width:10%;'>회원 번호</td>" + "<td style='width:15%;'>회원 등급</td>" + "<td style='width:20%;'>아이디</td>" + "<td style='width:20%;'>닉네임</td>" + "<td style='width:35%;'>메모</td>" + "</tr>";
+	resultFindMember += "<tr>";
+	resultFindMember += "<td style='width:10%;'>회원 번호</td>";
+	resultFindMember += "<td style='width:10%;'>회원 등급</td>";
+	resultFindMember += "<td style='width:10%;'>아이디</td>";
+	resultFindMember += "<td style='width:10%;'>닉네임</td>";
+	resultFindMember += "<td style='width:25%;'>회원 메모</td>";
+	resultFindMember += "<td style='width:25%;'>관리자 메모</td>";
+	resultFindMember += "</tr>";
 	resultFindMember += "</thead><tbody></tbody></table>";
 	$(".popupFindMember").html(resultFindMember);
 	
-	var finMemberOption = "";
-	finMemberOption += "<option value='Id'>" + "아이디" + "</option>";
-	finMemberOption += "<option value='name'>" + "닉네임" + "</option>";
-	finMemberOption += "<option value='memo'>" + "메모" + "</option>";
-	$("#selectInfoType").append(finMemberOption);
+	var findMemberOption = "";
+	findMemberOption += "<option value='Id'>" + "아이디" + "</option>";
+	findMemberOption += "<option value='name'>" + "닉네임" + "</option>";
+	findMemberOption += "<option value='memo'>" + "회원 메모" + "</option>";
+	$("#selectInfoType").append(findMemberOption);
 	
 	$("#inputMemberInfo").keypress(function(event) {
 		if (event.keyCode==13) {
@@ -284,7 +250,7 @@ function findMember() {
 		        error: function() { alert("데이터 로드 실패"); },
 		        success: function(data){
 		        	var result = "";
-		    		for (var i = 0; i < data.total; i++) {
+	        		for (var i = 0; i < data.total; i++) {
 		    			result += "<tr>";
 		    			result += "<td>" + data[i].memberIdx + "</td>";
 		    			
@@ -304,6 +270,7 @@ function findMember() {
 		    			result += "<td>" + data[i].memberID + "</td>";
 		    			result += "<td>" + data[i].memberName + "</td>";
 		    			result += "<td>" + data[i].memo + "</td>";
+		    			result += "<td>" + data[i].memoAdmin + "</td>";
 		    			result += "</tr>";
 		    		}
 		    		$(".popupFindMember tbody").html(result);
@@ -384,7 +351,7 @@ function savePayment() {
 }
 
 function resetPayment() {
-	$("#paymentMember").val("회원 정보");
+	$("#paymentMember").val("-");
 	$("#paymentMember").removeAttr("name");
 	$("#paymentFee").val("￦ 0");
 	$("#paymentLesson").val(0);

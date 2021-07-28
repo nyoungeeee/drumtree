@@ -197,13 +197,41 @@
 	
 	.error {
 		font-family: IBMPlexSansKR-Regular;
-		font-size: 1.2em;
+		font-size: 1em;
 		text-align: center;
 		border: 0;
-		border-radius: 2px;
+		border-radius: 100%;
 		background-color: #B40404;
 		color: #FFFFFF;
 		outline: 0;
-		padding: 0.25% 1.25% 0.25% 1.25%;
+		padding: 0.025em 0.6em 0.025em 0.6em;
+		user-select: none;
+	}
+	
+	.graphTotal {
+		display: inline-block;
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		font-weight: 500;
+		display: inline-block;
+		width: 75%;
+		height: 1.5em;
+		border: 0;
+		border-radius: 2px;
+		background-color: #BDBDBD;
+		color: #000000;
+		user-select: none;
+	}
+	
+	.graphBar {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		font-weight: 500;
+		display: inline-block;
+		height: 100%;
+		border: 0;
+		border-radius: 2px;
+		background-color: #424242;
+		color: #FFFFFF;
 		user-select: none;
 	}

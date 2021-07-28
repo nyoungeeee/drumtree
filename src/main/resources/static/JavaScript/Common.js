@@ -127,3 +127,42 @@ function maskingText(text) {
 	}
 	return resultText;
 }
+
+function createGraph(remain, total) {
+	var progressCount = total - remain;
+	
+	resultGraph = "";
+	if (remain==0&&total==0) {
+		resultGraph += "<a>" + "-" + "</a>";
+	}
+	else if (progressCount==0) {
+		resultGraph += "<div class='graphTotal'>";
+		resultGraph += "<a>" + progressCount + " / " + total + "</a>";
+		resultGraph += "</div>";
+	}
+	else if (remain==0&&total!=0) {
+		resultGraph += "<div class='graphTotal' style='background-color:#424242;color:#FFFFFF;'>";
+		resultGraph += "<a>" + progressCount + " / " + total + "</a>";
+		resultGraph += "</div>";
+	}
+	else {
+		if ((progressCount/total)>=0.5) {
+			resultGraph += "<div class='graphTotal'>";
+			resultGraph += "<div class='graphBar' style='float:left;width:" + (progressCount/total)*100 + "%'>";
+			resultGraph += "<a>" + progressCount + " / " + total + "</a>";
+			resultGraph += "</div>";
+			resultGraph += "<a>" + "&nbsp;" + "</a>";
+			resultGraph += "</div>";
+		}
+		else {
+			resultGraph += "<div class='graphTotal'>";
+			resultGraph += "<div class='graphBar' style='float:left;width:" + (progressCount/total)*100 + "%'>";
+			resultGraph += "<a>" + "&nbsp;" + "</a>";
+			resultGraph += "</div>";
+			resultGraph += "<a>" + progressCount + " / " + total + "</a>";
+			resultGraph += "</div>";
+		}
+	}
+	
+	return resultGraph;
+}

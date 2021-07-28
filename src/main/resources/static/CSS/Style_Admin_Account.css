@@ -103,6 +103,10 @@
 		background-color: #E6E6E6;
 	}
 	
+	table tbody tr td:nth-child(7):hover {
+		cursor: default;
+	}
+	
 	table tbody tr td {
 		font-family: IBMPlexSansKR-Regular;
 		text-align: center;
@@ -140,6 +144,66 @@
         z-index: 6;
         user-select: none;
     }
+    
+    .popupDetailPayment {
+        display: none;
+		font-family: IBMPlexSansKR-Regular;
+        position: absolute;
+        text-align: center;
+		width: 65%;
+		height: auto;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		padding: 1% 1% 2% 1%;
+        background-color: #EEEEEE;
+		box-shadow: 0 0 8px #000000;
+        z-index: 6;
+        user-select: none;
+    }
+    
+    #selectInfoType {
+		float: left;
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.8em;
+		width: 7.5em;
+		height: 2.5em;
+		border: 0;
+		outline: 0;
+		background-color: #D8D8D8;
+		color: #000000;
+		margin-right: 0.25%;
+		padding: 0 1% 0 1%;
+	}
+	
+	#inputPaymentInfo {
+		float: left;
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.8em;
+		width: 20em;
+		height: 2.5em;
+		border: 0;
+		outline: 0;
+		background-color: #D8D8D8;
+		color: #000000;
+		margin-right: 0.25%;
+		padding: 0 1% 0 1%;
+	}
+	
+	#searchPaymentInfo {
+		float: left;
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.8em;
+		font-weight: 500;
+		width: 5em;
+		height: 2.5em;
+		border: 0;
+		background-color: #2E2E2E;
+		color: #FFFFFF;
+		padding: 0;
+		cursor: pointer;
+		user-select: none;
+	}
     
     .closeBtn {
 		float: right;
@@ -225,4 +289,20 @@
 		margin-bottom: 1%;
 		cursor: pointer;
 		user-select: none;
+	}
+	
+	.datailBtn {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		text-align: center;
+		width: 5em;
+		height: 2.5em;
+		border: 0;
+		border-radius: 2px;
+		background-color: #6E6E6E;
+		color: #FFFFFF;
+		outline: 0;
+		cursor: pointer;
+		user-select: none;
+		transition: all 0.25s ease;
 	}
