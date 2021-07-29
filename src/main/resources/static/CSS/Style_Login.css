@@ -69,7 +69,7 @@
 		width: 15%;
 		margin-left: auto;
 		margin-right: auto;
-		margin-bottom: 2.5%;
+		margin-bottom: 1%;
 	}
 	
 	.mainInfo tr td {
@@ -267,4 +267,15 @@
 		color: #000000;
 		padding: 2%;
 		resize: none;
+	}
+	
+	#RecommendedSpec {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.8em;
+		color: #A4A4A4;
+		margin-top: 2.5%;
+	}
+	
+	#RecommendedSpec img {
+		margin-bottom: 0.5%;
 	}
