@@ -52,6 +52,12 @@ function processAjax(param0, param1) {
     			$(".rejectBtn").attr("onclick", "rejectReservation(" + $(this).children().eq(6).html() + ")");
         		$("#selectDate").val($(this).children().eq(3).html());
         		
+        		$("#selectDate").change(function() {
+            		$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("checkTrue");
+            		$(".checkFlag").removeClass("checkFalse");
+        		});
+        		
         		$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<br>");
     			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
     			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");

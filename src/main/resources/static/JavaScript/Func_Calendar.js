@@ -175,6 +175,12 @@ function processAjax(param0, param1, param2, param3, param4, param5) {
         		$(".updateBtn").attr("onclick", "updateReservation(" + rsvIdxArray[$(this).attr("name")] + ")");
         		$(".deleteBtn").attr("onclick", "deleteReservation(" + rsvIdxArray[$(this).attr("name")] + ")");
         		
+        		$("#selectDate").change(function() {
+            		$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("checkTrue");
+            		$(".checkFlag").removeClass("checkFalse");
+        		});
+        		
         		$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<br>");
     			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
     			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
@@ -324,9 +330,6 @@ function clickArrow(addValue) {
 	var changeYear = Number($("#month").val().slice(0,4));
 	var changeMonth = Number($("#month").val().slice(5,7))-1;
 	createMonthlyCalendar(changeYear, changeMonth);
-	$("#filter").val("");
-	$(".myScheduleArea").removeClass("myScheduleOn");
-	$(".myScheduleBtn").val("모든 일정");
 }
 
 function createMonthlyCalendar(currentYear, currentMonth) {
@@ -341,7 +344,7 @@ function createMonthlyCalendar(currentYear, currentMonth) {
 	resultHead += "<td>" + "토" + "</td>";
 	resultHead += "</tr>";
 	$("thead").html(resultHead);
-	processAjax(currentYear, currentMonth, "", "", "", 0);
+	filterCalendar();
 }
 
 function openPopup() {
