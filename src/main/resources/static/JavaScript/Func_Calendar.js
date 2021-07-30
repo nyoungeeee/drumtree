@@ -308,15 +308,10 @@ function selectMonth() {
 		var timezoneOffset = new Date().getTimezoneOffset() * 60000;
 		var timezoneDate = new Date(Date.now() - timezoneOffset);
 		$("#month").val(timezoneDate.toISOString().slice(0,7));
-		
-		var currentYear = Number($("#month").val().slice(0,4));
-		var currentMonth = Number($("#month").val().slice(5,7))-1;
-		createMonthlyCalendar(currentYear, currentMonth);
+		createMonthlyCalendar();
 		
 		$('#month').change(function(){
-			var currentYear = Number($("#month").val().slice(0,4));
-			var currentMonth = Number($("#month").val().slice(5,7))-1;
-			createMonthlyCalendar(currentYear, currentMonth);
+			createMonthlyCalendar();
 		})
 	});
 }
@@ -326,13 +321,10 @@ function clickArrow(addValue) {
 	var currentMonth = Number($("#month").val().slice(5,7))-1;
 	var currentDate = new Date(currentYear, currentMonth+addValue, 1, 9, 0, 0);
 	$("#month").val(currentDate.toISOString().slice(0,7));
-	
-	var changeYear = Number($("#month").val().slice(0,4));
-	var changeMonth = Number($("#month").val().slice(5,7))-1;
-	createMonthlyCalendar(changeYear, changeMonth);
+	createMonthlyCalendar();
 }
 
-function createMonthlyCalendar(currentYear, currentMonth) {
+function createMonthlyCalendar() {
 	var resultHead = "";
 	resultHead += "<tr>";
 	resultHead += "<td>" + "일" + "</td>";

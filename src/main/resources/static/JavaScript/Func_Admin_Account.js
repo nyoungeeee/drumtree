@@ -41,15 +41,14 @@ function processAjax(param0, param1, param2) {
     			var resultPopup = "";
     			resultPopup += "<strong>회원 정보 변경</strong>";
     			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
-    			resultPopup += "<br><br><hr><br>";
-    			resultPopup += "<table id='memberInfo'>";
+    			resultPopup += "<hr><table id='memberInfo'>";
     			resultPopup += "<tr>" + "<td>회원 번호</td>" + "<td>" + $(this).children().eq(0).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + "<input type='text' id='memberName' spellcheck='false'>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + "<textarea id='memoMember' spellcheck='false'></textarea>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>회원 등급</td>" + "<td>" + "<select id='memberGrade'></select>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>관리자 메모</td>" + "<td>" + "<textarea id='memoAdmin' spellcheck='false'></textarea>" + "</td></tr>";
-    			resultPopup += "</table><br><hr><br>";
+    			resultPopup += "</table><hr>";
     			resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
     			resultPopup += "<input type='button' class='updateBtn' value='저장'>";
     			$(".popupBox").html(resultPopup);

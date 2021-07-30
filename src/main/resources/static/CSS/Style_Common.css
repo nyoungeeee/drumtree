@@ -50,7 +50,7 @@
 		cursor: pointer;
 		padding-top: 2%;
 		padding-bottom: 2%;
-		transition: all 0.25s ease;
+		transition: all 0.5s ease;
 	}
 	
 	.menuName a { /*메뉴바 이름 디자인*/
@@ -81,7 +81,7 @@
 		font-size: 0.8em;
 		font-weight: 500;
 		color: #000000;
-		transition: all 0.25s ease;
+		transition: all 0.5s ease;
 	}
 	
 	.subMenuName:hover a { /*서브 메뉴 이름 마우스오버*/
@@ -107,26 +107,26 @@
 		color: #FFFFFF;
 	}
 	
-	#logout {
+	#logout, #myInfo {
 		display: inline-block;
 		text-align: center;
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 0.8em;
-		font-weight: bold;
 		color: #000000;
 		background-color: #D8D8D8;
 		cursor: pointer;
 		width: 5em;
 		height: 1.5em;
 		padding: 1% 2% 1% 2%;
-		margin-top: 5%;
+		margin: 5% 3% 0 3%;
 		border-radius: 1em;
 		user-select: none;
 		transition: all 0.25s ease;
 	}
 	
-	#logout:hover {
-		padding: 1% 7% 1% 7%;
+	#logout:hover, #myInfo:hover {
+		background-color: #848484;
+		color: #FFFFFF;
 	}
 	
 	.headerBar { /*상단 고정 헤더*/
@@ -148,7 +148,7 @@
 	.hideButton { /*메뉴바 숨기기 버튼*/
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
-		font-weight: 500;
+		font-weight: bold;
 		color: #000000;
 		background-color: #BDBDBD;
 		cursor: pointer;
@@ -168,8 +168,7 @@
 	}
 	
 	.hideButton:hover {
-		width: 3em;
-		height: 3em;
+		font-size: 1.25em;
 	}
 	
 	.mainScreen { /*페이지 메인 화면*/

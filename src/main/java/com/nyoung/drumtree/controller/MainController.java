@@ -55,4 +55,9 @@ public class MainController {
 	public String reservation() {
 		return "Reservation";
 	}
+	
+	@RequestMapping(value="/MyInformation")
+	public String myinformation() {
+		return "MyInformation";
+	}
 }
