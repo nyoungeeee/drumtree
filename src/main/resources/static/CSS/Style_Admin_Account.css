@@ -108,6 +108,10 @@
 		cursor: default;
 	}
 	
+	table tbody tr td:nth-child(8):hover {
+		cursor: default;
+	}
+	
 	table tbody tr td {
 		font-family: IBMPlexSansKR-Regular;
 		text-align: center;
@@ -157,6 +161,23 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		padding: 1% 1% 2% 1%;
+        background-color: #EEEEEE;
+		box-shadow: 0 0 8px #000000;
+        z-index: 6;
+        user-select: none;
+    }
+    
+    .popupResetPassword {
+        display: none;
+		font-family: IBMPlexSansKR-Regular;
+        position: absolute;
+        text-align: center;
+		width: 35%;
+		height: auto;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		padding: 1%;
         background-color: #EEEEEE;
 		box-shadow: 0 0 8px #000000;
         z-index: 6;
@@ -253,6 +274,21 @@
 		user-select: none;
 	}
 	
+	.resetBtn {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		font-weight: 500;
+		width: 5em;
+		height: 2.5em;
+		border: 0;
+		background-color: #D8D8D8;
+		color: #A4A4A4;
+		padding: 0;
+		margin: 0 10% 0 0;
+		cursor: pointer;
+		user-select: none;
+	}
+	
 	#filterType {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 0.8em;
@@ -306,4 +342,62 @@
 		cursor: pointer;
 		user-select: none;
 		transition: all 0.25s ease;
+	}
+	
+	.resetPW {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		text-align: center;
+		width: 5em;
+		height: 2.5em;
+		border: 0;
+		border-radius: 2px;
+		background-color: #6E6E6E;
+		color: #FFFFFF;
+		outline: 0;
+		cursor: pointer;
+		user-select: none;
+		transition: all 0.25s ease;
+	}
+	
+	#popupInfo tr {
+		border: 0;
+		background-color: #EEEEEE;
+		cursor: default;
+		user-select: text;
+	}
+	
+	#popupInfo tr td:nth-child(1) {
+		font-family: IBMPlexSansKR-Regular;
+		text-align: center;
+		font-size: 0.8em;
+		font-weight: bold;
+		color: #000000;
+		width: 30%;
+		height: 3em;
+		padding: 0.5%;
+	}
+	
+	#popupInfo tr td:nth-child(2) {
+		font-family: IBMPlexSansKR-Regular;
+		text-align: left;
+		font-size: 0.8em;
+		color: #000000;
+		width: 70%;
+		height: 3em;
+		padding: 0.5%;
+	}
+	
+	input[type=password] {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		text-align: left;
+		width: 75%;
+		height: 2em;
+		border: 1px solid #C4C4C4;
+		border-radius: 2px;
+		outline: 0;
+		background-color: #FFFFFF;
+		color: #000000;
+		padding: 1% 2% 1% 2%;
 	}
