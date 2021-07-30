@@ -6,41 +6,49 @@ function processAjax(param0, param1, param2) {
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
         success: function(data){
-    		var result = "";
-    		for (var i = 0; i < data.total; i++) {
-    			result += "<tr onclick='openPopup()'>";
-    			result += "<td>" + data[i].memberIdx + "</td>";
-    			
-    			if (data[i].memberGrade==0) {
-    				var gradeString = "비회원";
-    			} else if (data[i].memberGrade==1) {
-    				var gradeString = "손님";
-    			} else if (data[i].memberGrade==2) {
-    				var gradeString = "연습생";
-    			} else if (data[i].memberGrade==3) {
-    				var gradeString = "레슨생";
-    			} else if (data[i].memberGrade==99) {
-    				var gradeString = "관리자";
-    			}
-    			
-    			result += "<td>" + gradeString + "</td>";
-    			result += "<td>" + data[i].memberID + "</td>";
-    			result += "<td>" + data[i].memberName + "</td>";
-    			result += "<td>" + data[i].memo + "</td>";
-    			result += "<td>" + data[i].memoAdmin + "</td>";
-    			result += "<td onclick='event.cancelBubble=true'>";
-    			result += "<input type='button' class='datailBtn' value='상세 보기' name='" + data[i].memberName + "' onclick='detailPayment(" + data[i].memberIdx + "," + i + ")'>";
-    			result += "</td>";
-    			result += "<td onclick='event.cancelBubble=true'>";
-    			result += "<input type='button' class='resetPW' value='재설정' name='" + data[i].memberName + "' onclick='resetPassword(" + data[i].memberIdx + "," + i + "," + data[i].memberGrade + ")'>";
-    			result += "</td>";
-    			result += "</tr>";
+        	var timezoneOffset = new Date().getTimezoneOffset() * 60000;
+			var timezoneDate = new Date(Date.now() - timezoneOffset);
+        	var result = "";
+    		if (data.total==0) {
+        		result += "<tr id='noResult'><td colspan=" + $("thead tr td").length + ">" + "검색 결과가 없습니다." + "</td></tr>";
+        	}
+    		else {
+    			for (var i = 0; i < data.total; i++) {
+        			result += "<tr onclick='openPopup()'>";
+        			result += "<td>" + data[i].memberIdx + "</td>";
+        			
+        			if (data[i].memberGrade==0) {
+        				var gradeString = "비회원";
+        			} else if (data[i].memberGrade==1) {
+        				var gradeString = "손님";
+        			} else if (data[i].memberGrade==2) {
+        				var gradeString = "연습생";
+        			} else if (data[i].memberGrade==3) {
+        				var gradeString = "레슨생";
+        			} else if (data[i].memberGrade==99) {
+        				var gradeString = "관리자";
+        			}
+        			
+        			result += "<td>" + gradeString + "</td>";
+        			result += "<td>" + data[i].memberID + "</td>";
+        			result += "<td>" + data[i].memberName + "</td>";
+        			result += "<td>" + data[i].memo + "</td>";
+        			result += "<td>" + data[i].memoAdmin + "</td>";
+        			result += "<td onclick='event.cancelBubble=true'>";
+        			result += "<input type='button' class='datailBtn' value='상세 보기' name='" + data[i].memberName + "' onclick='detailPayment(" + data[i].memberIdx + "," + i + "," + '"' + timezoneDate.toISOString().slice(0,7) + '"' + ")'>";
+        			result += "</td>";
+        			result += "<td onclick='event.cancelBubble=true'>";
+        			result += "<input type='button' class='resetPW' value='재설정' name='" + data[i].memberName + "' onclick='resetPassword(" + data[i].memberIdx + "," + i + "," + data[i].memberGrade + ")'>";
+        			result += "</td>";
+        			result += "</tr>";
+        		}
     		}
     		$("tbody").html(result);
     		$("tbody tr").fadeOut(0);
     		$("tbody tr").fadeIn(500);
+    		$("#noResult").css("cursor", "default");
     		
-    		$("tbody tr").click(function(){
+    		$("tbody tr").not("#noResult").click(function(){
     			var resultPopup = "";
     			resultPopup += "<strong>회원 정보 변경</strong>";
     			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
@@ -214,13 +222,14 @@ function resetPassword(idx, no, grade) {
 	});
 }
 
-function detailPayment(idx, no) {
+function detailPayment(idx, no, month) {
 	var resultDetailPayment = "";
 	resultDetailPayment += "<strong>납부 정보 상세</strong>";
 	resultDetailPayment += "<input type='button' value='X' class='closeBtn' onclick='closeDetailPayment()'>";
-	resultDetailPayment += "<hr><select id='selectInfoType'></select>";
-	resultDetailPayment += "<input type='text' id='inputPaymentInfo' spellcheck=false placeholder='검색어를 입력해 주세요.' autocomplete='off'>";
-	resultDetailPayment += "<input type='button' id='searchPaymentInfo' value='검색'><br><br>";
+	resultDetailPayment += "<hr>";
+	resultDetailPayment += "<input type='button' id='leftArrow' value='◀' onclick='clickArrow(" + idx + "," + no + "," + "-1)'>";
+	resultDetailPayment += "<input type='month' id='month' onchange='changeMonth(" + idx + "," + no + ")'>";
+	resultDetailPayment += "<input type='button' id='rightArrow' value='▶' onclick='clickArrow(" + idx + "," + no + "," + "1)'>";
 	resultDetailPayment += "<table><thead>";
 	resultDetailPayment += "<tr>";
 	resultDetailPayment += "<td style='width:10%;'>납부 번호</td>";
@@ -233,42 +242,38 @@ function detailPayment(idx, no) {
 	resultDetailPayment += 	"</tr>";
 	resultDetailPayment += "</thead><tbody></tbody></table>";
 	$(".popupDetailPayment").html(resultDetailPayment);
+	$("#month").val(month);
 	
-	var detailPaymentOption = "";
-	detailPaymentOption += "<option value='memo'>" + "메모" + "</option>";
-	$("#selectInfoType").append(detailPaymentOption);
-	
-	$("#inputPaymentInfo").keypress(function(event) {
-		if (event.keyCode==13) {
-			event.preventDefault();
-			$("#searchPaymentInfo").click();
-		}
-	})
 	var name = $(".datailBtn").eq(no).attr("name");
-	loadPaymentData(idx, name, "");
+	loadPaymentData(idx, name, month);
 	openDetailPayment();
-	
-	$("#searchPaymentInfo").click(function() {
-		var selectInfoType = $("#selectInfoType").val();
-		var searchMemo = "";
-		if (selectInfoType=="memo") {
-			var searchMemo = $("#inputPaymentInfo").val();
-		}
-		loadPaymentData(idx, name, searchMemo)
-	})	
 }
 
-function loadPaymentData(idx, name, memo) {
+function clickArrow(idx, no, addValue) {
+	var currentYear = Number($("#month").val().slice(0,4));
+	var currentMonth = Number($("#month").val().slice(5,7))-1;
+	var currentDate = new Date(currentYear, currentMonth+addValue, 1, 9, 0, 0);
+	detailPayment(idx, no, currentDate.toISOString().slice(0,7));
+}
+
+function changeMonth(idx, no) {
+	var currentYear = Number($("#month").val().slice(0,4));
+	var currentMonth = Number($("#month").val().slice(5,7))-1;
+	var currentDate = new Date(currentYear, currentMonth, 1, 9, 0, 0);
+	detailPayment(idx, no, currentDate.toISOString().slice(0,7));
+}
+
+function loadPaymentData(idx, name, month) {
 	$.ajax({
 	    url: "http://" + IPstring + "/payments",
-	    data: { memberIdx: idx, memo: memo },
+	    data: { memberIdx: idx, payDate: month },
 	    method: "POST",
 	    dataType: "JSON",
 	    error: function() { alert("데이터 로드 실패"); },
 	    success: function(data){
 	    	var result = "";
 	    	if (data.total==0) {
-	    		result += "<tr><td colspan=7>" + name + "님의 납부 정보가 없습니다." + "</td></tr>";
+	    		result += "<tr><td colspan=7>" + name + "님의 " + month.split("-")[0] + "년 " + month.split("-")[1] + "월 납부 정보가 없습니다." + "</td></tr>";
 	    	}
 	    	else {
 	    		for (var i = 0; i < data.total; i++) {

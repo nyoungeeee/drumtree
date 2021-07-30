@@ -9,24 +9,30 @@ function processAjax(param0, param1, param2) {
         	var today = new Date();
 			today.setHours(9, 0, 0, 0);
     		var result = "";
-    		for (var i = 0; i < data.total; i++) {
-    			result += "<tr onclick='openPopup()'>";
-    			
-    			var signinDay = new Date(data[i].signinDate.split(" ")[0]);
-    			if (today.getTime()==signinDay.getTime()) { result += "<td name='" + data[i].signinDate.substring(0,16) + "'>" + data[i].signinDate.split(" ")[1].substring(0,5) + "</td>"; }
-    			else { result += "<td name='" + data[i].signinDate.substring(0,16) + "'>" + data[i].signinDate.split(" ")[0] + "</td>"; }
-    			
-    			result += "<td>" + data[i].memberIdx + "</td>";
-    			result += "<td>" + data[i].memberID + "</td>";
-    			result += "<td>" + data[i].memberName + "</td>";
-    			result += "<td>" + data[i].memo + "</td>";
-    			result += "</tr>";
+    		if (data.total==0) {
+        		result += "<tr id='noResult'><td colspan=" + $("thead tr td").length + ">" + "검색 결과가 없습니다." + "</td></tr>";
+        	}
+    		else {
+    			for (var i = 0; i < data.total; i++) {
+        			result += "<tr onclick='openPopup()'>";
+        			
+        			var signinDay = new Date(data[i].signinDate.split(" ")[0]);
+        			if (today.getTime()==signinDay.getTime()) { result += "<td name='" + data[i].signinDate.substring(0,16) + "'>" + data[i].signinDate.split(" ")[1].substring(0,5) + "</td>"; }
+        			else { result += "<td name='" + data[i].signinDate.substring(0,16) + "'>" + data[i].signinDate.split(" ")[0] + "</td>"; }
+        			
+        			result += "<td>" + data[i].memberIdx + "</td>";
+        			result += "<td>" + data[i].memberID + "</td>";
+        			result += "<td>" + data[i].memberName + "</td>";
+        			result += "<td>" + data[i].memo + "</td>";
+        			result += "</tr>";
+        		}
     		}
     		$("tbody").html(result);
     		$("tbody tr").fadeOut(0);
     		$("tbody tr").fadeIn(500);
+    		$("#noResult").css("cursor", "default");
     		
-    		$("tbody tr").click(function(){
+    		$("tbody tr").not("#noResult").click(function(){
     			var resultPopup = "";
     			resultPopup += "<strong>회원 정보</strong>";
     			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";

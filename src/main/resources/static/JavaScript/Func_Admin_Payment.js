@@ -1,34 +1,40 @@
-function processAjax(param0, param1) {
+function processAjax(param0, param1, param2) {
     $.ajax({
         url: "http://" + IPstring + "/payments",
-        data: { memberName: param0, memo: param1 },
+        data: { memberName: param0, memo: param1, payDate: param2 },
         method: "POST",
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
         success: function(data){
         	var result = "";
-    		for (var i = 0; i < data.total; i++) {
-    			result += "<tr onclick='openPopup()'>";
-    			result += "<td>" + data[i].payIdx + "</td>";
-    			result += "<td>" + data[i].payDate + "</td>";
-    			result += "<td>" + data[i].memberName + "</td>";
-    			result += "<td>" + "￦ " + data[i].fees.toLocaleString() + "</td>";
-    			
-    			createGraph(data[i].lessonRmnCnt, data[i].lessonCnt);
-    			result += "<td name='" + data[i].lessonRmnCnt + "'>" + resultGraph + "</td>";
-    			
-    			createGraph(data[i].practiceRmnCnt, data[i].practiceCnt);
-    			result += "<td name='" + data[i].practiceRmnCnt + "'>" + resultGraph + "</td>";
-    			
-    			result += "<td>" + data[i].memo.replaceAll("\n", "<br>") + "</td>";
-    			result += "<td style='display:none;'>" + data[i].memberIdx + "</td>";
-    			result += "</tr>";
-    		}
+        	if (data.total==0) {
+        		result += "<tr id='noResult'><td colspan=" + $("thead tr td").length + ">" + "검색 결과가 없습니다." + "</td></tr>";
+        	}
+        	else {
+        		for (var i = 0; i < data.total; i++) {
+        			result += "<tr onclick='openPopup()'>";
+        			result += "<td>" + data[i].payIdx + "</td>";
+        			result += "<td>" + data[i].payDate + "</td>";
+        			result += "<td>" + data[i].memberName + "</td>";
+        			result += "<td>" + "￦ " + data[i].fees.toLocaleString() + "</td>";
+        			
+        			createGraph(data[i].lessonRmnCnt, data[i].lessonCnt);
+        			result += "<td name='" + data[i].lessonRmnCnt + "'>" + resultGraph + "</td>";
+        			
+        			createGraph(data[i].practiceRmnCnt, data[i].practiceCnt);
+        			result += "<td name='" + data[i].practiceRmnCnt + "'>" + resultGraph + "</td>";
+        			
+        			result += "<td>" + data[i].memo.replaceAll("\n", "<br>") + "</td>";
+        			result += "<td style='display:none;'>" + data[i].memberIdx + "</td>";
+        			result += "</tr>";
+        		}
+        	}
     		$("tbody").html(result);
     		$("tbody tr").fadeOut(0);
     		$("tbody tr").fadeIn(500);
+    		$("#noResult").css("cursor", "default");
     		
-    		$("tbody tr").click(function() {
+    		$("tbody tr").not("#noResult").click(function() {
     			var resultPopup = "";
     			resultPopup += "<strong>납부 정보</strong>";
     			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
@@ -111,10 +117,27 @@ function createTableHead() {
 
 function createTableBody() {
 	$(document).ready(function(){
-		var filterName = "";
-		var filterMemo = "";
-		processAjax(filterName, filterMemo);
+		var timezoneOffset = new Date().getTimezoneOffset() * 60000;
+		var timezoneDate = new Date(Date.now() - timezoneOffset);
+		$("#month").val(timezoneDate.toISOString().slice(0,7));
+		filterPayment(timezoneDate.toISOString().slice(0,7));
+		
+		$("#month").change(function(){
+			filterPayment($("#month").val());
+		})
+		
+		$(".searchBtn").click(function(){
+			filterPayment($("#month").val());
+		})
 	});
+}
+
+function clickArrow(addValue) {
+	var currentYear = Number($("#month").val().slice(0,4));
+	var currentMonth = Number($("#month").val().slice(5,7))-1;
+	var currentDate = new Date(currentYear, currentMonth+addValue, 1, 9, 0, 0);
+	$("#month").val(currentDate.toISOString().slice(0,7));
+	filterPayment(currentDate.toISOString().slice(0,7));
 }
 
 function openPopup() {
@@ -139,7 +162,7 @@ function closeFindMember() {
 	$('.popupBackground').css('z-index', '5');
 }
 
-function filterPayment() {
+function filterPayment(month) {
 	var filterType = $("#filterType").val();
 	var filterName = "";
 	var filterMemo = "";
@@ -149,7 +172,7 @@ function filterPayment() {
 	else if (filterType=="memo") {
 		var filterMemo = $("#filter").val();
 	}
-	processAjax(filterName, filterMemo);
+	processAjax(filterName, filterMemo, month);
 }
 
 function addNotice() {

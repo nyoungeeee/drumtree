@@ -49,7 +49,15 @@ function processAjax(param0, param1) {
     		$("tbody tr").fadeIn(500);
     		$("tbody tr td").find("#fileList").css("display", "none");
     		
-    		$("tbody tr").click(function(){
+    		if ($("tbody tr").length==0) {
+    			var result = "<tr id='noResult'><td colspan=" + $("thead tr td").length + ">" + "검색 결과가 없습니다." + "</td></tr>";
+        		$("tbody").append(result);
+        		$("tbody tr td").fadeOut(0);
+            	$("tbody tr td").fadeIn(500);
+            	$("#noResult").css("cursor", "default");
+        	}
+    		
+    		$("tbody tr").not("#noResult").click(function(){
     			var resultPopup = "";
         		resultPopup += "<strong>예약 정보</strong>";
         		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
