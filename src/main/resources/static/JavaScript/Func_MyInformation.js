@@ -76,6 +76,10 @@ function closePopup() {
 
 function reset() {
 	$("#popupInfo input[type=password]").val("");
+	
+	$("#errorMessageCurrentPW").remove();
+	$("#errorMessageChangePW").remove();
+	$("#errorMessageCheckPW").remove();
 }
 
 function createMemberInfo(idx) {

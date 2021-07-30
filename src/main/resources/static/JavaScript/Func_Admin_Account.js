@@ -31,6 +31,9 @@ function processAjax(param0, param1, param2) {
     			result += "<td onclick='event.cancelBubble=true'>";
     			result += "<input type='button' class='datailBtn' value='상세 보기' name='" + data[i].memberName + "' onclick='detailPayment(" + data[i].memberIdx + "," + i + ")'>";
     			result += "</td>";
+    			result += "<td onclick='event.cancelBubble=true'>";
+    			result += "<input type='button' class='resetPW' value='재설정' name='" + data[i].memberName + "' onclick='resetPassword(" + data[i].memberIdx + "," + i + "," + data[i].memberGrade + ")'>";
+    			result += "</td>";
     			result += "</tr>";
     		}
     		$("tbody").html(result);
@@ -98,9 +101,10 @@ function createTableHead() {
 		result += "<td style='width:10%;'>" + "회원 등급" + "</td>";
 		result += "<td style='width:10%;'>" + "아이디" + "</td>";
 		result += "<td style='width:10%;'>" + "닉네임" + "</td>";
-		result += "<td style='width:25%;'>" + "회원 메모" + "</td>";
-		result += "<td style='width:25%;'>" + "관리자 메모" + "</td>";
+		result += "<td style='width:20%;'>" + "회원 메모" + "</td>";
+		result += "<td style='width:20%;'>" + "관리자 메모" + "</td>";
 		result += "<td style='width:10%;'>" + "납부 정보" + "</td>";
+		result += "<td style='width:10%;'>" + "비밀번호" + "</td>";
 		result += "</tr>";
 		
 		$("thead").html(result);
@@ -138,6 +142,76 @@ function closeDetailPayment() {
 	$('.popupDetailPayment').css('display', 'none');
 	$('.popupBackground').css('display', 'none');
 	$('html, body').css('overflow', '');
+}
+
+function openResetPassword() {
+	$('.popupResetPassword').css('display', 'inline-block');
+	$('.popupBackground').css('display', 'inline-block');
+	$('html, body').css('overflow', 'hidden');
+}
+
+function closeResetPassword() {
+	$('.popupResetPassword').css('display', 'none');
+	$('.popupBackground').css('display', 'none');
+	$('html, body').css('overflow', '');
+}
+
+function resetPassword(idx, no, grade) {
+	var resultResetPassword = "";
+	resultResetPassword += "<strong>비밀번호 변경</strong>";
+	resultResetPassword += "<input type='button' value='X' class='closeBtn' onclick='closeResetPassword()'>";
+	resultResetPassword += "<hr><table id='popupInfo'>";
+	resultResetPassword += "<tr>" + "<td>닉네임</td>" + "<td>" + $(".resetPW").eq(no).attr("name"); + "</td></tr>";
+	resultResetPassword += "<tr>" + "<td>변경할 비밀번호</td>" + "<td>" + "<input type='password' placeholder='변경할 비밀번호를 입력해 주세요.'>" + "&emsp;" + "</td></tr>";
+	resultResetPassword += "<tr>" + "<td>비밀번호 재확인</td>" + "<td>" + "<input type='password' placeholder='비밀번호를 다시 입력해 주세요.'>" + "&emsp;" + "</td></tr>";
+	resultResetPassword += "</table><hr>";
+	resultResetPassword += "<input type='button' class='resetBtn' value='초기화'>";
+	resultResetPassword += "<input type='button' class='updateBtn' value='변경'>";
+	$(".popupResetPassword").html(resultResetPassword);
+	openResetPassword();
+	
+	$(".resetBtn").click(function() {
+		$("#popupInfo input[type=password]").val("");
+		
+		$("#errorMessageChangePW").remove();
+		$("#errorMessageCheckPW").remove();
+	});
+	
+	$(".updateBtn").click(function() {
+		var changePW = $("#popupInfo input[type=password]").eq(0).val();
+		var checkPW = $("#popupInfo input[type=password]").eq(1).val();
+		
+		$("#errorMessageChangePW").remove();
+		$("#errorMessageCheckPW").remove();
+		
+		if (changePW==""||changePW==null) {
+			$("#popupInfo tr").eq(1).children().eq(1).append("<a id='errorMessageChangePW' class='error'>!</a>");
+			$("#errorMessageChangePW").fadeOut(0);
+			$("#errorMessageChangePW").fadeIn(500);
+		}
+		else if (changePW!=checkPW) {
+			$("#popupInfo tr").eq(2).children().eq(1).append("<a id='errorMessageCheckPW' class='error'>!</a>");
+			$("#errorMessageCheckPW").fadeOut(0);
+			$("#errorMessageCheckPW").fadeIn(500);
+		}
+		else {
+			$.ajax({
+		        url: "http://" + IPstring + "/update-member",
+		        data: {
+		        	memberIdx: idx,
+		        	memberPW: changePW,
+		        	memberGrade : grade
+		        },
+		        method: "POST",
+		        dataType: "JSON",
+		        error: function() { alert("데이터 로드 실패"); },
+		        success: function(data) {
+		        	alert($(".resetPW").eq(no).attr("name") + "님의 비밀번호 재설정이 완료되었습니다.");
+		        	window.location.reload();
+		        }
+			});
+		}
+	});
 }
 
 function detailPayment(idx, no) {
