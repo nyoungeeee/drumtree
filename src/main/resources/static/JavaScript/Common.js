@@ -65,7 +65,13 @@ function checkAccessAuthority(menuNo, subMenuNo) {
 		var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
 		var gradeNo = decrypt.split("&")[2];
 		
-		if (menuNo==0) {
+		if (menuNo==99) {
+			if (gradeNo==0) {
+				alert("페이지 접근 권한이 없습니다.");
+				location.href = "../Notice";
+			}
+		}
+		else if (menuNo==0) {
 			$(".menuName").eq(menuNo).css("background-color", "#424242");
 			$(".menuName").eq(menuNo).children().css("color", "#FFFFFF");
 		}

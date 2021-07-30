@@ -425,10 +425,12 @@ function clickArrow(addValue) {
 }
 
 function createTimeTable(currentDate) {
+	var weekDay = currentDate.getDay();
+	var weekDayString = [ "(일)", "(월)", "(화)", "(수)", "(목)", "(금)", "(토)" ];
 	var currentDateString = $("#date").val().split("-");
 	var resultHead = "";
 	resultHead += "<tr>";
-	resultHead += "<td style='width:7.5%;'>" + currentDateString[1] + "월" + "&nbsp;" + currentDateString[2] + "일" + "</td>";
+	resultHead += "<td style='width:7.5%;'>" + currentDateString[1] + "월" + "&nbsp;" + currentDateString[2] + "일" + weekDayString[weekDay] + "</td>";
 	for (var headIdx = 8; headIdx < 23; headIdx++) {
 		if (headIdx > 9) {
 			resultHead += "<td colspan=2 style='text-align:left;'>" + headIdx + ":00" + "</td>";
@@ -522,7 +524,7 @@ function updateReservation(idx, date) {
 	else {
 		$.ajax({
 	        url: "http://" + IPstring + "/update-rsv",
-	        data: { isApproval: 0, rsvIdx: idx, rsvType: rsv, roomType: room, start: startTime, end: endTime, memo: rsvMemo },
+	        data: { isApproval: 4, rsvIdx: idx, rsvType: rsv, roomType: room, start: startTime, end: endTime, memo: rsvMemo },
 	        method: "POST",
 	        dataType: "JSON",
 	        error: function() { alert("데이터 로드 실패"); },

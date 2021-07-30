@@ -2,7 +2,7 @@ function processAjax(param0, param1) {
 	var roomName = [ "레슨", "연습실 3번", "연습실 4번", "연습실 5번" ];
 	
 	$.ajax({
-        url: "http://" + IPstring + "/list-rsv?isApproval=0",
+        url: "http://" + IPstring + "/list-rsv",
         data: { memberName: param0, memo: param1 },
         method: "POST",
         dataType: "JSON",
@@ -12,19 +12,37 @@ function processAjax(param0, param1) {
 			today.setHours(9, 0, 0, 0);
     		var result = "";
     		for (var i = 0; i < data.total; i++) {
-    			result += "<tr onclick='openPopup()'>";
-    			
-    			var regDay = new Date(data[i].regDate.split(" ")[0]);
-    			if (today.getTime()==regDay.getTime()) { result += "<td name='" + data[i].regDate.substring(0,16) + "'>" + data[i].regDate.split(" ")[1].substring(0,5) + "</td>"; }
-    			else { result += "<td name='" + data[i].regDate.substring(0,16) + "'>" + data[i].regDate.split(" ")[0] + "</td>"; }
-    			
-    			result += "<td>" + data[i].memberName + "</td>";
-    			result += "<td>" + roomName[data[i].roomType] + "</td>";
-    			result += "<td>" + data[i].start.split(" ")[0] + "</td>";
-    			result += "<td>" + data[i].start.split(" ")[1].substring(0,5) + " ~ " + data[i].end.split(" ")[1].substring(0,5) + "</td>";
-    			result += "<td>" + data[i].memo.replaceAll("\n", "<br>") + "</td>";
-    			result += "<td style='display:none;'>" + data[i].rsvIdx + "</td>";
-    			result += "</tr>";
+    			if (data[i].isApproval==0||data[i].isApproval==4) {
+    				result += "<tr onclick='openPopup()'>";
+    				
+    				if (data[i].isApproval==0) {
+    					var rsvStatus = "신규 예약";
+    					result += "<td>" + rsvStatus + "</td>";
+    					
+    					var regDay = new Date(data[i].regDate.split(" ")[0]);
+    					if (today.getTime()==regDay.getTime()) { result += "<td name='" + data[i].regDate.substring(0,16) + "'>" + data[i].regDate.split(" ")[1].substring(0,5) + "</td>"; }
+            			else { result += "<td name='" + data[i].regDate.substring(0,16) + "'>" + data[i].regDate.split(" ")[0] + "</td>"; }
+    				}
+    				else if (data[i].isApproval==4) {
+    					var rsvStatus = "변경 신청";
+    					result += "<td>" + rsvStatus + "</td>";
+    					
+    					var regDay = new Date(data[i].updateDate.split(" ")[0]);
+    					if (today.getTime()==regDay.getTime()) { result += "<td name='" + data[i].updateDate.substring(0,16) + "'>" + data[i].updateDate.split(" ")[1].substring(0,5) + "</td>"; }
+            			else { result += "<td name='" + data[i].updateDate.substring(0,16) + "'>" + data[i].updateDate.split(" ")[0] + "</td>"; }
+    				}
+        			
+        			result += "<td>" + data[i].memberName + "</td>";
+        			result += "<td>" + roomName[data[i].roomType] + "</td>";
+        			result += "<td>" + data[i].start.split(" ")[0] + "</td>";
+        			result += "<td>" + data[i].start.split(" ")[1].substring(0,5) + " ~ " + data[i].end.split(" ")[1].substring(0,5) + "</td>";
+        			result += "<td>" + data[i].memo.replaceAll("\n", "<br>") + "</td>";
+        			result += "<td style='display:none;'>" + data[i].rsvIdx + "</td>";
+        			result += "</tr>";
+    			}
+    			else {
+    				result += "";
+    			}
     		}
     		$("tbody").html(result);
     		$("tbody tr").fadeOut(0);
@@ -36,8 +54,9 @@ function processAjax(param0, param1) {
         		resultPopup += "<strong>예약 정보</strong>";
         		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
         		resultPopup += "<hr><table id='reservationInfo'>";
-        		resultPopup += "<tr>" + "<td>신청 일자</td>" + "<td>" + $(this).children().eq(0).attr("name") + "</td></tr>";
-        		resultPopup += "<tr>" + "<td>신청 회원</td>" + "<td>" + $(this).children().eq(1).html() + "</td></tr>";
+        		resultPopup += "<tr>" + "<td>상태</td>" + "<td>" + $(this).children().eq(0).html() + "</td></tr>";
+        		resultPopup += "<tr>" + "<td>신청 일자</td>" + "<td>" + $(this).children().eq(1).attr("name") + "</td></tr>";
+        		resultPopup += "<tr>" + "<td>신청 회원</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>" + "&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
@@ -48,9 +67,9 @@ function processAjax(param0, param1) {
         		resultPopup += "<input type='button' class='rejectBtn' value='반려'>";
     			resultPopup += "<input type='button' class='approvalBtn' value='승인'>";
         		$(".popupBox").html(resultPopup);
-    			$(".approvalBtn").attr("onclick", "approvalReservation(" + $(this).children().eq(6).html() + ")");
-    			$(".rejectBtn").attr("onclick", "rejectReservation(" + $(this).children().eq(6).html() + ")");
-        		$("#selectDate").val($(this).children().eq(3).html());
+    			$(".approvalBtn").attr("onclick", "approvalReservation(" + $(this).children().eq(7).html() + ")");
+    			$(".rejectBtn").attr("onclick", "rejectReservation(" + $(this).children().eq(7).html() + ")");
+        		$("#selectDate").val($(this).children().eq(4).html());
         		
         		$("#selectDate").change(function() {
             		$(".checkFlag").val("체크");
@@ -58,13 +77,13 @@ function processAjax(param0, param1) {
             		$(".checkFlag").removeClass("checkFalse");
         		});
         		
-        		$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<br>");
-    			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
-    			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
-    			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
-    			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<input type='file' id='reservationFile' style='display:none;'>");
-    			$("#reservationInfo tr").eq(7).find("td").eq(1).prepend("<label class='fileBtn' for='reservationFile'>파일 선택</label>");
-    			$("#reservationInfo #fileList").html($(this).children().eq(5).find("#fileList").html());
+        		$("#reservationInfo tr").eq(8).find("td").eq(1).prepend("<br>");
+    			$("#reservationInfo tr").eq(8).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
+    			$("#reservationInfo tr").eq(8).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
+    			$("#reservationInfo tr").eq(8).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
+    			$("#reservationInfo tr").eq(8).find("td").eq(1).prepend("<input type='file' id='reservationFile' style='display:none;'>");
+    			$("#reservationInfo tr").eq(8).find("td").eq(1).prepend("<label class='fileBtn' for='reservationFile'>파일 선택</label>");
+    			$("#reservationInfo #fileList").html($(this).children().eq(6).find("#fileList").html());
     			
     			$("#reservationFile").on('change',function(){
     				$(".fileName a").html($("#reservationFile")[0].files[0].name);
@@ -72,10 +91,10 @@ function processAjax(param0, param1) {
     				$(".fileName a").fadeIn(500);
     			})
     			
-    			var startToDelete = $(this).children().eq(5).html().indexOf("<div");
-    			var endToDelete = $(this).children().eq(5).html().indexOf("div>") + 4;
-    			var toDeleteString = $(this).children().eq(5).html().substring(startToDelete, endToDelete);
-    			$("#reservationMemo").val($(this).children().eq(5).html().replaceAll(toDeleteString, "").replaceAll("<br>", "\n"));
+    			var startToDelete = $(this).children().eq(6).html().indexOf("<div");
+    			var endToDelete = $(this).children().eq(6).html().indexOf("div>") + 4;
+    			var toDeleteString = $(this).children().eq(6).html().substring(startToDelete, endToDelete);
+    			$("#reservationMemo").val($(this).children().eq(6).html().replaceAll(toDeleteString, "").replaceAll("<br>", "\n"));
         		
         		var resultStartTime = "";
         		var resultEndTime = "";
@@ -100,8 +119,8 @@ function processAjax(param0, param1) {
         		}
         		$("#selectStartTime").append(resultStartTime);
         		$("#selectEndTime").append(resultEndTime);
-        		$("#selectStartTime").val($(this).children().eq(4).html().split(" ~ ")[0]).prop("selected", true);
-        		$("#selectEndTime").val($(this).children().eq(4).html().split(" ~ ")[1]).prop("selected", true);
+        		$("#selectStartTime").val($(this).children().eq(5).html().split(" ~ ")[0]).prop("selected", true);
+        		$("#selectEndTime").val($(this).children().eq(5).html().split(" ~ ")[1]).prop("selected", true);
         		
         		$("#selectStartTime").change(function(){
         			var thisStartTime = $("#selectStartTime").val().split(":")[0];
@@ -124,8 +143,8 @@ function processAjax(param0, param1) {
         		resultType += "<option value=0>" + "레슨" + "</option>";
         		resultType += "<option value=1>" + "연습" + "</option>";
         		$("#selectType").append(resultType);
-        		if (roomName.indexOf($(this).children().eq(2).html())>1) { var thisType = 1; }
-        		else { var thisType = roomName.indexOf($(this).children().eq(2).html()); }
+        		if (roomName.indexOf($(this).children().eq(3).html())>1) { var thisType = 1; }
+        		else { var thisType = roomName.indexOf($(this).children().eq(3).html()); }
         		$("#selectType").val(thisType).prop("selected", true);
         		
         		var resultRoom = "";
@@ -140,7 +159,7 @@ function processAjax(param0, param1) {
         			resultRoom += "<option value=3>" + "연습실 5번" + "</option>";
         		}
         		$("#selectRoom").append(resultRoom);
-        		$("#selectRoom").val(roomName.indexOf($(this).children().eq(2).html())).prop("selected", true);
+        		$("#selectRoom").val(roomName.indexOf($(this).children().eq(3).html())).prop("selected", true);
         		
         		$("#selectType").change(function(){
         			$("#selectRoom option").remove();
@@ -176,12 +195,13 @@ function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
 		result += "<tr>";
+		result += "<td style='width:10%;'>" + "요청 상태" + "</td>";
 		result += "<td style='width:10%;'>" + "신청 일자" + "</td>";
 		result += "<td style='width:10%;'>" + "신청 회원" + "</td>";
 		result += "<td style='width:10%;'>" + "예약 장소" + "</td>";
-		result += "<td style='width:15%;'>" + "예약 날짜" + "</td>";
-		result += "<td style='width:15%;'>" + "예약 시간" + "</td>";
-		result += "<td style='width:40%;'>" + "예약 메모" + "</td>";
+		result += "<td style='width:10%;'>" + "예약 날짜" + "</td>";
+		result += "<td style='width:10%;'>" + "예약 시간" + "</td>";
+		result += "<td style='width:30%;'>" + "예약 메모" + "</td>";
 		result += "</tr>";
 		
 		$("thead").html(result);

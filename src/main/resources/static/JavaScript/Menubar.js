@@ -20,7 +20,8 @@ function createMenubar() {
 		else if (decrypt.split("&")[2]==3) { var grade = "레슨생"; }
 		else { var grade = "???" }
 		result += "<a style='float:left'>· 등급</a>" + "<a id='loginGrade' style='float:right'>" + grade + "</a><br>";
-		result += "<div id='logout' onclick='logOut()'>" + "LOGOUT" + "</div>";
+		result += "<div id='logout' onclick='logOut()'>" + "로그아웃" + "</div>";
+		if (decrypt.split("&")[2]!=0) { result += "<div id='myInfo' onclick=movePage('MyInformation')>" + "내 정보" + "</div>"; }
 		result += "</div><br>";
 		
 		result += "<div class='menuName' name='notice' onclick=movePage('Notice')>" + "<a>공지사항</a>" + "</div><br>";
@@ -39,22 +40,13 @@ function createMenubar() {
 		document.write(result);
 		checkMenubarAuthority(decrypt.split("&")[2]);
 		
-		$(function(){
-			$("#adminMenu").mouseover(function(){
-				if ($(".subMenuName").css("visibility")!="visible") {
-					$(".subMenuName").css("height", "0");
-				}
-			})
-			
-			$("#adminMenu").click(function(){
-				$(".menuName").css("background-color", "");
-				$(".menuName").children().css("color", "");
-				$(this).css("background-color", "#424242");
-				$(this).children().css("color", "#FFFFFF");
-				$(".subMenuName").css("visibility", "visible");
-				$(".subMenuName").css("height", "1.5em");
-			})
-		});
+		$("#adminMenu").click(function(){
+			$(".menuName").css("background-color", "");
+			$(".menuName").children().css("color", "");
+			$(this).css("background-color", "#424242");
+			$(this).children().css("color", "#FFFFFF");
+			$(".subMenuName").css("visibility", "visible");
+		})
 	}
 }
 
