@@ -40,4 +40,11 @@ public class PaymentServiceImpl implements PaymentService {
 		return paymentDAO.RmnCntPayment(memberIdx, code, cnt);
 	}
 	
+	/* 멤버 테이블의 횟수 변경 */
+	@Override
+	public int ChangeCntMember(int memberIdx, String code) {
+		// TODO Auto-generated method stub
+		return paymentDAO.ChangeCntMember(memberIdx, code);
+	}
+	
 }

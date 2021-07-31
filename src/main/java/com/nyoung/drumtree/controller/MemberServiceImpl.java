@@ -43,4 +43,11 @@ public class MemberServiceImpl implements MemberService{
 	public int ApprovalMember(int memberIdx, int memberGrade) {
 		return memberDAO.ApprovalMember(memberIdx, memberGrade);
 	}
+	
+	/*잔여 횟수 수정*/
+	@Override
+	public int UpdateCnt(int memberIdx, String code, int cnt) {
+		// TODO Auto-generated method stub
+		return memberDAO.UpdateCnt(memberIdx, code, cnt);
+	}
 }

@@ -23,4 +23,6 @@ public class MemberDTO {
 	private int isApproval;
 	private String memoAdmin;
 	private int memberGrade;
+	private int lessonCnt;
+	private int practiceCnt;
 }

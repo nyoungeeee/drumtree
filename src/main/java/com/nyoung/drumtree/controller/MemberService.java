@@ -15,4 +15,6 @@ public interface MemberService {
 	public int DeleteMember(int memberIdx);
 	/*회원 승인*/
 	public int ApprovalMember(int memberIdx, int memberGrade);
+	/*잔여 횟수 수정*/
+	public int UpdateCnt(int memberIdx, String code, int cnt);
 }

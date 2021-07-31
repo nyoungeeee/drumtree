@@ -72,4 +72,41 @@ public class PaymentDAO {
 		map.put("cnt", cnt);
 		return sqlSession.update("com.nyoung.drumtree.PaymentMapper.changeCntPayment", map);
 	};
+	
+	/* 멤버 테이블의 횟수 변경 */
+	public int ChangeCntMember(int memberIdx, String code) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberIdx", memberIdx);
+		map.put("code", code);
+		return sqlSession.update("com.nyoung.drumtree.PaymentMapper.changeCntMember", map);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

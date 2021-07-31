@@ -14,5 +14,6 @@ public interface PaymentService {
 	public int UpdatePayment(PaymentDTO param);
 	/* 횟수 변경 */
 	public int RmnCntPayment(int memberIdx, String code, int cnt);
-	
+	/* 멤버 테이블의 횟수 변경 */
+	public int ChangeCntMember(int memberIdx, String code);
 }

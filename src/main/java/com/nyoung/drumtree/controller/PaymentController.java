@@ -234,6 +234,10 @@ public class PaymentController {
 		param.setFees(fees);
 
 		total = paymentService.InsertPayment(param);
+		//레슨 횟수 추가
+		memberService.UpdateCnt(memberIdx, "1", lessonCnt);
+		//연습 횟수 추가
+		memberService.UpdateCnt(memberIdx, "2", practiceCnt);
 		if(total > 0) {
 			rt = "InsertPayment_OK";
 		} else {
@@ -263,7 +267,7 @@ public class PaymentController {
 		String usedRsvIdx = request.getParameter("usedRsvIdx")==null ? "" : request.getParameter("usedRsvIdx");
 		String feesStr = request.getParameter("fees")==null ? "" : request.getParameter("fees");
 		String code = request.getParameter("code")==null ? "" : request.getParameter("code");
-		
+
 		int payIdx = -1;
 		if(!payIdxStr.equals("")) {
 			payIdx = Integer.parseInt(request.getParameter("payIdx"));
@@ -309,8 +313,18 @@ public class PaymentController {
 		param.setFees(fees);
 		param.setIsDelete(isDelete);
 		if(code.equals("1")) {
+
+			// 삭제 처리 전 해당 연습/레슨 횟수를 member에서 삭제
+			int ilessonCnt = 0;
+			int ipracticeCnt = 0;
+			ilessonCnt = -paymentService.SelectPayment(param).get(0).getLessonCnt();
+			ipracticeCnt = -paymentService.SelectPayment(param).get(0).getPracticeCnt();
+			memberService.UpdateCnt(memberIdx, "1", ilessonCnt);
+			memberService.UpdateCnt(memberIdx, "2", ipracticeCnt);
+			
 			// code가 1으로 오면 삭제 처리
 			param.setIsDelete(1);
+
 		}
 		total = paymentService.UpdatePayment(param);
 		if(total > 0) {
@@ -341,7 +355,7 @@ public class PaymentController {
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
 		}
-		
+
 		int cnt = -1;
 		if(!cntStr.equals("")) {
 			cnt = Integer.parseInt(request.getParameter("cnt"));
@@ -351,7 +365,7 @@ public class PaymentController {
 		String rt = null;
 		int total = 0;
 
-		total = paymentService.RmnCntPayment(memberIdx, code, cnt);
+		total = memberService.UpdateCnt(memberIdx, code, cnt);
 		if(total > 0) {
 			rt = "ChangeCntPayment_OK";
 		} else {
