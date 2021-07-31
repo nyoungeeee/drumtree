@@ -69,6 +69,20 @@
 		WHERE memberIdx=${memberIdx}
 	</update>
 
+	<!-- 잔여 횟수 수정 -->
+	<update id="updateCnt" parameterType="java.util.Map">
+		UPDATE member
+		SET
+		memberIdx = ${memberIdx}
+		<if test="code == 1">
+			, lessonCnt = lessonCnt + #{cnt}
+		</if>
+		<if test="code == 2">
+			, practiceCnt = practiceCnt + #{cnt}
+		</if>
+		, updateDate = now()
+		WHERE memberIdx=${memberIdx}
+	</update>
 	<!-- 회원 삭제 -->
 	<delete id="deleteMember" parameterType="java.util.Map">
 		UPDATE member

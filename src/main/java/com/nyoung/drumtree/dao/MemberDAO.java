@@ -65,4 +65,20 @@ public class MemberDAO {
 		map.put("memberGrade", memberGrade);
 		return sqlSession.update("com.nyoung.drumtree.MemberMapper.approvalMember", map);
 	}
+	
+	/*잔여 횟수 수정*/
+	public int UpdateCnt(int memberIdx, String code, int cnt) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberIdx", memberIdx);
+		map.put("code", code);
+		map.put("cnt", cnt);
+		return sqlSession.update("com.nyoung.drumtree.MemberMapper.updateCnt", map);
+	}
+	
+	
+	
+	
+	
+	
+	
 }

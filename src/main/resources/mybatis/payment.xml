@@ -108,8 +108,36 @@
 			practiceRmnCnt=practiceRmnCnt+#{cnt},
 		</if>
 		updateDate = now()
-		WHERE memberIdx=#{memberIdx}
-		ORDER by payDate DESC 
-		limit 1;
+		WHERE memberIdx=#{memberIdx} AND isDelete = 0
+		ORDER BY
+		<if test="code == 1">
+			lessonRmnCnt DESC,
+		</if>
+		<if test="code == 2">
+			practiceRmnCnt DESC,
+		</if>
+		payDate ASC
+		LIMIT 1;
 	</update>
+
+	<!-- 멤버 테이블의 횟수 변경 -->
+	<update id="changeCntMember" parameterType="java.util.Map">
+		UPDATE member
+		set
+		<if test="code == 1">
+			lessonCnt =
+			(SELECT SUM(lessonRmnCnt)
+			FROM payment p
+			WHERE
+			p.memberIdx = #{memberIdx})
+		</if>
+		<if test="code == 2">
+			practiceCnt =
+			(SELECT SUM(practiceRmnCnt)
+			FROM payment p
+			WHERE p.memberIdx = #{memberIdx}) AND p.isDelete = 0
+		</if>
+		WHERE memberIdx = #{memberIdx}
+	</update>
+
 </mapper>

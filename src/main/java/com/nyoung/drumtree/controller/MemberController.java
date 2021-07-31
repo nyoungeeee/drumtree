@@ -92,6 +92,8 @@ public class MemberController {
 				member.put("isApproval", member1.getIsApproval());
 				member.put("memoAdmin", member1.getMemoAdmin());
 				member.put("memberGrade", member1.getMemberGrade());
+				member.put("lessonCnt", member1.getLessonCnt());
+				member.put("practiceCnt", member1.getPracticeCnt());
 				data.put(i, member);
 			}
 		} else {	//일반적인 경우, PW 노출하지 않음
@@ -109,6 +111,8 @@ public class MemberController {
 				member.put("isApproval", member1.getIsApproval());
 				member.put("memoAdmin", member1.getMemoAdmin());
 				member.put("memberGrade", member1.getMemberGrade());
+				member.put("lessonCnt", member1.getLessonCnt());
+				member.put("practiceCnt", member1.getPracticeCnt());
 				data.put(i, member);
 			}
 		}
