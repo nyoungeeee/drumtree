@@ -96,7 +96,7 @@
 	.loginInfo {
 		border-top: 1px solid #BDBDBD;
 		border-bottom: 1px solid #BDBDBD;
-		height: 6.5em;
+		height: auto;
 		padding: 5% 2% 5% 2%;
 		margin: 2% 5% 2% 5%;
 	}
