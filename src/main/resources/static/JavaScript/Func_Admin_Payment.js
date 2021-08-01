@@ -75,7 +75,7 @@ function processAjax(param0, param1, param2) {
     			var afterLesson = beforeLesson;
     			var afterPractice = beforePractice;
     			$(".updateBtn").attr("onclick", "updatePayment(" + payIdx + "," + (afterLesson-beforeLesson) + "," + (afterPractice-beforePractice) + ")");
-    			$(".deleteBtn").attr("onclick", "deletePayment(" + payIdx + ")");
+    			$(".deleteBtn").attr("onclick", "deletePayment(" + payIdx + "," + beforeLesson + "," + beforePractice + ")");
     			
     			$(".feeBtn").click(function() {
     				if ($(this).val()=="주 2회") {
@@ -451,7 +451,8 @@ function updatePayment(idx, lesson, practice) {
 	})
 }
 
-function deletePayment(idx) {
+function deletePayment(idx, lesson, practice) {
+	var paymentMember = Number($("#paymentMember").attr("name"));
 	if (confirm("납부 정보를 제거 하시겠습니까?")==true) {
 		$.ajax({
 	        url: "http://" + IPstring + "/update-payment",
@@ -467,6 +468,8 @@ function deletePayment(idx) {
 	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
 	        	}
 	        	else if (data.rt=="UpdatePayment_OK") {
+	        		if (lesson!=0) { changeRemainCount(paymentMember, 1, -lesson); }
+	        		if (practice!=0) { changeRemainCount(paymentMember, 2, -practice); }
 	            	alert("납부 정보 제거가 정상적으로 완료되었습니다.");
 	            	window.location.reload();
 	        	}
