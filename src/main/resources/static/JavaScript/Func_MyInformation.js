@@ -449,11 +449,21 @@ function createPaymentInfo(idx, month) {
         			paymentInfo += "<td>" + data[i].memberName + "</td>";
         			paymentInfo += "<td>" + "￦ " + data[i].fees.toLocaleString() + "</td>";
         			
-        			createGraph(data[i].lessonRmnCnt, data[i].lessonCnt);
-        			paymentInfo += "<td name='" + data[i].lessonRmnCnt + "'>" + resultGraph + "</td>";
+        			if (data[i].lessonCnt >= 0) {
+        				var lessonCount = "+" + data[i].lessonCnt;
+        			}
+        			else {
+        				var lessonCount = data[i].lessonCnt;
+        			}
+        			paymentInfo += "<td name='" + data[i].lessonCnt + "'>" + lessonCount + "</td>";
         			
-        			createGraph(data[i].practiceRmnCnt, data[i].practiceCnt);
-        			paymentInfo += "<td name='" + data[i].practiceRmnCnt + "'>" + resultGraph + "</td>";
+        			if (data[i].practiceCnt >= 0) {
+        				var practiceCount = "+" + data[i].practiceCnt;
+        			}
+        			else {
+        				var practiceCount = data[i].practiceCnt;
+        			}
+        			paymentInfo += "<td name='" + data[i].practiceCnt + "'>" + practiceCount + "</td>";
         			
         			paymentInfo += "<td>" + data[i].memo.replaceAll("\n", "<br>") + "</td>";
         			paymentInfo += "</tr>";

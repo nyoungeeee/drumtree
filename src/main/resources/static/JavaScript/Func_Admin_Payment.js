@@ -18,11 +18,21 @@ function processAjax(param0, param1, param2) {
         			result += "<td>" + data[i].memberName + "</td>";
         			result += "<td>" + "￦ " + data[i].fees.toLocaleString() + "</td>";
         			
-        			createGraph(data[i].lessonRmnCnt, data[i].lessonCnt);
-        			result += "<td name='" + data[i].lessonRmnCnt + "'>" + resultGraph + "</td>";
+        			if (data[i].lessonCnt >= 0) {
+        				var lessonCount = "+" + data[i].lessonCnt;
+        			}
+        			else {
+        				var lessonCount = data[i].lessonCnt;
+        			}
+        			result += "<td name='" + data[i].lessonCnt + "'>" + lessonCount + "</td>";
         			
-        			createGraph(data[i].practiceRmnCnt, data[i].practiceCnt);
-        			result += "<td name='" + data[i].practiceRmnCnt + "'>" + resultGraph + "</td>";
+        			if (data[i].practiceCnt >= 0) {
+        				var practiceCount = "+" + data[i].practiceCnt;
+        			}
+        			else {
+        				var practiceCount = data[i].practiceCnt;
+        			}
+        			result += "<td name='" + data[i].practiceCnt + "'>" + practiceCount + "</td>";
         			
         			result += "<td>" + data[i].memo.replaceAll("\n", "<br>") + "</td>";
         			result += "<td style='display:none;'>" + data[i].memberIdx + "</td>";
@@ -42,8 +52,8 @@ function processAjax(param0, param1, param2) {
     			resultPopup += "<tr>" + "<td>납부 일자</td>" + "<td>" + "<input type='date' id='paymentDate'>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>납부 회원</td>" + "<td>" + "<input type='text' id='paymentMember' readonly>" + "&emsp;" + "<input type='button' class='findBtn' value='찾기' onclick='findMember()'>" + "&emsp;" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>수강료</td>" + "<td>" + "<input type='text' id='paymentFee' readonly>" + "&emsp;" + "<input type='button' class='feeBtn' value='주 2회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 3회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 5회'>" + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>남은 레슨 횟수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>남은 연습 횟수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>추가 레슨</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>추가 연습</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='paymentMemo' spellcheck=false></textarea>" + "</td></tr>";
     			resultPopup += "</table><hr>";
     			resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
@@ -85,7 +95,7 @@ function processAjax(param0, param1, param2) {
     				if ($(this).val()=="+") {
     					$(this).parent().find("input[type=text]").val(currentCount + 1);
     				}
-    				else if ($(this).val()=="-") {
+    				else if ($(this).val()=="-"&&currentCount>0) {
     					$(this).parent().find("input[type=text]").val(currentCount - 1);
     				}
     				var afterLesson = Number($("#paymentLesson").val());
@@ -105,8 +115,8 @@ function createTableHead() {
 		result += "<td style='width:10%;'>" + "납부 일자" + "</td>";
 		result += "<td style='width:10%;'>" + "닉네임" + "</td>";
 		result += "<td style='width:10%;'>" + "수강료" + "</td>";
-		result += "<td style='width:15%;'>" + "레슨" + "</td>";
-		result += "<td style='width:15%;'>" + "연습" + "</td>";
+		result += "<td style='width:15%;'>" + "추가 레슨" + "</td>";
+		result += "<td style='width:15%;'>" + "추가 연습" + "</td>";
 		result += "<td style='width:30%;'>" + "메모" + "</td>";
 		result += "<td style='display:none;'>" + "회원 번호" + "</td>";
 		result += "</tr>";
@@ -175,7 +185,7 @@ function filterPayment(month) {
 	processAjax(filterName, filterMemo, month);
 }
 
-function addNotice() {
+function addPayment() {
 	var resultPopup = "";
 	resultPopup += "<strong>납부 정보 추가</strong>";
 	resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
@@ -183,8 +193,8 @@ function addNotice() {
 	resultPopup += "<tr>" + "<td>납부 일자</td>" + "<td>" + "<input type='date' id='paymentDate'>" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>납부 회원</td>" + "<td>" + "<input type='text' id='paymentMember' value='-' readonly>" + "&emsp;" + "<input type='button' class='findBtn' value='찾기' onclick='findMember()'>" + "&emsp;" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>수강료</td>" + "<td>" + "<input type='text' id='paymentFee' value='￦ 0' readonly>" + "&emsp;" + "<input type='button' class='feeBtn' value='주 2회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 3회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 5회'>" + "</td></tr>";
-	resultPopup += "<tr>" + "<td>레슨 횟수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
-	resultPopup += "<tr>" + "<td>연습 횟수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+	resultPopup += "<tr>" + "<td>추가 레슨</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+	resultPopup += "<tr>" + "<td>추가 연습</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='paymentMemo' spellcheck=false></textarea>" + "</td></tr>";
 	resultPopup += "</table><hr>";
 	resultPopup += "<input type='button' class='resetBtn' value='초기화'>";
@@ -216,7 +226,7 @@ function addNotice() {
 		if ($(this).val()=="+") {
 			$(this).parent().find("input[type=text]").val(currentCount + 1);
 		}
-		else if ($(this).val()=="-") {
+		else if ($(this).val()=="-"&&currentCount>0) {
 			$(this).parent().find("input[type=text]").val(currentCount - 1);
 		}
 	});
@@ -358,9 +368,7 @@ function savePayment() {
 	        	memberIdx: paymentMember,
 	        	fees: paymentFee,
 	        	lessonCnt: paymentLesson,
-	        	lessonRmnCnt: paymentLesson,
 	        	practiceCnt: paymentPractice,
-	        	practiceRmnCnt: paymentPractice,
 	        	memo: paymentMemo,
 	        	payCode: paymentCode
 	        },
@@ -410,8 +418,8 @@ function updatePayment(idx, lesson, practice) {
 	var paymentMember = Number($("#paymentMember").attr("name"));
 	var paymentMemberName = $("#paymentMember").val();
 	var paymentFee = Number($("#paymentFee").val().replaceAll("￦ ", "").replaceAll(",", ""));
-	var paymentRmnLesson = Number($("#paymentLesson").val());
-	var paymentRmnPractice = Number($("#paymentPractice").val());
+	var paymentLesson = Number($("#paymentLesson").val());
+	var paymentPractice = Number($("#paymentPractice").val());
 	var paymentMemo = $("#paymentMemo").val();
 	
 	$.ajax({
@@ -421,6 +429,8 @@ function updatePayment(idx, lesson, practice) {
         	payDate: paymentDate,
         	memberIdx: paymentMember,
         	memberName: paymentMemberName,
+        	lessonCnt: paymentLesson,
+        	practiceCnt: paymentPractice,
         	fees: paymentFee,
         	memo: paymentMemo
         },
