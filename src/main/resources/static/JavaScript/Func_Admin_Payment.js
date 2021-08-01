@@ -401,8 +401,7 @@ function changeRemainCount(param0, param1, param2) {
         },
         method: "POST",
         dataType: "JSON",
-        error: function() { console.log("데이터 로드 실패"); },
-        success: function(data) { console.log(data.rt); }
+        error: function() { console.log("데이터 로드 실패"); }
 	})
 }
 

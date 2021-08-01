@@ -40,7 +40,7 @@
 		padding: 0.5% 10% 0.5% 0.5%;
 	}
 	
-	input[type=text]:not(#filter, #inputPaymentInfo) {
+	input[type=text]:not(#filter, #inputPaymentInfo, #paymentLesson, #paymentPractice) {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;
 		text-align: center;
@@ -104,11 +104,11 @@
 		background-color: #E6E6E6;
 	}
 	
-	table tbody tr td:nth-child(7):hover {
+	table tbody tr td:nth-child(9):hover {
 		cursor: default;
 	}
 	
-	table tbody tr td:nth-child(8):hover {
+	table tbody tr td:nth-child(10):hover {
 		cursor: default;
 	}
 	
@@ -390,4 +390,36 @@
 		padding: 0;
 		cursor: pointer;
 		user-select: none;
+	}
+	
+	#paymentLesson, #paymentPractice {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		text-align: center;
+		width: 10%;
+		height: 2em;
+		border: 1px solid #C4C4C4;
+		border-radius: 2px;
+		outline: 0;
+		background-color: #FFFFFF;
+		color: #6E6E6E;
+		padding: 1% 2% 1% 2%;
+		cursor: not-allowed;
+	}
+	
+	.changeBtn {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		font-weight: bold;
+		text-align: center;
+		width: 2.5em;
+		height: 2.5em;
+		border: 0;
+		border-radius: 2px;
+		background-color: #6E6E6E;
+		color: #FFFFFF;
+		outline: 0;
+		cursor: pointer;
+		user-select: none;
+		transition: all 0.25s ease;
 	}
