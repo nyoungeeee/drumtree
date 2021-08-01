@@ -119,17 +119,6 @@ function processAjax(param0, param1, param2, param3) {
         		resultPopup += "<input type='button' class='updateBtn' value='변경'>";
         		$(".popupBox").html(resultPopup);
         		$("#selectDate").val($("#date").val());
-        		var reservationIdx = rsvIdxArray[$(this).attr("name")];
-        		$(".updateBtn").attr("onclick", "updateReservation(" + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
-        		$(".deleteBtn").attr("onclick", "deleteReservation(" + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
-        		
-        		$("#selectDate").change(function() {
-        			$(".updateBtn").attr("onclick", "updateReservation(" + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
-            		$(".deleteBtn").attr("onclick", "deleteReservation(" + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
-            		$(".checkFlag").val("체크");
-            		$(".checkFlag").removeClass("checkTrue");
-            		$(".checkFlag").removeClass("checkFalse");
-        		});
         		
         		$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<br>");
     			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
@@ -222,6 +211,20 @@ function processAjax(param0, param1, param2, param3) {
         		$("#selectRoom").append(resultRoom);
         		var thisRoom = roomTypeArray[$(this).attr("name")];
         		$("#selectRoom").val(thisRoom).prop("selected", true);
+        		
+        		var memberIdx = memberIdxArray[$(this).attr("name")];
+        		var reservationIdx = rsvIdxArray[$(this).attr("name")];
+        		var originalRsv = thisType;
+        		$(".updateBtn").attr("onclick", "updateReservation(" + originalRsv + "," + memberIdx + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
+        		$(".deleteBtn").attr("onclick", "deleteReservation(" + originalRsv + "," + memberIdx + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
+        		
+        		$("#selectDate").change(function() {
+        			$(".updateBtn").attr("onclick", "updateReservation(" + memberIdx + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
+            		$(".deleteBtn").attr("onclick", "deleteReservation(" + memberIdx + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
+            		$(".checkFlag").val("체크");
+            		$(".checkFlag").removeClass("checkTrue");
+            		$(".checkFlag").removeClass("checkFalse");
+        		});
         		
         		$("#selectType").change(function(){
         			$("#selectRoom option").remove();
@@ -508,7 +511,7 @@ function resetReservation() {
 	$(".checkFlag").removeClass("checkFalse");
 }
 
-function updateReservation(idx, date) {
+function updateReservation(type, member, idx, date) {
 	var rsv = $("#selectType").val();
 	var room = $("#selectRoom").val();
 	var startTime = $("#selectDate").val() + " " + $("#selectStartTime").val() + ":00";
@@ -533,6 +536,12 @@ function updateReservation(idx, date) {
 	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
 	        	}
 	        	else if (data.rt=="UpdateRsv_OK") {
+	        		if (type==0) {
+	        			changeRemainCount(member, 1, 1);
+	        		}
+	        		else if (type==1) {
+	        			changeRemainCount(member, 2, 1);
+	        		}
 	            	alert("변경 신청이 접수되었습니다.\n관리자에게 승인을 요청해 주세요.");
 	            	location.href = "../Reservation?date=" + date;
 	        	}
@@ -541,7 +550,21 @@ function updateReservation(idx, date) {
 	}
 }
 
-function deleteReservation(idx, date) {
+function changeRemainCount(param0, param1, param2) {
+	$.ajax({
+        url: "http://" + IPstring + "/change-cnt",
+        data: {
+        	memberIdx: param0,
+        	code: param1,
+        	cnt: param2
+        },
+        method: "POST",
+        dataType: "JSON",
+        error: function() { console.log("데이터 로드 실패"); }
+	})
+}
+
+function deleteReservation(type, member, idx, date) {
 	if (confirm("예약을 취소 하시겠습니까?")==true) {
 		$.ajax({
 	        url: "http://" + IPstring + "/update-rsv",
@@ -554,6 +577,12 @@ function deleteReservation(idx, date) {
 	        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
 	        	}
 	        	else if (data.rt=="UpdateRsv_OK") {
+	        		if (type==0) {
+	        			changeRemainCount(member, 1, 1);
+	        		}
+	        		else if (type==1) {
+	        			changeRemainCount(member, 2, 1);
+	        		}
 	            	alert("예약 취소가 정상적으로 완료되었습니다.");
 	            	location.href = "../Reservation?date=" + date;
 	        	}
