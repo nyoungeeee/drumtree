@@ -16,6 +16,8 @@ function processAjax(param0, param1, param2) {
     			for (var i = 0; i < data.total; i++) {
         			result += "<tr onclick='openPopup()'>";
         			result += "<td>" + data[i].memberIdx + "</td>";
+        			result += "<td>" + data[i].memberID + "</td>";
+        			result += "<td>" + data[i].memberName + "</td>";
         			
         			if (data[i].memberGrade==0) {
         				var gradeString = "비회원";
@@ -28,10 +30,10 @@ function processAjax(param0, param1, param2) {
         			} else if (data[i].memberGrade==99) {
         				var gradeString = "관리자";
         			}
-        			
         			result += "<td>" + gradeString + "</td>";
-        			result += "<td>" + data[i].memberID + "</td>";
-        			result += "<td>" + data[i].memberName + "</td>";
+        			
+        			result += "<td>" + data[i].lessonCnt + "</td>";
+        			result += "<td>" + data[i].practiceCnt + "</td>";
         			result += "<td>" + data[i].memo + "</td>";
         			result += "<td>" + data[i].memoAdmin + "</td>";
         			result += "<td onclick='event.cancelBubble=true'>";
@@ -54,39 +56,46 @@ function processAjax(param0, param1, param2) {
     			resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
     			resultPopup += "<hr><table id='memberInfo'>";
     			resultPopup += "<tr>" + "<td>회원 번호</td>" + "<td>" + $(this).children().eq(0).html() + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + $(this).children().eq(2).html() + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>아이디</td>" + "<td>" + $(this).children().eq(1).html() + "</td></tr>";
     			resultPopup += "<tr>" + "<td>닉네임</td>" + "<td>" + "<input type='text' id='memberName' spellcheck='false'>" + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + "<textarea id='memoMember' spellcheck='false'></textarea>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>회원 등급</td>" + "<td>" + "<select id='memberGrade'></select>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>레슨</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>연습</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>회원 메모</td>" + "<td>" + "<textarea id='memoMember' spellcheck='false'></textarea>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>관리자 메모</td>" + "<td>" + "<textarea id='memoAdmin' spellcheck='false'></textarea>" + "</td></tr>";
     			resultPopup += "</table><hr>";
     			resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
     			resultPopup += "<input type='button' class='updateBtn' value='저장'>";
     			$(".popupBox").html(resultPopup);
     			
-    			$("#memberName").val($(this).children().eq(3).html());
-    			$("#memoMember").val($(this).children().eq(4).html().replaceAll("<br>", "\n"));
-    			$("#memoAdmin").val($(this).children().eq(5).html().replaceAll("<br>", "\n"));
+    			var beforeLesson = $(this).children().eq(4).html();
+    			var beforePractice = $(this).children().eq(5).html();
+    			
+    			$("#memberName").val($(this).children().eq(2).html());
+    			$("#paymentLesson").val(beforeLesson);
+    			$("#paymentPractice").val(beforePractice);
+    			$("#memoMember").val($(this).children().eq(6).html().replaceAll("<br>", "\n"));
+    			$("#memoAdmin").val($(this).children().eq(7).html().replaceAll("<br>", "\n"));
 
     			var resultOption = "";
-    			if ($(this).children().eq(1).html()=="손님") {
+    			if ($(this).children().eq(3).html()=="손님") {
     				resultOption += "<option value=1 selected>" + "손님" + "</option>";
 	    			resultOption += "<option value=2>" + "연습생" + "</option>";
 	    			resultOption += "<option value=3>" + "레슨생" + "</option>";
-    			} else if ($(this).children().eq(1).html()=="연습생") {
+    			} else if ($(this).children().eq(3).html()=="연습생") {
     				resultOption += "<option value=1>" + "손님" + "</option>";
 	    			resultOption += "<option value=2 selected>" + "연습생" + "</option>";
 	    			resultOption += "<option value=3>" + "레슨생" + "</option>";
-    			} else if ($(this).children().eq(1).html()=="레슨생") {
+    			} else if ($(this).children().eq(3).html()=="레슨생") {
     				resultOption += "<option value=1>" + "손님" + "</option>";
 	    			resultOption += "<option value=2>" + "연습생" + "</option>";
 	    			resultOption += "<option value=3 selected>" + "레슨생" + "</option>";
-    			} else if ($(this).children().eq(1).html()=="비회원") {
+    			} else if ($(this).children().eq(3).html()=="비회원") {
     				resultOption += "<option value=0 selected>" + "비회원" + "</option>";
     				resultOption += "<option value=1>" + "손님" + "</option>";
 	    			resultOption += "<option value=2>" + "연습생" + "</option>";
 	    			resultOption += "<option value=3>" + "레슨생" + "</option>";
-    			} else if ($(this).children().eq(1).html()=="관리자") {
+    			} else if ($(this).children().eq(3).html()=="관리자") {
     				resultOption += "<option value=99 selected>" + "관리자" + "</option>";
     				resultOption += "<option value=1>" + "손님" + "</option>";
 	    			resultOption += "<option value=2>" + "연습생" + "</option>";
@@ -94,8 +103,24 @@ function processAjax(param0, param1, param2) {
     			}
     			$("#memberGrade").append(resultOption);
     			
-    			$(".updateBtn").attr("onclick", "updateMember(" + $(this).children().eq(0).html() + ")");
-    			$(".deleteBtn").attr("onclick", "deleteMember(" + $(this).children().eq(0).html() + ")");
+    			var memberIndex = $(this).children().eq(0).html();
+    			var afterLesson = beforeLesson;
+    			var afterPractice = beforePractice;
+    			$(".updateBtn").attr("onclick", "updateMember(" + memberIndex + "," + (afterLesson-beforeLesson) + "," + (afterPractice-beforePractice) + ")");
+    			$(".deleteBtn").attr("onclick", "deleteMember(" + memberIndex + ")");
+    			
+    			$(".changeBtn").click(function() {
+    				var currentCount = Number($(this).parent().find("input[type=text]").val());
+    				if ($(this).val()=="+") {
+    					$(this).parent().find("input[type=text]").val(currentCount + 1);
+    				}
+    				else if ($(this).val()=="-") {
+    					$(this).parent().find("input[type=text]").val(currentCount - 1);
+    				}
+    				var afterLesson = Number($("#paymentLesson").val());
+    				var afterPractice = Number($("#paymentPractice").val());
+    				$(".updateBtn").attr("onclick", "updateMember(" + memberIndex + "," + (afterLesson-beforeLesson) + "," + (afterPractice-beforePractice) + ")");
+    			});
     		})
         }
     })
@@ -105,14 +130,16 @@ function createTableHead() {
 	$(document).ready(function(){
 		var result = "";
 		result += "<tr>";
-		result += "<td style='width:10%;'>" + "회원 번호" + "</td>";
-		result += "<td style='width:10%;'>" + "회원 등급" + "</td>";
+		result += "<td style='width:5%;'>" + "회원 번호" + "</td>";
 		result += "<td style='width:10%;'>" + "아이디" + "</td>";
 		result += "<td style='width:10%;'>" + "닉네임" + "</td>";
+		result += "<td style='width:10%;'>" + "회원 등급" + "</td>";
+		result += "<td style='width:5%;'>" + "레슨" + "</td>";
+		result += "<td style='width:5%;'>" + "연습" + "</td>";
 		result += "<td style='width:20%;'>" + "회원 메모" + "</td>";
 		result += "<td style='width:20%;'>" + "관리자 메모" + "</td>";
-		result += "<td style='width:10%;'>" + "납부 정보" + "</td>";
-		result += "<td style='width:10%;'>" + "비밀번호" + "</td>";
+		result += "<td style='width:7.5%;'>" + "납부 정보" + "</td>";
+		result += "<td style='width:7.5%;'>" + "비밀번호" + "</td>";
 		result += "</tr>";
 		
 		$("thead").html(result);
@@ -301,14 +328,20 @@ function loadPaymentData(idx, name, month) {
 	})
 }
 
-function updateMember(idx) {
+function updateMember(idx, lesson, practice) {
 	var name = $("#memberName").val();
 	var grade = $("#memberGrade").val();
 	var memo1 = $("#memoMember").val().replaceAll("\n", "<br>");
 	var memo2 = $("#memoAdmin").val().replaceAll("\n", "<br>");
 	$.ajax({
         url: "http://" + IPstring + "/update-member",
-        data: { memberIdx: idx, memberName: name, memberGrade: grade, memo: memo1, memoAdmin: memo2 },
+        data: {
+        	memberIdx: idx,
+        	memberName: name,
+        	memberGrade: grade,
+        	memo: memo1,
+        	memoAdmin: memo2
+        },
         method: "POST",
         dataType: "JSON",
         error: function() { alert("데이터 로드 실패"); },
@@ -320,10 +353,26 @@ function updateMember(idx) {
         		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
         	}
         	else if (data.rt=="UpdateMember_OK") {
+        		if (lesson!=0) { changeRemainCount(idx, 1, lesson); }
+        		if (practice!=0) { changeRemainCount(idx, 2, practice); }
             	alert("회원 정보 변경이 정상적으로 완료되었습니다.");
             	window.location.reload();
         	}
         }
+	})
+}
+
+function changeRemainCount(param0, param1, param2) {
+	$.ajax({
+        url: "http://" + IPstring + "/change-cnt",
+        data: {
+        	memberIdx: param0,
+        	code: param1,
+        	cnt: param2
+        },
+        method: "POST",
+        dataType: "JSON",
+        error: function() { console.log("데이터 로드 실패"); }
 	})
 }
 

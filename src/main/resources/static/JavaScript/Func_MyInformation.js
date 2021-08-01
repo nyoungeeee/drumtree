@@ -104,6 +104,8 @@ function createMemberInfo(idx) {
         	memberInfo += "<tr>" + "<td>회원 번호</td>" + "<td>" + data[0].memberIdx + "</td>" + "</tr>";
         	memberInfo += "<tr>" + "<td>회원 등급</td>" + "<td>" + gradeString + "</td>" +  "</tr>";
         	memberInfo += "<tr>" + "<td>아이디</td>" + "<td>" + data[0].memberID + "</td>" + "</tr>";
+        	memberInfo += "<tr>" + "<td>레슨</td>" + "<td>" + data[0].lessonCnt + "</td>" + "</tr>";
+        	memberInfo += "<tr>" + "<td>연습</td>" + "<td>" + data[0].practiceCnt + "</td>" + "</tr>";
         	memberInfo += "<tr>" + "<td>닉네임</td>" + "<td>" + "<input type='text'>" + "<input type='button' value='수정' onclick=changeMemberName("+ data[0].memberIdx + "," + data[0].memberGrade + ")>" + "</td>" + "</tr>";
         	memberInfo += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea></textarea>" + "<input type='button' value='수정' onclick=changeMemberMemo("+ data[0].memberIdx + "," + data[0].memberGrade + ")>" + "</td>" +  "</tr>";
         	memberInfo += "<tr>" + "<td>비밀번호</td>" + "<td>" + "<input type='button' id='changePassword' value='수정'>" + "</td>" +  "</tr>";
