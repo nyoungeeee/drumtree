@@ -312,15 +312,19 @@ public class PaymentController {
 		param.setUsedRsvIdx(usedRsvIdx);
 		param.setFees(fees);
 		param.setIsDelete(isDelete);
+		param.setLessonRmnCnt(-1);
+		param.setPracticeRmnCnt(-1);
 		if(code.equals("1")) {
 
 			// 삭제 처리 전 해당 연습/레슨 횟수를 member에서 삭제
 			int ilessonCnt = 0;
 			int ipracticeCnt = 0;
+			int imemberIdx = 0;
 			ilessonCnt = -paymentService.SelectPayment(param).get(0).getLessonCnt();
 			ipracticeCnt = -paymentService.SelectPayment(param).get(0).getPracticeCnt();
-			memberService.UpdateCnt(memberIdx, "1", ilessonCnt);
-			memberService.UpdateCnt(memberIdx, "2", ipracticeCnt);
+			imemberIdx = paymentService.SelectPayment(param).get(0).getMemberIdx();
+			memberService.UpdateCnt(imemberIdx, "1", ilessonCnt);
+			memberService.UpdateCnt(imemberIdx, "2", ipracticeCnt);
 			
 			// code가 1으로 오면 삭제 처리
 			param.setIsDelete(1);
