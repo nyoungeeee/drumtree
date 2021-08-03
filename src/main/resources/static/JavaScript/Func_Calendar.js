@@ -161,6 +161,8 @@ function processAjax(param0, param1, param2, param3, param4, param5) {
         		resultPopup += "<strong>예약 정보</strong>";
         		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
         		resultPopup += "<hr><table id='reservationInfo'>";
+        		resultPopup += "<tr>" + "<td>예약 회원</td>" + "<td>" + "<input type='text' id='selectMember' readonly>";
+        		resultPopup += "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
@@ -172,6 +174,8 @@ function processAjax(param0, param1, param2, param3, param4, param5) {
         		resultPopup += "<input type='button' class='updateBtn' value='변경'>";
         		$(".popupBox").html(resultPopup);
         		$("#selectDate").val($(this).parent().parent().find("#realTime").html());
+        		$("#selectMember").attr("name", memberIdxArray[$(this).attr("name")]);
+        		$("#selectMember").val(maskingText(memberNameArray[$(this).attr("name")]));
         		
         		$("#selectDate").change(function() {
             		$(".checkFlag").val("체크");
@@ -179,12 +183,12 @@ function processAjax(param0, param1, param2, param3, param4, param5) {
             		$(".checkFlag").removeClass("checkFalse");
         		});
         		
-        		$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<br>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<input type='file' id='reservationFile' style='display:none;'>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='fileBtn' for='reservationFile'>파일 선택</label>");
+        		$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<br>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<input type='file' id='reservationFile' style='display:none;'>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='fileBtn' for='reservationFile'>파일 선택</label>");
     			var startHTML = "<div id='fileList'>";
     			var startToFile = memoArray[$(this).attr("name")].indexOf(startHTML) + startHTML.length;
     			var endToFile = memoArray[$(this).attr("name")].indexOf("</div>");
@@ -271,11 +275,10 @@ function processAjax(param0, param1, param2, param3, param4, param5) {
         		var thisRoom = roomTypeArray[$(this).attr("name")];
         		$("#selectRoom").val(thisRoom).prop("selected", true);
         		
-        		var memberIdx = memberIdxArray[$(this).attr("name")];
         		var reservationIdx = rsvIdxArray[$(this).attr("name")];
         		var originalRsv = thisType;
-        		$(".updateBtn").attr("onclick", "updateReservation(" + originalRsv + "," + memberIdx + "," + reservationIdx + ")");
-        		$(".deleteBtn").attr("onclick", "deleteReservation(" + originalRsv + "," + memberIdx + "," + reservationIdx + ")");
+        		$(".updateBtn").attr("onclick", "updateReservation(" + originalRsv + "," + $("#selectMember").attr("name") + "," + reservationIdx + ")");
+        		$(".deleteBtn").attr("onclick", "deleteReservation(" + originalRsv + "," + $("#selectMember").attr("name") + "," + reservationIdx + ")");
         		
         		$("#selectType").change(function(){
         			$("#selectRoom option").remove();

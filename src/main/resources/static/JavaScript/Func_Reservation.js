@@ -54,7 +54,8 @@ function processAjax(param0, param1, param2, param3) {
         	
         	var key = $.cookie("loginInfo");
         	var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
-    		var loginGrade = decrypt.split("&")[2];
+        	var loginName = decrypt.split("&")[1];
+        	var loginGrade = decrypt.split("&")[2];
     		var loginMember = decrypt.split("&")[3];
     		
         	for (var arrayIdx = 0; arrayIdx < startArray.length; arrayIdx++) {
@@ -108,6 +109,8 @@ function processAjax(param0, param1, param2, param3) {
         		resultPopup += "<strong>예약 정보</strong>";
         		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
         		resultPopup += "<hr><table id='reservationInfo'>";
+        		resultPopup += "<tr>" + "<td>예약 회원</td>" + "<td>" + "<input type='text' id='selectMember' readonly>";
+        		resultPopup += "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
@@ -119,13 +122,15 @@ function processAjax(param0, param1, param2, param3) {
         		resultPopup += "<input type='button' class='updateBtn' value='변경'>";
         		$(".popupBox").html(resultPopup);
         		$("#selectDate").val($("#date").val());
+        		$("#selectMember").attr("name", memberIdxArray[$(this).attr("name")]);
+        		$("#selectMember").val(maskingText(memberNameArray[$(this).attr("name")]));
         		
-        		$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<br>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<input type='file' id='reservationFile' style='display:none;'>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='fileBtn' for='reservationFile'>파일 선택</label>");
+        		$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<br>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<input type='file' id='reservationFile' style='display:none;'>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='fileBtn' for='reservationFile'>파일 선택</label>");
     			var startHTML = "<div id='fileList'>";
     			var startToFile = memoArray[$(this).attr("name")].indexOf(startHTML) + startHTML.length;
     			var endToFile = memoArray[$(this).attr("name")].indexOf("</div>");
@@ -212,15 +217,14 @@ function processAjax(param0, param1, param2, param3) {
         		var thisRoom = roomTypeArray[$(this).attr("name")];
         		$("#selectRoom").val(thisRoom).prop("selected", true);
         		
-        		var memberIdx = memberIdxArray[$(this).attr("name")];
         		var reservationIdx = rsvIdxArray[$(this).attr("name")];
         		var originalRsv = thisType;
-        		$(".updateBtn").attr("onclick", "updateReservation(" + originalRsv + "," + memberIdx + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
-        		$(".deleteBtn").attr("onclick", "deleteReservation(" + originalRsv + "," + memberIdx + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
+        		$(".updateBtn").attr("onclick", "updateReservation(" + originalRsv + "," + $("#selectMember").attr("name") + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
+        		$(".deleteBtn").attr("onclick", "deleteReservation(" + originalRsv + "," + $("#selectMember").attr("name") + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
         		
         		$("#selectDate").change(function() {
-        			$(".updateBtn").attr("onclick", "updateReservation(" + memberIdx + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
-            		$(".deleteBtn").attr("onclick", "deleteReservation(" + memberIdx + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
+        			$(".updateBtn").attr("onclick", "updateReservation(" + originalRsv + "," + $("#selectMember").attr("name") + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
+            		$(".deleteBtn").attr("onclick", "deleteReservation(" + originalRsv + "," + $("#selectMember").attr("name") + "," + reservationIdx + "," + "'" + $("#selectDate").val() + "'" + ")");
             		$(".checkFlag").val("체크");
             		$(".checkFlag").removeClass("checkTrue");
             		$(".checkFlag").removeClass("checkFalse");
@@ -258,6 +262,9 @@ function processAjax(param0, param1, param2, param3) {
         		resultPopup += "<strong>예약하기</strong>";
         		resultPopup += "<input type='button' value='X' class='closeBtn' onclick='closePopup()'>";
         		resultPopup += "<hr><table id='reservationInfo'>";
+        		resultPopup += "<tr>" + "<td>예약 회원</td>" + "<td>" + "<input type='text' id='selectMember' readonly>";
+        		if (loginGrade==99) { resultPopup += "&emsp;" + "<input type='button' class='findBtn' value='찾기'>"; }
+        		resultPopup += "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 구분</td>" + "<td>" + "<select id='selectType'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 장소</td>" + "<td>" + "<select id='selectRoom'></select>&emsp;" + "</td></tr>";
         		resultPopup += "<tr>" + "<td>예약 날짜</td>" + "<td>" + "<input type='date' id='selectDate'>" + "</td></tr>";
@@ -271,6 +278,9 @@ function processAjax(param0, param1, param2, param3) {
         		$("#selectDate").val($("#date").val());
         		$(".saveBtn").attr("onclick", "saveReservation('" + $("#selectDate").val() + "')");
         		$(".resetBtn").attr("onclick", "resetReservation()");
+        		$(".findBtn").attr("onclick", "findMember()");
+        		$("#selectMember").attr("name", loginMember);
+        		$("#selectMember").val(maskingText(loginName));
         		
         		$("#selectDate").change(function() {
         			$(".saveBtn").attr("onclick", "saveReservation('" + $("#selectDate").val() + "')");
@@ -279,12 +289,12 @@ function processAjax(param0, param1, param2, param3) {
             		$(".checkFlag").removeClass("checkFalse");
         		});
         		
-        		$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<br>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<input type='file' id='reservationFile' style='display:none;'>");
-    			$("#reservationInfo tr").eq(5).find("td").eq(1).prepend("<label class='fileBtn' for='reservationFile'>파일 선택</label>");
+        		$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<br>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='clearBtn' onclick='clearFile()'>지우기</label>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='uploadBtn' onclick='uploadFile()'>첨부</label>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='fileName'><a>첨부할 파일을 선택해 주세요.</a></label>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<input type='file' id='reservationFile' style='display:none;'>");
+    			$("#reservationInfo tr").eq(6).find("td").eq(1).prepend("<label class='fileBtn' for='reservationFile'>파일 선택</label>");
     			
     			$("#reservationFile").on('change',function(){
     				$(".fileName a").html($("#reservationFile")[0].files[0].name);
@@ -398,6 +408,122 @@ function processAjax(param0, param1, param2, param3) {
     })
 }
 
+function openFindMember() {
+	$('.popupFindMember').css('display', 'inline-block');
+	$('.popupBackground').css('z-index', '7');
+}
+
+function closeFindMember() {
+	$('.popupFindMember').css('display', 'none');
+	$('.popupBackground').css('z-index', '5');
+}
+
+function findMember() {
+	var resultFindMember = "";
+	resultFindMember += "<strong>회원 정보 찾기</strong>";
+	resultFindMember += "<input type='button' value='X' class='closeBtn' onclick='closeFindMember()'>";
+	resultFindMember += "<hr><select id='selectInfoType'></select>";
+	resultFindMember += "<input type='text' id='inputMemberInfo' spellcheck=false placeholder='검색어를 입력해 주세요.' autocomplete='off'>";
+	resultFindMember += "<input type='button' id='searchMemberInfo' value='검색'><br><br>";
+	resultFindMember += "<table><thead>";
+	resultFindMember += "<tr>";
+	resultFindMember += "<td style='width:10%;'>회원 번호</td>";
+	resultFindMember += "<td style='width:10%;'>회원 등급</td>";
+	resultFindMember += "<td style='width:10%;'>아이디</td>";
+	resultFindMember += "<td style='width:10%;'>닉네임</td>";
+	resultFindMember += "<td style='width:25%;'>회원 메모</td>";
+	resultFindMember += "<td style='width:25%;'>관리자 메모</td>";
+	resultFindMember += "</tr>";
+	resultFindMember += "</thead><tbody></tbody></table>";
+	$(".popupFindMember").html(resultFindMember);
+	
+	var findMemberOption = "";
+	findMemberOption += "<option value='name'>" + "닉네임" + "</option>";
+	findMemberOption += "<option value='Id'>" + "아이디" + "</option>";
+	findMemberOption += "<option value='memo'>" + "회원 메모" + "</option>";
+	$("#selectInfoType").append(findMemberOption);
+	
+	$("#inputMemberInfo").keypress(function(event) {
+		if (event.keyCode==13) {
+			event.preventDefault();
+			$("#searchMemberInfo").click();
+		}
+	})
+	
+	$("#searchMemberInfo").click(function() {
+		var selectInfoType = $("#selectInfoType").val();
+		var searchId = "";
+		var searchName = "";
+		var searchMemo = "";
+		if (selectInfoType=="Id") {
+			var searchId = $("#inputMemberInfo").val();
+		}
+		else if (selectInfoType=="name") {
+			var searchName = $("#inputMemberInfo").val();
+		}
+		else if (selectInfoType=="memo") {
+			var searchMemo = $("#inputMemberInfo").val();
+		}
+		
+		if ($("#inputMemberInfo").val()!="") {
+			$.ajax({
+		        url: "http://" + IPstring + "/members?isApproval=1",
+		        data: { memberID: searchId, memberName: searchName, memo: searchMemo },
+		        method: "POST",
+		        dataType: "JSON",
+		        error: function() { alert("데이터 로드 실패"); },
+		        success: function(data){
+		        	var result = "";
+	        		for (var i = 0; i < data.total; i++) {
+		    			result += "<tr>";
+		    			result += "<td>" + data[i].memberIdx + "</td>";
+		    			
+		    			if (data[i].memberGrade=="0") {
+		    				var gradeString = "비회원";
+		    			} else if (data[i].memberGrade==1) {
+		    				var gradeString = "손님";
+		    			} else if (data[i].memberGrade==2) {
+		    				var gradeString = "연습생";
+		    			} else if (data[i].memberGrade==3) {
+		    				var gradeString = "레슨생";
+		    			} else if (data[i].memberGrade==99) {
+		    				var gradeString = "관리자";
+		    			}
+		    			
+		    			result += "<td>" + gradeString + "</td>";
+		    			result += "<td>" + data[i].memberID + "</td>";
+		    			result += "<td>" + data[i].memberName + "</td>";
+		    			result += "<td>" + data[i].memo + "</td>";
+		    			result += "<td>" + data[i].memoAdmin + "</td>";
+		    			result += "</tr>";
+		    		}
+		    		$(".popupFindMember tbody").html(result);
+		    		$(".popupFindMember tbody tr").fadeOut(0);
+		    		$(".popupFindMember tbody tr").fadeIn(500);
+		    		
+		    		$(".popupFindMember tbody tr").click(function() {
+		    			var confirmMessage = "아래 회원 정보로 변경하시겠습니까?" + "\n";
+		    			confirmMessage += "\n" + "· 아이디: " + $(this).children().eq(2).html();
+		    			confirmMessage += "\n" + "· 닉네임: " + $(this).children().eq(3).html();
+		    			confirmMessage += "\n" + "· 회원 등급: " + $(this).children().eq(1).html();
+		    			
+		    			if(confirm(confirmMessage)==true) {
+		    				var selectIdx = $(this).children().eq(0).html();
+		    				var selectName = $(this).children().eq(3).html();
+		    				$("#selectMember").attr("name", selectIdx);
+		    				$("#selectMember").val(maskingText(selectName));
+		    				closeFindMember();
+		    			}
+		    			
+		    		});
+		        }
+		    })
+		}
+	});
+	
+	openFindMember();
+}
+
 function selectDate() {
 	$(document).ready(function(){
 		if (window.location.href.indexOf("?date=")>0) {
@@ -460,15 +586,12 @@ function closePopup() {
 }
 
 function saveReservation(date) {
-	var key = $.cookie("loginInfo");
-	var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
-	
 	var rsv = $("#selectType").val();	
 	var room = $("#selectRoom").val();
 	var startTime = $("#selectDate").val() + " " + $("#selectStartTime").val() + ":00";
 	var endTime = $("#selectDate").val() + " " + $("#selectEndTime").val() + ":00";
 	var rsvMemo = "<div id='fileList'>" + $("#reservationInfo #fileList").html() + "</div>" + $("#reservationMemo").val();
-	var rsvMember = decrypt.split("&")[3];
+	var rsvMember = $("#selectMember").attr("name");
 	
 	if ($(".checkFlag").val()=="체크") {
 		alert("예약 가능 시간을 체크해주세요.");
