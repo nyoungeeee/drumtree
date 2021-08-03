@@ -162,6 +162,21 @@
 		padding: 1% 2% 1% 2%;
 	}
 	
+	#selectMember {
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 1em;
+		text-align: center;
+		width: 20%;
+		height: 2em;
+		border: 1px solid #C4C4C4;
+		border-radius: 2px;
+		outline: 0;
+		background-color: #FFFFFF;
+		color: #6E6E6E;
+		padding: 1% 2% 1% 2%;
+		cursor: not-allowed;
+	}
+	
 	.checkFlag {
 		font-family: IBMPlexSansKR-Regular;
 		font-size: 1em;

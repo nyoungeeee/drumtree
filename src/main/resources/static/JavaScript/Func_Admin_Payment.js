@@ -452,7 +452,6 @@ function updatePayment(idx, lesson, practice) {
 }
 
 function deletePayment(idx) {
-	var paymentMember = Number($("#paymentMember").attr("name"));
 	if (confirm("납부 정보를 제거 하시겠습니까?")==true) {
 		$.ajax({
 	        url: "http://" + IPstring + "/update-payment",
