@@ -51,9 +51,9 @@ function processAjax(param0, param1, param2) {
     			resultPopup += "<hr><table id='paymentInfo'>";
     			resultPopup += "<tr>" + "<td>납부 일자</td>" + "<td>" + "<input type='date' id='paymentDate'>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>납부 회원</td>" + "<td>" + "<input type='text' id='paymentMember' readonly>" + "&emsp;" + "<input type='button' class='findBtn' value='찾기' onclick='findMember()'>" + "&emsp;" + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>수강료</td>" + "<td>" + "<input type='text' id='paymentFee' readonly>" + "&emsp;" + "<input type='button' class='feeBtn' value='주 2회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 3회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 5회'>" + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>추가 레슨</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
-    			resultPopup += "<tr>" + "<td>추가 연습</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>수강료</td>" + "<td>" + "<input type='text' id='paymentFee'>" + "&emsp;" + "<input type='button' class='feeBtn' value='주 2회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 3회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 5회'>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>레슨 수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+    			resultPopup += "<tr>" + "<td>연습 수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
     			resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='paymentMemo' spellcheck=false></textarea>" + "</td></tr>";
     			resultPopup += "</table><hr>";
     			resultPopup += "<input type='button' class='deleteBtn' value='제거'>";
@@ -67,6 +67,7 @@ function processAjax(param0, param1, param2) {
     			$("#paymentMember").val($(this).children().eq(2).html());
     			$("#paymentMember").attr("name", $(this).children().eq(7).html());
     			$("#paymentFee").val($(this).children().eq(3).html());
+    			$("#paymentFee").attr("name", Number($("#paymentFee").val().replaceAll("￦ ", "").replaceAll(",", "")));
     			$("#paymentLesson").val(beforeLesson);
     			$("#paymentPractice").val(beforePractice);
     			$("#paymentMemo").val($(this).children().eq(6).html().replaceAll("<br>", "\n"));
@@ -88,6 +89,24 @@ function processAjax(param0, param1, param2) {
     					var selectFee = 220000; 
     				}
     				$(this).parent().find("input[type=text]").val("￦ " + selectFee.toLocaleString());
+    				$(this).parent().find("input[type=text]").attr("name", selectFee);
+    			});
+    			
+    			$("#paymentFee").focus(function() {
+    				var inputFee = $("#paymentFee").val();
+    				$(this).val(inputFee.replaceAll("￦ ", "").replaceAll(",", ""));
+    				$(this).attr("name", Number(inputFee.replaceAll("￦ ", "").replaceAll(",", "")));
+    			});
+    			
+    			$("#paymentFee").focusout(function() {
+    				if (Number.isNaN(Number($("#paymentFee").val()))==true) {
+    					var inputFee = 0;
+    				}
+    				else {
+    					var inputFee = Number($("#paymentFee").val());
+    				}
+    				$(this).val("￦ " + inputFee.toLocaleString());
+    				$(this).attr("name", inputFee);
     			});
     			
     			$(".changeBtn").click(function() {
@@ -192,9 +211,9 @@ function addPayment() {
 	resultPopup += "<hr><table id='paymentInfo'>";
 	resultPopup += "<tr>" + "<td>납부 일자</td>" + "<td>" + "<input type='date' id='paymentDate'>" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>납부 회원</td>" + "<td>" + "<input type='text' id='paymentMember' value='-' readonly>" + "&emsp;" + "<input type='button' class='findBtn' value='찾기' onclick='findMember()'>" + "&emsp;" + "</td></tr>";
-	resultPopup += "<tr>" + "<td>수강료</td>" + "<td>" + "<input type='text' id='paymentFee' value='￦ 0' readonly>" + "&emsp;" + "<input type='button' class='feeBtn' value='주 2회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 3회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 5회'>" + "</td></tr>";
-	resultPopup += "<tr>" + "<td>추가 레슨</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
-	resultPopup += "<tr>" + "<td>추가 연습</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+	resultPopup += "<tr>" + "<td>수강료</td>" + "<td>" + "<input type='text' id='paymentFee'>" + "&emsp;" + "<input type='button' class='feeBtn' value='주 2회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 3회'>" + "&nbsp;" + "<input type='button' class='feeBtn' value='주 5회'>" + "</td></tr>";
+	resultPopup += "<tr>" + "<td>레슨 수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentLesson' value=0 readonly>" + "&nbsp;" +  "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
+	resultPopup += "<tr>" + "<td>연습 수</td>" + "<td>" + "<input type='button' class='changeBtn' value='-'>" + "&nbsp;" + "<input type='text' id='paymentPractice' value=0 readonly>" + "&nbsp;" + "<input type='button' class='changeBtn' value='+'>" + "</td></tr>";
 	resultPopup += "<tr>" + "<td>메모</td>" + "<td>" + "<textarea id='paymentMemo' spellcheck=false></textarea>" + "</td></tr>";
 	resultPopup += "</table><hr>";
 	resultPopup += "<input type='button' class='resetBtn' value='초기화'>";
@@ -208,6 +227,9 @@ function addPayment() {
 	var timezoneDate = new Date(Date.now() - timezoneOffset);
 	$("#paymentDate").val(timezoneDate.toISOString().slice(0,10));
 	
+	$("#paymentFee").val("￦ 0");
+	$("#paymentFee").attr("name", 0);
+	
 	$(".feeBtn").click(function() {
 		if ($(this).val()=="주 2회") {
 			var selectFee = 180000; 
@@ -219,6 +241,24 @@ function addPayment() {
 			var selectFee = 220000; 
 		}
 		$(this).parent().find("input[type=text]").val("￦ " + selectFee.toLocaleString());
+		$(this).parent().find("input[type=text]").attr("name", selectFee);
+	});
+	
+	$("#paymentFee").focus(function() {
+		var inputFee = $("#paymentFee").val();
+		$(this).val(inputFee.replaceAll("￦ ", "").replaceAll(",", ""));
+		$(this).attr("name", Number(inputFee.replaceAll("￦ ", "").replaceAll(",", "")));
+	});
+	
+	$("#paymentFee").focusout(function() {
+		if (Number.isNaN(Number($("#paymentFee").val()))==true) {
+			var inputFee = 0;
+		}
+		else {
+			var inputFee = Number($("#paymentFee").val());
+		}
+		$(this).val("￦ " + inputFee.toLocaleString());
+		$(this).attr("name", inputFee);
 	});
 	
 	$(".changeBtn").click(function() {
@@ -343,7 +383,7 @@ function findMember() {
 function savePayment() {
 	var paymentDate = $("#paymentDate").val();
 	var paymentMember = Number($("#paymentMember").attr("name"));
-	var paymentFee = Number($("#paymentFee").val().replaceAll("￦ ", "").replaceAll(",", ""));
+	var paymentFee = Number($("#paymentFee").attr("name"));
 	var paymentLesson = Number($("#paymentLesson").val());
 	var paymentPractice = Number($("#paymentPractice").val());
 	var paymentMemo = $("#paymentMemo").val();
@@ -417,7 +457,7 @@ function updatePayment(idx, lesson, practice) {
 	var paymentDate = $("#paymentDate").val();
 	var paymentMember = Number($("#paymentMember").attr("name"));
 	var paymentMemberName = $("#paymentMember").val();
-	var paymentFee = Number($("#paymentFee").val().replaceAll("￦ ", "").replaceAll(",", ""));
+	var paymentFee = Number($("#paymentFee").attr("name"));
 	var paymentLesson = Number($("#paymentLesson").val());
 	var paymentPractice = Number($("#paymentPractice").val());
 	var paymentMemo = $("#paymentMemo").val();
