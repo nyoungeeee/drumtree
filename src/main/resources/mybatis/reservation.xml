@@ -37,12 +37,12 @@
 		(memberIdx, rsvType,
 		roomType, `start`,
 		`end`, regDate, updateDate,
-		memo)
+		memo, isApproval)
 		VALUES
 		(#{memberIdx}, #{rsvType},
 		#{roomType}, #{start},
 		#{end},
-		now(), now(), #{memo})
+		now(), now(), #{memo}, #{isApproval})
 	</insert>
 
 	<!-- 예약 수정 -->

@@ -37,6 +37,7 @@ public class RsvController {
 		String start = request.getParameter("start")==null ? "" : request.getParameter("start");
 		String end = request.getParameter("end")==null ? "" : request.getParameter("end");
 		String memo = request.getParameter("memo")==null ? "" : request.getParameter("memo");
+		String isApprovalStr = request.getParameter("isApproval")==null ? "" : request.getParameter("isApproval");
 		int memberIdx = -1;
 		if(!memberIdxStr.equals("")) {
 			memberIdx = Integer.parseInt(request.getParameter("memberIdx"));
@@ -49,6 +50,11 @@ public class RsvController {
 		if(!roomTypeStr.equals("")) {
 			roomType = Integer.parseInt(request.getParameter("roomType"));
 		}
+		int isApproval = -1;
+		if(!isApprovalStr.equals("")) {
+			isApproval = Integer.parseInt(request.getParameter("isApproval"));
+		}
+
 
 		// 결과값 세팅
 		String rt = null;
@@ -62,6 +68,7 @@ public class RsvController {
 		param.setStart(start);
 		param.setEnd(end);
 		param.setMemo(memo);
+		param.setIsApproval(isApproval);
 		total = rsvService.WriteRsv(param);
 		if(total > 0) {
 			rt = "WriteRsv_OK";
