@@ -37,6 +37,7 @@ public class RsvDAO {
 		map.put("start", param.getStart());
 		map.put("end", param.getEnd());
 		map.put("memo", param.getMemo());
+		map.put("isApproval", param.getIsApproval());
 		return sqlSession.insert("com.nyoung.drumtree.ReservationMapper.writeRsv", map);
 	}
 

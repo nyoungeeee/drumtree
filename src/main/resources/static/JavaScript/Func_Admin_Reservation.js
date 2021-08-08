@@ -347,10 +347,12 @@ function checkTime(reservationIndex) {
         	
         	if (reservationIndex != -1) {
         		var thisIdx = rsvIdxCheckArray.indexOf(reservationIndex);
-        		startCheckArray.splice(thisIdx, 1);
-        		endCheckArray.splice(thisIdx, 1);
-        		roomTypeCheckArray.splice(thisIdx, 1);
-        		rsvIdxCheckArray.splice(thisIdx, 1);
+        		if (thisIdx > 0) {
+        			startCheckArray.splice(thisIdx, 1);
+            		endCheckArray.splice(thisIdx, 1);
+            		roomTypeCheckArray.splice(thisIdx, 1);
+            		rsvIdxCheckArray.splice(thisIdx, 1);
+        		}
         	}
         	
         	$("#errorMessageRoom").remove();

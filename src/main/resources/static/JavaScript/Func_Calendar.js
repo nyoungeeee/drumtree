@@ -372,6 +372,10 @@ function updateReservation(type, member, idx) {
 		alert("변경할 수 없는 시간대입니다.");
 	}
 	else {
+		var key = $.cookie("loginInfo");
+    	var decrypt = CryptoJS.AES.decrypt(key, Decode).toString(CryptoJS.enc.Utf8);
+    	var loginGrade = decrypt.split("&")[2];
+		
 		$.ajax({
 	        url: "http://" + IPstring + "/update-rsv",
 	        data: { isApproval: 4, rsvIdx: idx, rsvType: rsv, roomType: room, start: startTime, end: endTime, memo: rsvMemo },
@@ -389,8 +393,14 @@ function updateReservation(type, member, idx) {
 	        		else if (type==1) {
 	        			changeRemainCount(member, 2, 1);
 	        		}
-	            	alert("변경 신청이 접수되었습니다.\n관리자에게 승인을 요청해 주세요.");
-	            	window.location.reload();
+	        		
+	        		if (loginGrade==99) {
+	        			approvalReservation(idx, member);
+	        		}
+	        		else {
+	        			alert("변경 신청이 접수되었습니다.\n관리자에게 승인을 요청해 주세요.");
+		            	window.location.reload();
+	        		}
 	        	}
 	        }
 		})
@@ -408,6 +418,37 @@ function changeRemainCount(param0, param1, param2) {
         method: "POST",
         dataType: "JSON",
         error: function() { console.log("데이터 로드 실패"); }
+	})
+}
+
+function approvalReservation(idx, member) {
+	var rsv = $("#selectType").val();	
+	var room = $("#selectRoom").val();
+	var startTime = $("#selectDate").val() + " " + $("#selectStartTime").val() + ":00";
+	var endTime = $("#selectDate").val() + " " + $("#selectEndTime").val() + ":00";
+	var rsvMemo = "<div id='fileList'>" + $("#reservationInfo #fileList").html() + "</div>" + $("#reservationMemo").val();
+	
+	$.ajax({
+        url: "http://" + IPstring + "/update-rsv",
+        data: { rsvIdx: idx, isApproval: 1, rsvType: rsv, roomType: room, start: startTime, end: endTime, memo: rsvMemo },
+        method: "POST",
+        dataType: "JSON",
+        error: function() { alert("데이터 로드 실패"); },
+        success: function(data) {
+        	if (data.rt=="UpdateRsv_FAIL001") {
+        		alert("알 수 없는 오류. 관리자에게 문의해 주세요.");
+        	}
+        	else if (data.rt=="UpdateRsv_OK") {
+        		if (rsv==0) {
+    				changeRemainCount(member, 1, -1);
+    			}
+    			else if (rsv==1) {
+    				changeRemainCount(member, 2, -1);
+    			}
+    			alert("승인이 정상적으로 완료되었습니다.");
+    			window.location.reload();
+        	}
+        }
 	})
 }
 
@@ -460,10 +501,12 @@ function checkTime(reservationIndex) {
         	
         	if (reservationIndex != -1) {
         		var thisIdx = rsvIdxCheckArray.indexOf(reservationIndex);
-        		startCheckArray.splice(thisIdx, 1);
-        		endCheckArray.splice(thisIdx, 1);
-        		roomTypeCheckArray.splice(thisIdx, 1);
-        		rsvIdxCheckArray.splice(thisIdx, 1);
+        		if (thisIdx > 0) {
+        			startCheckArray.splice(thisIdx, 1);
+            		endCheckArray.splice(thisIdx, 1);
+            		roomTypeCheckArray.splice(thisIdx, 1);
+            		rsvIdxCheckArray.splice(thisIdx, 1);
+        		}
         	}
         	
         	$("#errorMessageType").remove();
