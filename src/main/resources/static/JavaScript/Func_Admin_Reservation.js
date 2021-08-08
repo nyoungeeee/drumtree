@@ -78,6 +78,14 @@ function processAjax(param0, param1) {
         		$(".popupBox").html(resultPopup);
         		$("#selectDate").val($(this).children().eq(4).html());
         		
+        		$(".checkFlag").mouseenter(function() {
+        			createPopupList();
+        		})
+        		
+        		$(".checkFlag").mouseleave(function() {
+        			$('.popupList').empty().hide();
+        		})
+        		
         		$("#selectDate").change(function() {
             		$(".checkFlag").val("체크");
             		$(".checkFlag").removeClass("checkTrue");
@@ -446,4 +454,55 @@ function uploadFile() {
 
 function clearFile() {
 	$("#reservationInfo #fileList span").remove();
+}
+
+function createPopupList() {
+	var roomName = [ "레슨", "연습실 3번", "연습실 4번", "연습실 5번" ];
+	
+	if ($("#selectRoom").val()!=null&&$("#selectRoom").val()!="none") {
+		$.ajax({
+			url: "http://" + IPstring + "/list-rsv?isApproval=1",
+	        data: {
+	        	start: $("#selectDate").val(),
+	        	rsvType : $("#selectType").val(),
+	        	roomType : $("#selectRoom").val(),
+	        },
+	        method: "POST",
+	        dataType: "JSON",
+	        error: function() { alert("데이터 로드 실패"); },
+	        success: function(data) {
+	        	var memberNameCheckArray = [];
+	        	var startCheckArray = [];
+	        	var endCheckArray = [];
+	        	
+	        	for (var jsonIdx = 0; jsonIdx < data.total; jsonIdx++) {
+	        		memberNameCheckArray.push(data[jsonIdx].memberName);
+	        		startCheckArray.push(data[jsonIdx].start);
+	        		endCheckArray.push(data[jsonIdx].end);
+	        	}
+	        	
+	    		var divHTML = "<div>";
+	    		divHTML += "<strong>" + $("#selectDate").val() + "<a style='float:right;'>" + roomName[$("#selectRoom").val()] + "</a>" + "</strong>";
+	    		divHTML += "<hr>";
+	    		if (startCheckArray.length==0) {
+	    			divHTML += "&nbsp;" + "승인된 예약 목록 없음";
+	    		}
+	    		else {
+	    			for (var arrayIdx = 0; arrayIdx < startCheckArray.length; arrayIdx++) {
+	        			divHTML += startCheckArray[arrayIdx].split(" ")[1].substring(0,5);
+	        			divHTML += "&nbsp;~&nbsp;";
+	        			divHTML += endCheckArray[arrayIdx].split(" ")[1].substring(0,5);
+	        			divHTML += "<a style='float:right;'>" + memberNameCheckArray[arrayIdx] + "</a>";
+	        			divHTML += "<br>";
+	        		}
+	    		}
+	    		divHTML += "</div>";
+	    		$('.popupList').empty().append(divHTML);
+	    		
+	    		var divTop = $(".checkFlag").offset().top;
+	    		var divLeft = $(".checkFlag").offset().left + 60;
+	    		$('.popupList').css({ "top":divTop, "left":divLeft, "position":"absolute", "z-index":7 }).show();
+	        }	
+		})
+	}
 }
