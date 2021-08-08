@@ -483,3 +483,17 @@
 		cursor: pointer;
 		user-select: none;
 	}
+	
+	.popupList {
+		display: none;
+		position: absolute;
+		font-family: IBMPlexSansKR-Regular;
+		font-size: 0.75em;
+		text-align: left;
+		width: 15em;
+		height: auto;
+		padding: 0.5%;
+        background-color: #EEEEEE;
+		box-shadow: 0 0 4px #000000;
+		user-select: none;
+	}
