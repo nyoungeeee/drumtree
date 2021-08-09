@@ -30,6 +30,7 @@
 		<if test="isApproval != -1">
 			AND isApproval = ${isApproval}
 		</if>
+		ORDER BY start, roomType ASC
 	</select>
 	<!-- 예약 등록 -->
 	<insert id="writeRsv" parameterType="java.util.Map">
