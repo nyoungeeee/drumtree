@@ -84,7 +84,7 @@ function processAjax(param0, param1, param2, param3, param4, param5) {
         	
         	var holyDay = [ "01-01", "01-31", "02-01", "02-02", "03-01", "03-09", "05-05", "05-08", "06-01", "06-06", "08-15", "09-09", "09-10", "09-11", "09-12", "10-03", "10-09", "10-10", "12-25" ];
         	for (var k = 0; k < holyDay.length; k++) {
-        		$("tbody td:contains('" + holyDay[k] + "')").css("color", "#FA5858");
+        		$("tbody td:contains('" + "2022-" + holyDay[k] + "')").css("color", "#FA5858");
         	}
         	
         	var today = new Date();
